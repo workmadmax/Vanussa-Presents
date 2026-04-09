@@ -1,21 +1,19 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    views.py                                           :+:      :+:    :+:    #
+#    serializers.py                                     :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/04/09 15:39:05 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/09 15:39:17 by mdouglas         ###   ########.fr        #
+#    Created: 2026/04/09 15:21:07 by mdouglas          #+#    #+#              #
+#    Updated: 2026/04/09 15:50:13 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import serializers
 from .models import Category
-from .serializers import CategorySerializer
 
-
-class CategoryListView(generics.ListAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'slug']
