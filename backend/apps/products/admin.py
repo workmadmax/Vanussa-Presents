@@ -15,3 +15,4 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('is_active', 'category', 'created_at')
     search_fields = ('name', 'description')
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [ProductImageInline]
