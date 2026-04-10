@@ -6,13 +6,14 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 17:28:10 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/09 17:29:11 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/09 22:16:16 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+
+export const api = axios.create({
+  baseURL: 'http://127.0.0.1:8000/api/',
 });
 
