@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/09 00:03:38 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/09 11:47:01 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/04/09 22:14:08 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,9 +56,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.categories',
     'apps.products',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -66,6 +69,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 ROOT_URLCONF = 'core.urls'
