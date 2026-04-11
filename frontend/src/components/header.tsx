@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 19:31:31 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/10 21:01:04 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/10 23:56:05 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,85 +14,55 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/cartContext";
-import { Search, User, Heart, ShoppingBag } from "lucide-react"; // Instale: npm install lucide-react
+import { Search, User, Heart, ShoppingBag, Phone } from "lucide-react"; // Instale: npm install lucide-react
 
 export function Header() {
   const { cartItems } = useCart();
-
-  // Calcula o total de itens no carrinho
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <header className="w-full font-sans bg-white shadow-sm">
-      {/* 1. FAIXA SUPERIOR (Promoção) */}
-      <div className="w-full bg-[#ef4444] text-[#374151] text-center text-xs py-2 border-b border-gray-200 tracking-wide">
-        Frete grátis para compras acima de R$ 279
-      </div>
-
-      {/* 2. MIOLO (Logo, Busca e Ações) */}
-      <div className="container mx-auto px-4 py-6 flex items-center justify-between">
+    <header className="bg-[#FFDEAD] text-white w-full">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link
-          href="/"
-          className="text-3xl font-serif italic font-light tracking-tighter"
-        >
-          Vanusa <span className="text-pink-500 font-bold">Presentes</span>
-        </Link>
-
-        {/* Barra de Busca */}
-        <div className="hidden md:flex flex-1 mx-10 max-w-md relative">
-          <input
-            type="text"
-            placeholder="Busque por aliança, pulseira..."
-            className="w-full border-b border-gray-300 pb-1 outline-none focus:border-black transition-colors text-sm"
-          />
-          <Search className="absolute right-0 bottom-1 w-4 h-4 text-gray-500" />
+        <div className="flex-shrink-0">
+          <h1 className="text-xl font-bold tracking-widest">
+            Vanusa Presentes 💎
+          </h1>
         </div>
+        {/* Barra de busca */}
+        <div className="justify-center px-4">
+          <div className="w-full max-w-xl items-center bg-white rounded-md flex px-4 py-2 gap-2">
+            <input
+              type="text"
+              placeholder="Olá, o que você procura?"
+              className="flex-1 text-gray-800 text-sm outline-none bg-transparent"
+            />
+            <Search size={18} className="text-gray-500" />
+          </div>
+        </div>
+        {/* Ícones direita */}
+        <div className="flex items-center gap-6 flex-shrink-0">
+          <button className="flex flex-col items-center text-xs text-gray-300 hover:text-white">
+            <Phone size={20} />
+            <span>Contato</span>
+          </button>
 
-        {/* Ícones de Ação */}
-        <div className="flex items-center gap-6 text-sm text-gray-700">
-          <Link
-            href="/conta"
-            className="flex items-center gap-2 hover:text-black"
-          >
-            <User className="w-5 h-5" />
-            <span className="hidden lg:inline">Minha conta</span>
-          </Link>
+          <button className="flex flex-col items-center text-xs text-gray-300 hover:text-white">
+            <User size={20} />
+            <span>Entrar</span>
+          </button>
 
-          <Link
-            href="/favoritos"
-            className="flex items-center gap-2 hover:text-black"
-          >
-            <Heart className="w-5 h-5" />
-            <span className="hidden lg:inline">Lista de desejos</span>
-          </Link>
-
-          <Link
-            href="/cart"
-            className="flex items-center gap-2 hover:text-black font-medium"
-          >
-            <ShoppingBag className="w-5 h-5" />
-            <span>sacola de compras ({cartCount})</span>
-          </Link>
+          <button className="flex flex-col items-center text-xs text-gray-300 hover:text-white relative">
+            <ShoppingBag size={20} />
+            <span>Carrinho</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-2 bg-pink-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </button>
         </div>
       </div>
-
-      {/* 3. MENU DE CATEGORIAS */}
-      <nav className="border-t border-gray-100">
-        <div className="container mx-auto px-4">
-          <ul className="flex items-center justify-center gap-8 py-4 text-[12px] font-bold uppercase tracking-wider text-gray-800">
-            <li className="hover:text-pink-500 cursor-pointer">Alianças</li>
-            <li className="hover:text-pink-500 cursor-pointer">Anéis</li>
-            <li className="hover:text-pink-500 cursor-pointer text-pink-600">
-              Brincos
-            </li>
-            <li className="hover:text-pink-500 cursor-pointer">Correntes</li>
-            <li className="hover:text-pink-500 cursor-pointer font-black border-2 border-black px-3 py-1 bg-black text-white">
-              Ver Tudo
-            </li>
-          </ul>
-        </div>
-      </nav>
     </header>
   );
 }
