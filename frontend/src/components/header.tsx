@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hearder.tsx                                        :+:      :+:    :+:   */
+/*   header.tsx                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 19:31:31 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/10 20:28:53 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/10 21:01:04 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ export function Header() {
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <header className="w-full font-sans">
+    <header className="w-full font-sans bg-white shadow-sm">
       {/* 1. FAIXA SUPERIOR (Promoção) */}
-      <div className="w-full bg-pink-500 text-white text-center text-xs py-2 border-b border-pink-300">
+      <div className="w-full bg-[#ef4444] text-[#374151] text-center text-xs py-2 border-b border-gray-200 tracking-wide">
         Frete grátis para compras acima de R$ 279
       </div>
 
