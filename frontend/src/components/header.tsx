@@ -40,7 +40,7 @@ export function Header() {
         </Link>
 
         {/* Barra de Busca */}
-        <div className="hidden md:flex flex-1 mx-10 max-w-md relative">
+        <div className="hidden md:flex flex-1 mx-4 max-w-xs relative">
           <input
             type="text"
             placeholder="Busque por aliança, pulseira..."
