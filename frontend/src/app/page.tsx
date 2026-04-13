@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 21:43:32 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/13 13:23:10 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/13 14:15:36 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ export default function Home() {
   const [products, setProducts] = useState<any[]>([]);
   const searchParams = useSearchParams();
 
-  const category = searchParams.get("Category");
+  const category = searchParams.get("category");
 
   useEffect(() => {
     let url = "/products/";
 
     if (category) {
-      url += `?Category=${category}`;
+      url += `?category=${category}`;
     }
 
     api.get(url).then((res) => {

@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 12:23:16 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/13 13:33:58 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/13 14:15:30 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ export function CategoryBar() {
           {open && (
             <div className="absolute top-12 left-0 bg-white shadow-lg rounded-xl p-3 w-48 z-50">
               {categories.map((cat) => (
-                <Link key={cat.id} href={`/?category/${cat.slug}`}>
+                <Link key={cat.id} href={`/?category=${cat.slug}`}>
                   <div
                     key={cat.id}
                     className="p-2 hover:bg-pink-100 rounded cursor-pointer"
@@ -63,7 +63,7 @@ export function CategoryBar() {
         {/*  LISTA HORIZONTAL */}
         <div className="flex gap-3 overflow-x-auto">
           {categories.map((cat) => (
-            <Link key={cat.id} href={`/?category/${cat.slug}`}>
+            <Link key={cat.id} href={`/?category=${cat.slug}`}>
               <button
                 key={cat.id}
                 className="bg-white px-4 py-2 rounded-full shadow hover:bg-pink-500 hover:text-white transition whitespace-nowrap"

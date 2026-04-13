@@ -1,7 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    models.py                                          :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/04/13 14:12:23 by mdouglas          #+#    #+#              #
+#    Updated: 2026/04/13 14:15:16 by mdouglas         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 from django.db import models
 
 # Create your models here.
-
 class Product(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
