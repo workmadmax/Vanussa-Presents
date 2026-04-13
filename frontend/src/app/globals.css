@@ -6,10 +6,9 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 20:29:59 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/10 20:32:55 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/13 11:02:55 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+@import "tailwindcss";
