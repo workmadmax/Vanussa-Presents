@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 19:31:31 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/13 11:09:08 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/14 18:50:59 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 import Link from "next/link";
 import { useCart } from "@/context/cartContext";
 import { Search, User, Heart, ShoppingBag, Phone } from "lucide-react";
+import { SupportMenu } from "./supportMenu/supportMenu";
 
 export function Header() {
   const { cartItems } = useCart();
@@ -50,10 +51,12 @@ export function Header() {
 
         {/* Ações direita */}
         <div className="flex items-center gap-10">
-          <button className="flex flex-col items-center text-sm text-gray-300 hover:text-yellow-500 transition">
-            <Phone size={22} />
-            <span>Contato</span>
-          </button>
+          <SupportMenu>
+            <div className="flex flex-col items-center text-sm text-gray-300 hover:text-yellow-500 transition">
+              <Phone size={22} />
+              <span>Contato</span>
+            </div>
+          </SupportMenu>
 
           <button className="flex flex-col items-center text-sm text-gray-300 hover:text-yellow-500 transition">
             <User size={22} />
