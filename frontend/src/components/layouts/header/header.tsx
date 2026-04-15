@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 19:31:31 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/14 18:50:59 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/15 18:20:04 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 import Link from "next/link";
 import { useCart } from "@/context/cartContext";
 import { Search, User, Heart, ShoppingBag, Phone } from "lucide-react";
-import { SupportMenu } from "./supportMenu/supportMenu";
+import { SupportMenu } from "../supportMenu/supportMenu";
+import { useState } from "react";
+import { LoginModal } from "@/components/ui/modal/loguinModal";
 
 export function Header() {
   const { cartItems } = useCart();
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   return (
     <header className="bg-black text-white w-full shadow-lg">
@@ -58,9 +61,12 @@ export function Header() {
             </div>
           </SupportMenu>
 
-          <button className="flex flex-col items-center text-sm text-gray-300 hover:text-yellow-500 transition">
+          <button
+            onClick={() => setIsLoginOpen(true)}
+            className="flex flex-col items-center text-sm text-gray-300 hover:text-yellow-500 transition"
+          >
             <User size={22} />
-            <span>Entrar</span>
+            <span>Entrar ou Cadastre</span>
           </button>
 
           <button className="flex flex-col items-center text-sm text-gray-300 hover:text-yellow-500 transition relative">
@@ -74,6 +80,7 @@ export function Header() {
           </button>
         </div>
       </div>
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </header>
   );
 }
