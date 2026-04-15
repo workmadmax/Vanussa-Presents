@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 18:45:03 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/14 19:06:03 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/15 10:32:37 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ export function SupportMenu({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <div className="relative font-sans z-50">
-      
+    <div ref={menuRef} className="relative font-sans z-50">
       <button
         onClick={toggleMenu}
         aria-expanded={isOpen}
