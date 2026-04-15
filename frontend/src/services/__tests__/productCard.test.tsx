@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 20:24:32 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/14 22:15:47 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/15 17:16:55 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ const mockProduct: Product = {
   images: [{ image: "http://localhost/image.jpg" }],
 };
 
-const mockProductWithoutImage: Product  = {
+const mockProductWithoutImage: Product = {
   id: 2,
   name: "Produto Sem Imagem",
   description: "Descrição do produto sem imagem",

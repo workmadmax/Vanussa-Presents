@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   index.tsx                                          :+:      :+:    :+:   */
+/*   index.ts                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:23:54 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/14 22:12:34 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/15 17:09:36 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ export interface Product {
   id: number;
   name: string;
   slug: string;
-  price: string;
+  price: number;
   description?: string; // Opcional
   images: ProductImage[];
 }
