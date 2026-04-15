@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 12:23:16 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/13 14:15:30 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/14 22:14:23 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import Link from "next/link";
-
-type Category = {
-  id: number;
-  name: string;
-  slug: string;
-};
+import { Category } from "@/types";
 
 export function CategoryBar() {
   const [categories, setCategories] = useState<Category[]>([]);

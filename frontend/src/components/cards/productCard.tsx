@@ -6,19 +6,12 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 09:35:22 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/10 17:06:24 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/14 22:13:47 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import Link from "next/link";
-
-type Product = {
-  id: number;
-  name: string;
-  slug: string;
-  price: string;
-  images: { image: string }[];
-};
+import { Product } from "@/types";
 
 export function ProductCard({ product }: { product: Product }) {
   const image = product.images?.[0]?.image;

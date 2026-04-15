@@ -6,14 +6,15 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 20:24:32 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/14 20:59:59 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/14 22:15:47 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { render, screen } from "@testing-library/react";
 import { ProductCard } from "@/components/cards/productCard";
+import { Product } from "@/types";
 
-const mockProduct = {
+const mockProduct: Product = {
   id: 1,
   name: "Produto Teste",
   description: "Descrição do produto teste",
@@ -22,7 +23,7 @@ const mockProduct = {
   images: [{ image: "http://localhost/image.jpg" }],
 };
 
-const mockProductWithoutImage = {
+const mockProductWithoutImage: Product  = {
   id: 2,
   name: "Produto Sem Imagem",
   description: "Descrição do produto sem imagem",
