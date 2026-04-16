@@ -6,14 +6,27 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 17:47:00 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/15 18:18:38 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/16 20:51:17 by mdouglas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loguinModal.tsx                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/15 17:47:00 by mdouglas          #+#    #+#             */
+/*   Updated: 2026/04/15 22:30:33 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { useAuth } from "@/context/authContext";
 
 /* ================= TYPES ================= */
 
@@ -27,6 +40,11 @@ type LoginModalProps = {
 export function LoginModal({ isOpen, onClose }: LoginModalProps) {
   useEscapeToClose(isOpen, onClose);
 
+  const { loginUser } = useAuth();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   if (!isOpen) return null;
 
   return (
@@ -36,13 +54,25 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
       <div className="relative z-10 w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
         <ModalHeader onClose={onClose} />
 
-        <form className="flex flex-col gap-4">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await loginUser(username, password);
+            onClose();
+          }}
+        >
           <InputField
-            label="E-mail"
-            type="email"
-            placeholder="Digite seu e-mail"
+            label="Usuário (ou E-mail)"
+            placeholder="Digite seu usuário"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
-          <PasswordField />
+
+          <PasswordField
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <PrimaryButton>Entrar</PrimaryButton>
           <SecondaryButton>Não sei meu e-mail</SecondaryButton>
           <GoogleButton />
@@ -93,22 +123,38 @@ type InputFieldProps = {
   label: string;
   type?: string;
   placeholder?: string;
+  value?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function InputField({ label, type = "text", placeholder }: InputFieldProps) {
+function InputField({
+  label,
+  type = "text",
+  placeholder,
+  value,
+  onChange,
+}: InputFieldProps) {
   return (
     <div>
       <label className="text-sm text-gray-600">{label}</label>
       <input
         type={type}
         placeholder={placeholder}
+        value={value}
+        onChange={onChange}
         className="mt-1 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
       />
     </div>
   );
 }
 
-function PasswordField() {
+function PasswordField({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   return (
     <div>
       <div className="mb-1 flex justify-between text-sm text-gray-600">
@@ -117,9 +163,12 @@ function PasswordField() {
           Esqueceu sua senha?
         </span>
       </div>
+
       <input
         type="password"
         placeholder="Digite sua senha"
+        value={value}
+        onChange={onChange}
         className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
       />
     </div>
