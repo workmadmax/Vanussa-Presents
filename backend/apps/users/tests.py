@@ -6,9 +6,11 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/15 20:29:26 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/15 21:34:04 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/04/15 22:06:38 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+import token
 
 from django.urls import reverse
 from rest_framework.test import APITestCase
@@ -160,4 +162,25 @@ class UserRegistrationTest(APITestCase):
                 "password": "wrongpass"
             }, format='json')
 
+        self.assertEqual(response.status_code, 401)
+
+    def test_access_protected_route(self):
+        user = User.objects.create_user(
+            username="secureuser",
+            password="password123"
+        )
+
+        response = self.client.post(reverse('token_obtain_pair'), {
+            "username": "secureuser",
+            "password": "password123"
+        })
+
+        token = response.data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+        response = self.client.get("/api/users/profile/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["user"], "secureuser")
+
+    def test_protected_route_without_token(self):
+        response = self.client.get("/api/users/profile/")
         self.assertEqual(response.status_code, 401)
