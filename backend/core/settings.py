@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/09 00:03:38 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/13 20:09:09 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/04/15 20:06:07 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -54,6 +60,7 @@ INSTALLED_APPS = [
     'apps.categories',
     'apps.products',
     'corsheaders',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +142,4 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
