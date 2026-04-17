@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 09:35:22 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/15 17:28:56 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:21:29 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ function formatPrice(price: number) {
   });
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product }: ProductCardProps) {
   const imageUrl = product.images?.[0]?.image ?? "/placeholder.png";
 
   return (
