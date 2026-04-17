@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 20:31:47 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/16 20:51:41 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:37:51 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ import { useCart } from "@/context/cartContext";
 import { Search, User, ShoppingBag, Phone, LogOut } from "lucide-react";
 import { SupportMenu } from "../supportMenu/supportMenu";
 import { useState } from "react";
-import { LoginModal } from "@/components/ui/modal/loguinModal";
+import { LoginModal } from "@/components/ui/modal/loginModal";
 import { useAuth } from "@/context/authContext";
 
 export function Header() {

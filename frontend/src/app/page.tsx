@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 21:43:32 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/15 17:33:32 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:41:14 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useSearchParams } from "next/navigation";
-import  ProductCard from "@/components/cards/productCard";
+import { ProductCard } from "@/components/cards/productCard";
 
 export default function Home() {
   const [products, setProducts] = useState<any[]>([]);
