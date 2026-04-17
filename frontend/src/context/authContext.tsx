@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 22:11:12 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/16 20:51:51 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:07:24 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ type AuthContextType = {
   user: string | null;
   token: string | null;
   isAuthenticated: boolean;
-  loginUser: (username: string, password: string) => Promise<void>;
+  loginUser: (
+    username: string,
+    password: string,
+  ) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
 };
 
@@ -39,29 +42,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function loginUser(username: string, password: string) {
+    const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    let data: any = null;
+
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error("Detalhes do erro:", errorData);
-
-        throw new Error(errorData.detail || "Usuário ou senha inválidos");
-      }
-      const data = await response.json();
-
-      const accessToken = data.access;
-      setToken(accessToken);
-      setUser(username);
-      localStorage.setItem("token", accessToken);
-      localStorage.setItem("user", username);
-    } catch (error) {
-      console.error("Login error:", error);
-      throw error;
+      data = await response.json();
+    } catch {
+      data = {};
     }
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.detail || "Login failed. Please try again.",
+      };
+    }
+    const acessToken = data.access;
+
+    setToken(acessToken);
+    setUser(username);
+    localStorage.setItem("token", acessToken);
+    localStorage.setItem("user", username);
+    return { success: true };
   }
 
   function logout() {

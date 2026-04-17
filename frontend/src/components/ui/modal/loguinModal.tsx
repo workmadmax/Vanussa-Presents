@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 17:47:00 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/16 20:51:17 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/16 21:59:53 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   if (!isOpen) return null;
 
   return (
@@ -58,8 +61,19 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
           className="flex flex-col gap-4"
           onSubmit={async (e) => {
             e.preventDefault();
-            await loginUser(username, password);
-            onClose();
+
+            setError(null);
+            setLoading(true);
+
+            const result = await loginUser(username, password);
+
+            if (!result.success) {
+              setError(result.message || "Erro desconhecido");
+            } else {
+              onClose();
+            }
+
+            setLoading(false);
           }}
         >
           <InputField
@@ -73,7 +87,12 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <PrimaryButton>Entrar</PrimaryButton>
+          {error && (
+            <div className="text-red-500 text-sm bg-red-50 p-2 rounded-lg">
+              {error}
+            </div>
+          )}
+          <PrimaryButton loading={loading}>Entrar</PrimaryButton>
           <SecondaryButton>Não sei meu e-mail</SecondaryButton>
           <GoogleButton />
           <SignupText />
@@ -177,10 +196,19 @@ function PasswordField({
 
 /* ================= BUTTONS ================= */
 
-function PrimaryButton({ children }: { children: React.ReactNode }) {
+function PrimaryButton({
+  children,
+  loading,
+}: {
+  children: React.ReactNode;
+  loading?: boolean;
+}) {
   return (
-    <button className="rounded-xl bg-black py-3 text-white hover:opacity-90">
-      {children}
+    <button
+      disabled={loading}
+      className="rounded-xl bg-black py-3 text-white hover:opacity-90 disabled:opacity-50"
+    >
+      {loading ? "Carregando..." : children}
     </button>
   );
 }
