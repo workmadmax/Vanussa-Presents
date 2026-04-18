@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 20:31:47 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/16 22:37:51 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/17 22:15:05 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ import { SupportMenu } from "../supportMenu/supportMenu";
 import { useState } from "react";
 import { LoginModal } from "@/components/ui/modal/loginModal";
 import { useAuth } from "@/context/authContext";
+import { RegisterModal } from "@/components/ui/modal/registerModal";
 
 export function Header() {
   const { cartItems } = useCart();
   const { user, isAuthenticated, logout } = useAuth();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -106,7 +108,15 @@ export function Header() {
         </div>
       </div>
 
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onOpenRegister={() => setIsRegisterOpen(true)}
+      />
+      <RegisterModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+      />
     </header>
   );
 }
