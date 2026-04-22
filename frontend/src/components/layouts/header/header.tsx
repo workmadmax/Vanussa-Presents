@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 20:31:47 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/22 15:43:13 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/22 16:11:14 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { LoginModal } from "@/components/ui/modal/loginModal";
 import { useAuth } from "@/context/authContext";
 import { RegisterModal } from "@/components/ui/modal/registerModal";
+import { CartMenu } from "@/components/layouts/supportMenu/cart/cartMenu";
 
 export function Header() {
 	const { cartItems } = useCart();
@@ -114,23 +115,27 @@ export function Header() {
 					)}
 
 					{/* Carrinho */}
-					<button
-						className="flex flex-col items-center text-sm text-gray-300
-					 hover:text-yellow-500 transition relative"
-					>
-						<ShoppingBag size={22} />
-						{mounted && cartCount > 0 && (
-							<span
-								className="absolute -top-2 -right-3 bg-yellow-500 
-							text-black text-xs rounded-full w-5 h-5 flex items-center 
-							justify-center font-bold animate-pulse"
-							>
-								{cartCount}
-							</span>
-						)}
-					</button>
+					<CartMenu onLoginClick={() => setIsLoginOpen(true)}>
+						<div
+							className="flex flex-col items-center text-sm text-gray-300
+						hover:text-yellow-500 transition relative"
+						>
+							<ShoppingBag size={22} />
+							<span>Carrinho</span>
+							{mounted && cartCount > 0 && (
+								<span
+									className="absolute -top-2 -right-3 bg-yellow-50
+								 text-black text-xs rounded-full w-5 h-5
+								 flex items-center justify-center font-bold animate-pulse"
+								>
+									{cartCount}
+								</span>
+							)}
+						</div>
+					</CartMenu>
 				</div>
 			</div>
+			{ /* Modais de Login e Registro */}
 			<LoginModal
 				isOpen={isLoginOpen}
 				onClose={() => setIsLoginOpen(false)}
