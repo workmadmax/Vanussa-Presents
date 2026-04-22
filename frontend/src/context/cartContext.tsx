@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 17:18:33 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/22 11:55:04 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/22 16:28:07 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,11 @@ import {
 	useEffect,
 	ReactNode,
 	useContext,
-	use,
+	
 } from "react";
 
-type Product = {
-	id: number;
-	name: string;
-	price: string;
-	images: { image: string }[];
-};
+import { Product } from "@/types";	
+
 
 export type CartItem = Product & {
 	quantity: number;
