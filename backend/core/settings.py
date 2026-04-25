@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/09 00:03:38 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/15 20:06:07 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/04/24 21:59:51 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'apps.products',
     'corsheaders',
     'apps.users',
+		'apps.orders',
 ]
 
 MIDDLEWARE = [
