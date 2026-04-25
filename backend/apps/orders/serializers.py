@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/24 21:04:25 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/25 12:57:31 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/04/25 18:31:45 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['product_name', 'product_slug', 'quantity', 'price', 'subtotal_price']
+        fields = ['id','product_name', 'product_slug', 'quantity', 'price', 'subtotal_price']
         
     def get_subtotal_price(self, obj):
         return obj.subtotal()
