@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:03:00 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/22 16:33:46 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/25 13:27:43 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,42 @@ export function CartMenu({ children, onLoginClick }: CartMenuProps) {
 		router.push("/cart");
 	}
 
-	function handleCheckout() {
-		closeMenu();
-		router.push("/checkout");
+	async function handleCheckout() {
+		try {
+			const token = localStorage.getItem("token");
+
+			if (!token) {
+				onLoginClick();
+				return;
+			}
+
+			const response = await fetch("http://127.0.0.1:8000/api/orders/create/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({
+					items: cartItems.map((item) => ({
+						product_id: item.id,
+						quantity: item.quantity,
+					})),
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error("Erro ao criar pedido");
+			}
+
+			const order = await response.json();
+
+			closeMenu();
+
+			router.push(`/checkout/${order.id}`);
+		} catch (error) {
+			console.error(error);
+			alert("Erro ao finalizar compra");
+		}
 	}
 
 	function handleLoginClick() {

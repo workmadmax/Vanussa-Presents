@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 17:40:14 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/22 16:52:43 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/24 23:55:57 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,8 @@ function EmptyCart() {
 		<div className="text-center py-16 text-gray-400">
 			<p className="text-4xl mb-3">🛒</p>
 			<p className="text-lg">Seu carrinho está vazio</p>
-			<a>
-				href="/" className="text-pink-500 hover:underline text-sm mt-2
-				inline-block" Continuar comprando
+			<a href="/" className="text-pink-500 hover:underline text-sm mt-2 inline-block">
+				Continuar comprando
 			</a>
 		</div>
 	);
