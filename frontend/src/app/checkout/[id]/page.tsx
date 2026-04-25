@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 22:24:24 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/24 23:48:04 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/25 17:50:36 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ export default function CheckoutPage({
 		async function fetchOrder() {
 			try {
 				const token = localStorage.getItem("token");
+				
+				if (!token) {
+					console.error("User not authenticated");
+					setOrder(null);
+					setLoading(false);
+					return;
+				}
 
 				const response = await fetch(
 					`http://127.0.0.1:8000/api/orders/${id}/`,
@@ -54,6 +61,15 @@ export default function CheckoutPage({
 						},
 					},
 				);
+
+				if (response.status === 401) {
+					console.warn("Unauthorized access - token may be invalid or expired");
+					localStorage.removeItem("token");
+					setOrder(null);
+					setLoading(false);
+					return;
+				}
+				
 				if (!response.ok) {
 					console.error("Failed to fetch order:", response.statusText);
 					setOrder(null);
