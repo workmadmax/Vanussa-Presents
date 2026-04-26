@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 22:11:12 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/25 22:22:55 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/26 11:49:08 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ type AuthContextType = {
 	user: string | null;
 	token: string | null;
 	isAuthenticated: boolean;
+	isLoading: boolean;
 	registerUser: (
 		username: string,
 		email: string,
@@ -45,6 +46,7 @@ async function registerUser(
 	try {
 		data = await response.json();
 	} catch {}
+
 	if (!response.ok) {
 		return {
 			success: false,
@@ -64,6 +66,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [user, setUser] = useState<string | null>(null);
 	const [token, setToken] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const storedToken = localStorage.getItem("token");
@@ -73,6 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setToken(storedToken);
 			setUser(storedUser);
 		}
+		setIsLoading(false);
 	}, []);
 
 	async function loginUser(username: string, password: string) {
@@ -83,12 +87,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		});
 
 		let data: any = null;
-
 		try {
 			data = await response.json();
 		} catch {
 			data = {};
 		}
+
 		if (!response.ok) {
 			return {
 				success: false,
@@ -97,14 +101,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		}
 
 		const accessToken = data.access;
-		const refreshToken = data.refresh; // NOVO: Pegando o token de refresh da resposta
+		const refreshToken = data.refresh;
 
 		setToken(accessToken);
 		setUser(username);
 
 		localStorage.setItem("token", accessToken);
 		localStorage.setItem("user", username);
-		localStorage.setItem("refresh_token", refreshToken); // NOVO: Salvando no localStorage
+		localStorage.setItem("refresh_token", refreshToken);
 
 		return { success: true };
 	}
@@ -114,7 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		setToken(null);
 		localStorage.removeItem("token");
 		localStorage.removeItem("user");
-		localStorage.removeItem("refresh_token"); // NOVO: Limpando o refresh token ao sair
+		localStorage.removeItem("refresh_token");
 	}
 
 	return (
@@ -123,7 +127,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				user,
 				token,
 				isAuthenticated: !!token,
-				registerUser: registerUser,
+				isLoading,
+				registerUser,
 				loginUser,
 				logout,
 			}}
