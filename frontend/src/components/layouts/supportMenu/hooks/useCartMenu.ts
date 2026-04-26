@@ -28,10 +28,14 @@ export function useCartMenu() {
 
 	useEffect(() => {
 		function handleKeyDown(event: KeyboardEvent) {
-			if (event.key === "Escape") closeMenu();
+			if (event.key === "Escape") {
+				closeMenu();
+			}
 		}
 
-		if (isOpen) window.addEventListener("keydown", handleKeyDown);
+		if (isOpen) {
+			window.addEventListener("keydown", handleKeyDown);
+		}
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, [isOpen, closeMenu]);
 

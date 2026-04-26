@@ -36,7 +36,7 @@ export function CartMenuGuest({
 
 			<button
 				onClick={onLoginClick}
-				className="w-full bg-black text-white py-2 
+				className="w-full bg-black text-white py-2
 				rounded-xl text-sm hover:opacity-90 transition"
 			>
 				Entrar ou Cadastrar

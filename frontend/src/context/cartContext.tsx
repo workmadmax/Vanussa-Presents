@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 17:18:33 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/24 22:17:01 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/25 23:33:53 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 			if (item) {
 				return prev.map((p) =>
-					p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p,
+					p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
 				);
 			}
 			return [...prev, { ...product, quantity: 1 }];
@@ -80,9 +80,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		}
 
 		setCartItems((prev) =>
-			prev.map((item) =>
-				item.id === productId ? { ...item, quantity } : item,
-			),
+			prev.map((item) => (item.id === productId ? { ...item, quantity } : item))
 		);
 	}
 
@@ -92,12 +90,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 	const totalItems = useMemo(
 		() => cartItems.reduce((acc, item) => acc + item.quantity, 0),
-		[cartItems],
+		[cartItems]
 	);
 
 	const subtotal = useMemo(
 		() => cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0),
-		[cartItems],
+		[cartItems]
 	);
 
 	return (

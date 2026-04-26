@@ -10,28 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import type { Config } from 'jest';
-import nextJest from 'next/jest.js';
+import type { Config } from "jest";
+import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
-  dir: './',
+	dir: "./",
 });
 
 const config: Config = {
-  testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  
-  // 1. ISSO AQUI RESOLVE O ERRO DO "_location"
-  testEnvironmentOptions: {
-    url: 'http://localhost/',
-  },
+	testEnvironment: "jest-environment-jsdom",
+	setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 
-  // 2. ISSO AQUI RESOLVE O ERRO DE NÃO ACHAR O MÓDULO "@/..."
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-  },
+	// 1. ISSO AQUI RESOLVE O ERRO DO "_location"
+	testEnvironmentOptions: {
+		url: "http://localhost/",
+	},
 
-  testMatch: ["**/__tests__/**/*.(ts|tsx)"],
+	// 2. ISSO AQUI RESOLVE O ERRO DE NÃO ACHAR O MÓDULO "@/..."
+	moduleNameMapper: {
+		"^@/(.*)$": "<rootDir>/src/$1",
+	},
+
+	testMatch: ["**/__tests__/**/*.(ts|tsx)"],
 };
 
 export default createJestConfig(config);

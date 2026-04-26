@@ -77,7 +77,7 @@ describe("CartPage", () => {
 		it("não mostra botão de limpar carrinho", () => {
 			setup();
 			expect(
-				screen.queryByRole("button", { name: /limpar carrinho/i }),
+				screen.queryByRole("button", { name: /limpar carrinho/i })
 			).not.toBeInTheDocument();
 		});
 	});
@@ -91,21 +91,21 @@ describe("CartPage", () => {
 		it("mostra total corretamente", () => {
 			setup({ cartItems: [mockItem] });
 			expect(
-				screen.getByText(/R\$ 499\.99/, { selector: "span.text-2xl" }),
+				screen.getByText(/R\$ 499\.99/, { selector: "span.text-2xl" })
 			).toBeInTheDocument();
 		});
 
 		it("mostra botão de Faça login", () => {
 			setup({ cartItems: [mockItem] });
 			expect(
-				screen.getByRole("button", { name: /faça login/i }),
+				screen.getByRole("button", { name: /faça login/i })
 			).toBeInTheDocument();
 		});
 
 		it("não mostra botão de Finalizar compra", () => {
 			setup({ cartItems: [mockItem] });
 			expect(
-				screen.queryByRole("button", { name: /finalizar compra/i }),
+				screen.queryByRole("button", { name: /finalizar compra/i })
 			).not.toBeInTheDocument();
 		});
 
@@ -121,7 +121,7 @@ describe("CartPage", () => {
 		it("mostra botão limpar carrinho", () => {
 			setup({ cartItems: [mockItem] });
 			expect(
-				screen.getByRole("button", { name: /limpar carrinho/i }),
+				screen.getByRole("button", { name: /limpar carrinho/i })
 			).toBeInTheDocument();
 		});
 
@@ -129,7 +129,7 @@ describe("CartPage", () => {
 			const user = userEvent.setup();
 			setup({ cartItems: [mockItem] });
 			await user.click(
-				screen.getByRole("button", { name: /limpar carrinho/i }),
+				screen.getByRole("button", { name: /limpar carrinho/i })
 			);
 			expect(mockClearCart).toHaveBeenCalledTimes(1);
 		});
@@ -139,14 +139,14 @@ describe("CartPage", () => {
 		it("mostra botão de Finalizar compra", () => {
 			setup({ cartItems: [mockItem], isAuthenticated: true });
 			expect(
-				screen.getByRole("button", { name: /finalizar compra/i }),
+				screen.getByRole("button", { name: /finalizar compra/i })
 			).toBeInTheDocument();
 		});
 
 		it("não mostra botão de Faça login", () => {
 			setup({ cartItems: [mockItem], isAuthenticated: true });
 			expect(
-				screen.queryByRole("button", { name: /faça login/i }),
+				screen.queryByRole("button", { name: /faça login/i })
 			).not.toBeInTheDocument();
 		});
 
@@ -154,7 +154,7 @@ describe("CartPage", () => {
 			const user = userEvent.setup();
 			setup({ cartItems: [mockItem], isAuthenticated: true });
 			await user.click(
-				screen.getByRole("button", { name: /finalizar compra/i }),
+				screen.getByRole("button", { name: /finalizar compra/i })
 			);
 			expect(mockPush).toHaveBeenCalledWith("/checkout");
 		});

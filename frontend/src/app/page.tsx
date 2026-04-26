@@ -33,7 +33,9 @@ export default function Home() {
 	useEffect(() => {
 		setLoading(true);
 		let url = `/products/?page=${currentPage}`;
-		if (category) url += `&category=${category}`;
+		if (category) {
+			url += `&category=${category}`;
+		}
 
 		api
 			.get(url)

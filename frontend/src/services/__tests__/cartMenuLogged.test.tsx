@@ -26,7 +26,7 @@ function renderLogged(cartCount = 1, total = 100) {
 			total={total}
 			onCheckout={onCheckout}
 			onCartClick={onCartClick}
-		/>,
+		/>
 	);
 
 	return { onCheckout, onCartClick };
@@ -37,7 +37,7 @@ function getParagraphWithText(...words: string[]) {
 		element?.tagName === "P" &&
 		words.every((word) => element?.textContent?.includes(word))
 			? true
-			: false,
+			: false
 	);
 }
 
@@ -67,10 +67,10 @@ describe("CartMenuLogged", () => {
 		it("mostra botão de finalizar compra e ver carrinho", () => {
 			renderLogged();
 			expect(
-				screen.getByRole("button", { name: /finalizar compra/i }),
+				screen.getByRole("button", { name: /finalizar compra/i })
 			).toBeInTheDocument();
 			expect(
-				screen.getByRole("link", { name: /ver carrinho/i }),
+				screen.getByRole("link", { name: /ver carrinho/i })
 			).toBeInTheDocument();
 		});
 	});
@@ -80,7 +80,7 @@ describe("CartMenuLogged", () => {
 			const user = userEvent.setup();
 			const { onCheckout } = renderLogged();
 			await user.click(
-				screen.getByRole("button", { name: /finalizar compra/i }),
+				screen.getByRole("button", { name: /finalizar compra/i })
 			);
 			expect(onCheckout).toHaveBeenCalledTimes(1);
 		});

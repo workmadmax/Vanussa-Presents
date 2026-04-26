@@ -14,26 +14,30 @@ import { useState, useEffect, useCallback } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export function useSupportMenu() {
-  const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  
-  const closeMenu = useCallback(() => setIsOpen(false), []);
-  const toggleMenu = () => setIsOpen((prev) => !prev);
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
 
-  useEffect(() => {
-    closeMenu();
-  }, [pathname, closeMenu, searchParams]);
+	const closeMenu = useCallback(() => setIsOpen(false), []);
+	const toggleMenu = () => setIsOpen((prev) => !prev);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeMenu();
-    };
+	useEffect(() => {
+		closeMenu();
+	}, [pathname, closeMenu, searchParams]);
 
-    if (isOpen) window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, closeMenu]);
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				closeMenu();
+			}
+		};
 
-  return { isOpen, toggleMenu, closeMenu };
+		if (isOpen) {
+			window.addEventListener("keydown", handleKeyDown);
+		}
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [isOpen, closeMenu]);
+
+	return { isOpen, toggleMenu, closeMenu };
 }

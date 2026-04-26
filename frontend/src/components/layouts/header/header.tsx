@@ -41,7 +41,7 @@ export function Header() {
 				{/* Logo */}
 				<div className="flex items-center gap-4">
 					<div
-						className="w-14 h-14 bg-linear-to-br from-yellow-500 
+						className="w-14 h-14 bg-linear-to-br from-yellow-500
 					to-yellow-700 rounded-full flex items-center justify-center
 					 text-black text-2xl shadow-md"
 					>
@@ -75,7 +75,7 @@ export function Header() {
 				<div className="flex items-center gap-10">
 					<SupportMenu>
 						<div
-							className="flex flex-col items-center text-sm text-gray-300 
+							className="flex flex-col items-center text-sm text-gray-300
 						hover:text-yellow-500 transition cursor-pointer"
 						>
 							<Phone size={22} />
@@ -96,7 +96,7 @@ export function Header() {
 							</div>
 							<button
 								onClick={logout}
-								className="p-2 hover:bg-gray-900 rounded-full text-gray-400 
+								className="p-2 hover:bg-gray-900 rounded-full text-gray-400
 							hover:text-red-500 transition"
 								title="Sair"
 							>
@@ -106,7 +106,7 @@ export function Header() {
 					) : (
 						<button
 							onClick={() => setIsLoginOpen(true)}
-							className="flex flex-col items-center text-sm text-gray-300 
+							className="flex flex-col items-center text-sm text-gray-300
 								hover:text-yellow-500 transition"
 						>
 							<User size={22} />
@@ -135,7 +135,7 @@ export function Header() {
 					</CartMenu>
 				</div>
 			</div>
-			{ /* Modais de Login e Registro */}
+			{/* Modais de Login e Registro */}
 			<LoginModal
 				isOpen={isLoginOpen}
 				onClose={() => setIsLoginOpen(false)}

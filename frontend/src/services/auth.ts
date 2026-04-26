@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { api }  from "./api";
+import { api } from "./api";
 
 export async function login(username: string, password: string) {
-    const response = await api.post("/users/login/", { username, password });
-    return response.data;
+	const response = await api.post("/users/login/", { username, password });
+	return response.data;
 }

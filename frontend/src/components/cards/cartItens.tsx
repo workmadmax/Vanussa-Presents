@@ -35,7 +35,7 @@ export function CartItemCard({
 
 	return (
 		<div
-			className="flex items-center gap-4 border 
+			className="flex items-center gap-4 border
 		rounded-2xl p-4 mb-4 shadow-sm bg-white"
 		>
 			<ProductImage image={item.images?.[0]?.image} name={item.name} />
@@ -61,7 +61,9 @@ export function CartItemCard({
 /* ================= UI COMPONENTS ================= */
 
 function ProductImage({ image, name }: { image?: string; name: string }) {
-	if (!image) return null;
+	if (!image) {
+		return null;
+	}
 
 	return (
 		<div className="w-20 h-20 relative rounded-xl overflow-hidden shrink-0">

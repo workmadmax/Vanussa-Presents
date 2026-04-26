@@ -16,55 +16,55 @@ import { api } from "@/services/api";
 
 // Mock da resposta da API
 jest.mock("@/services/api", () => ({
-  api: {
-    get: jest.fn(),
-  },
+	api: {
+		get: jest.fn(),
+	},
 }));
 
 jest.mock("next/navigation", () => ({
-  usePathname: () => "/",
+	usePathname: () => "/",
 }));
 
 const mockCategories = [
-  { id: 1, name: "Categoria 1", slug: "categoria-1" },
-  { id: 2, name: "Categoria 2", slug: "categoria-2" },
+	{ id: 1, name: "Categoria 1", slug: "categoria-1" },
+	{ id: 2, name: "Categoria 2", slug: "categoria-2" },
 ];
 
 describe("CategoryBar", () => {
-  beforeEach(() => {
-    (api.get as jest.Mock).mockResolvedValue({ data: mockCategories });
-  });
+	beforeEach(() => {
+		(api.get as jest.Mock).mockResolvedValue({ data: mockCategories });
+	});
 
-  it("busca categorias ao montar", async () => {
-    render(<CategoryBar />);
-    await waitFor(() => {
-      expect(api.get).toHaveBeenCalledWith("/categories/");
-    });
-  });
+	it("busca categorias ao montar", async () => {
+		render(<CategoryBar />);
+		await waitFor(() => {
+			expect(api.get).toHaveBeenCalledWith("/categories/");
+		});
+	});
 
-  it("renderiza categorias na lista horizontal", async () => {
-    render(<CategoryBar />);
-    await waitFor(() => {
-      expect(screen.getAllByText("Categoria 1").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("Categoria 2").length).toBeGreaterThan(0);
-    });
-  });
+	it("renderiza categorias na lista horizontal", async () => {
+		render(<CategoryBar />);
+		await waitFor(() => {
+			expect(screen.getAllByText("Categoria 1").length).toBeGreaterThan(0);
+			expect(screen.getAllByText("Categoria 2").length).toBeGreaterThan(0);
+		});
+	});
 
-  it("renderiza botão Todas", async () => {
-    render(<CategoryBar />);
+	it("renderiza botão Todas", async () => {
+		render(<CategoryBar />);
 
-    await waitFor(() => {
-      expect(screen.getByText(/Todas/)).toBeInTheDocument();
-    });
-  });
+		await waitFor(() => {
+			expect(screen.getByText(/Todas/)).toBeInTheDocument();
+		});
+	});
 
-  it("links das categorias têm href correto", async () => {
-    render(<CategoryBar />);
-    await waitFor(() => {
-      const links = screen.getAllByRole("link");
-      const hrefs = links.map((l) => l.getAttribute("href"));
-      expect(hrefs).toContain("/?category=categoria-1");
-      expect(hrefs).toContain("/?category=categoria-2");
-    });
-  });
+	it("links das categorias têm href correto", async () => {
+		render(<CategoryBar />);
+		await waitFor(() => {
+			const links = screen.getAllByRole("link");
+			const hrefs = links.map((l) => l.getAttribute("href"));
+			expect(hrefs).toContain("/?category=categoria-1");
+			expect(hrefs).toContain("/?category=categoria-2");
+		});
+	});
 });

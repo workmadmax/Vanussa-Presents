@@ -45,7 +45,7 @@ export default function CheckoutPage({
 		async function fetchOrder() {
 			try {
 				const token = localStorage.getItem("token");
-				
+
 				if (!token) {
 					console.error("User not authenticated");
 					setOrder(null);
@@ -59,7 +59,7 @@ export default function CheckoutPage({
 						headers: {
 							Authorization: `Bearer ${token}`,
 						},
-					},
+					}
 				);
 
 				if (response.status === 401) {
@@ -69,7 +69,7 @@ export default function CheckoutPage({
 					setLoading(false);
 					return;
 				}
-				
+
 				if (!response.ok) {
 					console.error("Failed to fetch order:", response.statusText);
 					setOrder(null);
@@ -138,7 +138,7 @@ export default function CheckoutPage({
 				</div>
 
 				<button
-					className="w-full bg-pink-500 text-white py-3 
+					className="w-full bg-pink-500 text-white py-3
 				rounded-xl font-semibold hover:bg-pink-600"
 				>
 					Ir para pagamento

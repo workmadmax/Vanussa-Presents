@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { describe } from 'node:test';
-import { api } from '../api';
+import { describe } from "node:test";
+import { api } from "../api";
 
-describe('api', () => {
-    it('should be defined', () => {
-        expect(api.defaults.baseURL).toBe('http://127.0.0.1:8000/api/');
-    });
+describe("api", () => {
+	it("should be defined", () => {
+		expect(api.defaults.baseURL).toBe("http://127.0.0.1:8000/api/");
+	});
 });

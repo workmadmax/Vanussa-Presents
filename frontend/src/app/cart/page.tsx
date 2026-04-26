@@ -35,11 +35,13 @@ export default function CartPage() {
 		setMounted(true);
 	}, []);
 
-	if (!mounted) return null;
+	if (!mounted) {
+		return null;
+	}
 
 	const total = cartItems.reduce(
 		(acc, item) => acc + Number(item.price) * item.quantity,
-		0,
+		0
 	);
 
 	return (
@@ -109,7 +111,10 @@ function EmptyCart() {
 		<div className="text-center py-16 text-gray-400">
 			<p className="text-4xl mb-3">🛒</p>
 			<p className="text-lg">Seu carrinho está vazio</p>
-			<a href="/" className="text-pink-500 hover:underline text-sm mt-2 inline-block">
+			<a
+				href="/"
+				className="text-pink-500 hover:underline text-sm mt-2 inline-block"
+			>
 				Continuar comprando
 			</a>
 		</div>

@@ -68,7 +68,7 @@ export function ProductCard({ product, onLoginClick }: ProductCardProps) {
 function Badge({ label }: { label: string }) {
 	return (
 		<span
-			className="absolute top-2 left-2 bg-pink-600 text-white text-xs 
+			className="absolute top-2 left-2 bg-pink-600 text-white text-xs
 		font-semibold px-2 py-1 rounded"
 		>
 			{label}

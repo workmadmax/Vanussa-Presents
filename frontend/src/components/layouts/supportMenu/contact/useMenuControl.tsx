@@ -14,21 +14,23 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 export function useMenuControl() {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  const toggleMenu = () => setOpen((prev) => !prev);
+	const [open, setOpen] = useState(false);
+	const pathname = usePathname();
+	const toggleMenu = () => setOpen((prev) => !prev);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+	useEffect(() => {
+		setOpen(false);
+	}, [pathname]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "Escape") {
+				setOpen(false);
+			}
+		};
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, []);
 
-  return { isOpen: open, toggleMenu };
+	return { isOpen: open, toggleMenu };
 }

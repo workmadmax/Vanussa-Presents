@@ -19,27 +19,27 @@ import { AuthProvider } from "@/context/authContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "My Site",
-  description: "Next.js app",
+	title: "My Site",
+	description: "Next.js app",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <html lang="pt-br">
-      <body>
-        <AuthProvider>
-          <CartProvider>
-            <Header />
-            <CategoryBar />
-            {children}
-            {/* <Footer /> */}
-          </CartProvider>
-        </AuthProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="pt-br">
+			<body>
+				<AuthProvider>
+					<CartProvider>
+						<Header />
+						<CategoryBar />
+						{children}
+						{/* <Footer /> */}
+					</CartProvider>
+				</AuthProvider>
+			</body>
+		</html>
+	);
 }

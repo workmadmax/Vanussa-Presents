@@ -25,7 +25,7 @@ function renderGuest(cartCount = 0) {
 			cartCount={cartCount}
 			onLoginClick={onLoginClick}
 			onCartClick={onCartClick}
-		/>,
+		/>
 	);
 
 	return { onLoginClick, onCartClick };
@@ -43,7 +43,7 @@ describe("CartMenuGuest", () => {
 				element?.textContent?.includes("item") &&
 				element?.textContent?.includes("carrinho")
 					? true
-					: false,
+					: false
 			);
 			expect(paragraph).toBeInTheDocument();
 		});
@@ -56,7 +56,7 @@ describe("CartMenuGuest", () => {
 				element?.textContent?.includes("itens") &&
 				element?.textContent?.includes("carrinho")
 					? true
-					: false,
+					: false
 			);
 			expect(paragraph).toBeInTheDocument();
 		});
@@ -64,10 +64,10 @@ describe("CartMenuGuest", () => {
 		it("renderiza os botões de login e carrinho corretamente", () => {
 			renderGuest();
 			expect(
-				screen.getByRole("button", { name: /entrar ou cadastrar/i }),
+				screen.getByRole("button", { name: /entrar ou cadastrar/i })
 			).toBeInTheDocument();
 			expect(
-				screen.getByRole("button", { name: /ver carrinho/i }),
+				screen.getByRole("button", { name: /ver carrinho/i })
 			).toBeInTheDocument();
 		});
 	});

@@ -16,33 +16,33 @@
  * Representa uma imagem de produto vinda da API
  */
 export interface ProductImage {
-  image: string;
+	image: string;
 }
 
 /**
  * Representa uma categoria de produtos
  */
 export interface Category {
-  id: number;
-  name: string;
-  slug: string;
+	id: number;
+	name: string;
+	slug: string;
 }
 
 /**
  * Representa a estrutura completa de um Produto
  */
 export interface Product {
-  id: number;
-  name: string;
-  slug: string;
-  price: number;
-  description?: string; // Opcional
-  images: ProductImage[];
+	id: number;
+	name: string;
+	slug: string;
+	price: number;
+	description?: string; // Opcional
+	images: ProductImage[];
 }
 
 /**
  * Tipagem para respostas genéricas da API (opcional, mas recomendado)
  */
 export interface ApiResponse<T> {
-  data: T;
+	data: T;
 }

@@ -37,10 +37,12 @@ export function CartMenu({ children, onLoginClick }: CartMenuProps) {
 
 	const total = cartItems.reduce(
 		(acc, item) => acc + item.price * item.quantity,
-		0,
+		0
 	);
 	useClickOutside(menuRef, () => {
-		if (isOpen) closeMenu();
+		if (isOpen) {
+			closeMenu();
+		}
 	});
 
 	function handleCartClick() {
