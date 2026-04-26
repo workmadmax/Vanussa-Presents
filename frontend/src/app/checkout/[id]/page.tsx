@@ -6,21 +6,21 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 22:24:24 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/25 17:50:36 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/26 12:40:54 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 "use client";
 
 import { useEffect, useState, use } from "react";
+import { api } from "@/services/api";
 
 type OrderItem = {
-	id: number;
-	name: string;
-	price: number;
-	quantity: number;
 	product_name: string;
-	subtotal: number;
+	product_slug: string;
+	quantity: number;
+	price: number;
+	subtotal_price: number;
 };
 
 type Order = {
@@ -38,54 +38,17 @@ export default function CheckoutPage({
 }) {
 	const [order, setOrder] = useState<Order | null>(null);
 	const [loading, setLoading] = useState(true);
-	const resolvedParams = use(params);
-	const { id } = resolvedParams;
+	const { id } = use(params);
 
 	useEffect(() => {
-		async function fetchOrder() {
-			try {
-				const token = localStorage.getItem("token");
-
-				if (!token) {
-					console.error("User not authenticated");
-					setOrder(null);
-					setLoading(false);
-					return;
-				}
-
-				const response = await fetch(
-					`http://127.0.0.1:8000/api/orders/${id}/`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					}
-				);
-
-				if (response.status === 401) {
-					console.warn("Unauthorized access - token may be invalid or expired");
-					localStorage.removeItem("token");
-					setOrder(null);
-					setLoading(false);
-					return;
-				}
-
-				if (!response.ok) {
-					console.error("Failed to fetch order:", response.statusText);
-					setOrder(null);
-					return;
-				}
-
-				const data = await response.json();
-				setOrder(data);
-			} catch (error) {
-				console.error(error);
-			} finally {
-				setLoading(false);
-			}
-		}
-
-		fetchOrder();
+		api
+			.get(`/orders/${id}/`)
+			.then((res) => setOrder(res.data))
+			.catch((err) => {
+				console.error("Erro ao buscar pedido:", err);
+				setOrder(null);
+			})
+			.finally(() => setLoading(false));
 	}, [id]);
 
 	if (loading) {
@@ -112,7 +75,6 @@ export default function CheckoutPage({
 				<p>
 					<strong>Status:</strong> {order.status}
 				</p>
-
 				<p>
 					<strong>Total:</strong> R$ {order.total_price}
 				</p>
@@ -122,24 +84,23 @@ export default function CheckoutPage({
 				<h2 className="text-xl font-semibold">Itens</h2>
 
 				<div className="space-y-3">
-					{order.items?.map((item) => (
+					{order.items?.map((item, index) => (
 						<div
-							key={item.id}
+							key={`${item.product_slug}-${index}`}
 							className="border rounded-xl p-4 flex justify-between"
 						>
 							<div>
 								<p>{item.product_name}</p>
 								<p className="text-sm text-gray-500">Qtd: {item.quantity}</p>
 							</div>
-
-							<p>R$ {item.subtotal}</p>
+							<p>R$ {item.subtotal_price}</p>
 						</div>
 					))}
 				</div>
 
 				<button
-					className="w-full bg-pink-500 text-white py-3
-				rounded-xl font-semibold hover:bg-pink-600"
+					className="w-full bg-pink-500 text-white
+				py-3 rounded-xl font-semibold hover:bg-pink-600"
 				>
 					Ir para pagamento
 				</button>
