@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+frontend/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -12,13 +13,17 @@
 
 # testing
 /coverage
+frontend/coverage/
 
 # next.js
 /.next/
+frontend/.next/
 /out/
+frontend/out/
 
 # production
 /build
+frontend/build/
 
 # misc
 .DS_Store
@@ -39,9 +44,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
 
-CLAUDE.md
-AGENTS.md
 
 .prettierignore
 
