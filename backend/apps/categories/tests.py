@@ -29,6 +29,11 @@ from apps.products.models import Product
 from apps.categories.models import Category
 
 
+def get_results(response):
+    data = response.data
+    return data["results"] if "results" in data else data
+
+
 # Create your tests here.
 class ProductModelTestCase(TestCase):
 
@@ -82,26 +87,28 @@ class ProductAPITestCase(TestCase):
     def test_get_products(self):
         response = self.client.get("/api/products/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]["name"], "Test Product")
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(get_results(response)[0]["name"], "Test Product")
 
     def test_product_active_filter(self):
         self.product.is_active = False
         self.product.save()
         response = self.client.get("/api/products/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 0)
+        self.assertEqual(response.data["count"], 0)
+        self.assertEqual(get_results(response), [])
 
     def test_filter_by_category(self):
         response = self.client.get("/api/products/?category=test-category")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]["name"], "Test Product")
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(get_results(response)[0]["name"], "Test Product")
 
     def test_filter_by_nonexistent_category(self):
         response = self.client.get("/api/products/?category=nonexistent-category")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 0)
+        self.assertEqual(response.data["count"], 0)
+        self.assertEqual(get_results(response), [])
 
     def test_detail_product_return_200(self):
         response = self.client.get("/api/products/test-product/")

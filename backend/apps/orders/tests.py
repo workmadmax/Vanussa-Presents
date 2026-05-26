@@ -120,6 +120,23 @@ class OrderCreateViewTest(APITestCase):
         response = self._post(payload)
         self.assertEqual(Decimal(response.data['total_price']), self.product.price * 2)
 
+    def test_create_order_ignores_client_supplied_price_and_total(self):
+        payload = {
+            'total_price': '1.00',
+            'items': [
+                {
+                    'product_id': self.product.id,
+                    'quantity': 2,
+                    'price': '1.00',
+                }
+            ],
+        }
+        response = self._post(payload)
+        item = response.data['items'][0]
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Decimal(response.data['total_price']), Decimal('100.00'))
+        self.assertEqual(Decimal(item['price']), self.product.price)
+
     def test_create_order_multiple_items(self):
         product2 = make_product(self.category, name='Produto B', price='30.00', stock=5)
         payload  = {'items': [
@@ -140,6 +157,24 @@ class OrderCreateViewTest(APITestCase):
         response = self._post({'items': []})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_create_order_fails_with_zero_quantity(self):
+        payload = {'items': [{'product_id': self.product.id, 'quantity': 0}]}
+        response = self._post(payload)
+        self.product.refresh_from_db()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Order.objects.count(), 0)
+        self.assertEqual(OrderItem.objects.count(), 0)
+        self.assertEqual(self.product.stock, 10)
+
+    def test_create_order_fails_with_negative_quantity(self):
+        payload = {'items': [{'product_id': self.product.id, 'quantity': -1}]}
+        response = self._post(payload)
+        self.product.refresh_from_db()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Order.objects.count(), 0)
+        self.assertEqual(OrderItem.objects.count(), 0)
+        self.assertEqual(self.product.stock, 10)
+
     def test_create_order_fails_with_invalid_product_id(self):
         payload  = {'items': [{'product_id': 9999, 'quantity': 1}]}
         response = self._post(payload)
@@ -149,6 +184,21 @@ class OrderCreateViewTest(APITestCase):
         payload  = {'items': [{'product_id': self.product.id, 'quantity': 999}]}
         response = self._post(payload)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_order_rolls_back_when_later_item_fails(self):
+        product2 = make_product(self.category, name='Produto B', price='30.00', stock=1)
+        payload = {'items': [
+            {'product_id': self.product.id, 'quantity': 2},
+            {'product_id': product2.id, 'quantity': 2},
+        ]}
+        response = self._post(payload)
+        self.product.refresh_from_db()
+        product2.refresh_from_db()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Order.objects.count(), 0)
+        self.assertEqual(OrderItem.objects.count(), 0)
+        self.assertEqual(self.product.stock, 10)
+        self.assertEqual(product2.stock, 1)
 
     def test_create_order_fails_with_inactive_product(self):
         self.product.is_active = False
