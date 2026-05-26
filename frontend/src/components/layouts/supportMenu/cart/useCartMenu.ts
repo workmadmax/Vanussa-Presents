@@ -13,20 +13,19 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export function useCartMenu() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const pathname = usePathname();
-	const searchParams = useSearchParams();
 
 	const closeMenu = useCallback(() => setIsOpen(false), []);
 	const toggleMenu = () => setIsOpen((prev) => !prev);
 
 	useEffect(() => {
 		closeMenu();
-	}, [pathname, closeMenu, searchParams]);
+	}, [pathname, closeMenu]);
 
 	useEffect(() => {
 		function handleKeyDown(event: KeyboardEvent) {

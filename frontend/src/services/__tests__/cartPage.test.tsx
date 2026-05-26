@@ -16,11 +16,17 @@ import CartPage from "@/app/cart/page";
 import { useCart } from "@/context/cartContext";
 import { useAuth } from "@/context/authContext";
 import { useRouter } from "next/navigation";
+import { api } from "@/services/api";
 
 /* ================= MOCKS ================= */
 
 jest.mock("@/context/cartContext");
 jest.mock("@/context/authContext");
+jest.mock("@/services/api", () => ({
+	api: {
+		post: jest.fn(),
+	},
+}));
 jest.mock("next/navigation", () => ({
 	useRouter: jest.fn(),
 }));
@@ -29,6 +35,7 @@ const mockPush = jest.fn();
 const mockRemoveFromCart = jest.fn();
 const mockUpdateQuantity = jest.fn();
 const mockClearCart = jest.fn();
+const mockApiPost = api.post as jest.Mock;
 
 const mockItem = {
 	id: 1,
@@ -42,6 +49,7 @@ const mockItem = {
 beforeEach(() => {
 	jest.clearAllMocks();
 	(useRouter as jest.Mock).mockReturnValue({ push: mockPush });
+	mockApiPost.mockResolvedValue({ data: { id: 123 } });
 });
 
 /* ================= HELPERS ================= */
@@ -150,13 +158,19 @@ describe("CartPage", () => {
 			).not.toBeInTheDocument();
 		});
 
-		it("redireciona para /checkout ao clicar em Finalizar compra", async () => {
+		it("cria pedido e redireciona para /checkout/{id}", async () => {
 			const user = userEvent.setup();
 			setup({ cartItems: [mockItem], isAuthenticated: true });
 			await user.click(
 				screen.getByRole("button", { name: /finalizar compra/i })
 			);
-			expect(mockPush).toHaveBeenCalledWith("/checkout");
+			await waitFor(() => {
+				expect(mockApiPost).toHaveBeenCalledWith("/orders/create/", {
+					items: [{ product_id: mockItem.id, quantity: mockItem.quantity }],
+				});
+				expect(mockClearCart).toHaveBeenCalledTimes(1);
+				expect(mockPush).toHaveBeenCalledWith("/checkout/123");
+			});
 		});
 	});
 });

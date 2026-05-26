@@ -10,21 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { useState, useEffect, useCallback, use } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useState, useEffect, useCallback } from "react";
+import { usePathname } from "next/navigation";
 
 export function useCartMenu() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const pathName = usePathname();
-	const searchParams = useSearchParams();
 
 	const closeMenu = useCallback(() => setIsOpen(false), []);
 	const toggleMenu = () => setIsOpen((prev) => !prev);
 
 	useEffect(() => {
 		closeMenu();
-	}, [pathName, closeMenu, searchParams]);
+	}, [pathName, closeMenu]);
 
 	useEffect(() => {
 		function handleKeyDown(event: KeyboardEvent) {

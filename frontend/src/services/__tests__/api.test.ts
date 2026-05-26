@@ -15,6 +15,8 @@ import { api } from "../api";
 
 describe("api", () => {
 	it("should be defined", () => {
-		expect(api.defaults.baseURL).toBe("http://127.0.0.1:8000/api/");
+		expect(api.defaults.baseURL).toBe(
+			process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/"
+		);
 	});
 });
