@@ -12,6 +12,7 @@
 
 
 from decimal import Decimal
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
@@ -100,6 +101,38 @@ class ProductModelTest(TestCase):
         product = make_product(self.category, name="Inactive", is_active=False)
         self.assertFalse(product.is_active)
         self.assertTrue(Product.objects.filter(slug="inactive").exists())
+
+    def test_active_product_rejects_negative_price(self):
+        product = Product(
+            name="Negative Price",
+            slug="negative-price",
+            description="invalid",
+            price=Decimal("-1.00"),
+            stock=1,
+            is_active=True,
+            category=self.category,
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            product.full_clean()
+
+        self.assertIn("price", context.exception.message_dict)
+
+    def test_active_product_rejects_zero_price(self):
+        product = Product(
+            name="Zero Price",
+            slug="zero-price",
+            description="invalid",
+            price=Decimal("0.00"),
+            stock=1,
+            is_active=True,
+            category=self.category,
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            product.full_clean()
+
+        self.assertIn("price", context.exception.message_dict)
 
 
 # ---------------------------------------------------------------------------- #
