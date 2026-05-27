@@ -18,10 +18,10 @@ gates and CI.
 
 | ID | Description | WP | Parallel |
 |----|-------------|----|----------|
-| T001 | Verify central API client base URL, token attachment and refresh behavior | WP01 | No |
-| T002 | Keep auth registration/login on the central API client with typed errors | WP01 | No |
-| T003 | Update auth/API tests to mock axios/client behavior without real network | WP01 | No |
-| T004 | Re-run frontend Jest for auth/API surfaces and record any remaining gate risk | WP01 | No |
+| T001 | Verify central API client base URL, token attachment and refresh behavior | WP01 | No | [D] |
+| T002 | Keep auth registration/login on the central API client with typed errors | WP01 | No | [D] |
+| T003 | Update auth/API tests to mock axios/client behavior without real network | WP01 | No | [D] |
+| T004 | Re-run frontend Jest for auth/API surfaces and record any remaining gate risk | WP01 | No | [D] |
 | T005 | Keep cart checkout submission on central API client with `/checkout/{id}` redirect | WP02 | No |
 | T006 | Consolidate cart menu hook ownership and remove duplicate/dead hook paths | WP02 | No |
 | T007 | Preserve cart/menu interactions: login prompt, checkout, close on navigation, Escape and outside click | WP02 | No |
@@ -49,10 +49,10 @@ owns the API client, auth context and related tests only.
 
 Included subtasks:
 
-- [ ] T001 Verify central API client base URL, token attachment and refresh behavior (WP01)
-- [ ] T002 Keep auth registration/login on the central API client with typed errors (WP01)
-- [ ] T003 Update auth/API tests to mock axios/client behavior without real network (WP01)
-- [ ] T004 Re-run frontend Jest for auth/API surfaces and record any remaining gate risk (WP01)
+- [x] T001 Verify central API client base URL, token attachment and refresh behavior (WP01)
+- [x] T002 Keep auth registration/login on the central API client with typed errors (WP01)
+- [x] T003 Update auth/API tests to mock axios/client behavior without real network (WP01)
+- [x] T004 Re-run frontend Jest for auth/API surfaces and record any remaining gate risk (WP01)
 
 Implementation sketch:
 
