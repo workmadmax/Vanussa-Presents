@@ -1,0 +1,10 @@
+{
+  "created_at": "2026-05-27T00:48:42.238689+00:00",
+  "friendly_name": "mvp stabilization",
+  "mission_id": "01KSKEFDQ37GNMP51CAAFGR3RG",
+  "mission_number": null,
+  "mission_slug": "mvp-stabilization-01KSKEFD",
+  "mission_type": "software-dev",
+  "slug": "mvp-stabilization-01KSKEFD",
+  "target_branch": "main"
+}
