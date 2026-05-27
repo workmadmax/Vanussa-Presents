@@ -20,8 +20,8 @@ subtasks:
 - T004
 phase: Phase 1 - Frontend API/Auth
 assignee: ''
-agent: ''
-shell_pid: '5054'
+agent: "codex"
+shell_pid: "5054"
 history:
 - timestamp: '2026-05-27T00:53:50Z'
   agent: codex
@@ -118,3 +118,7 @@ into `main`. Spec Kitty will allocate execution worktrees per `lanes.json`.
 
 Focus review on token safety, refresh retry loops, auth storage clearing, and
 network mocking. Reject broad UI refactors or backend changes in this WP.
+
+## Activity Log
+
+- 2026-05-27T01:23:08Z – codex – shell_pid=5054 – Assigned agent via action command
