@@ -122,3 +122,63 @@ Tasks must be implemented in order unless a new decision record changes the sequ
 **Definition of Done:** CI runs all baseline gates on pull requests or main branch updates.
 **Rollback notes:** Disable or revert CI workflow if it blocks due to infrastructure, keeping documented local gates.
 **Security considerations:** Do not expose secrets in logs; use ephemeral CI database credentials.
+
+## LINT-001: React Hooks State-in-Effect Cleanup
+
+**Related FR-ID:** FR-011, JTBD-004
+**Objective:** Resolve `react-hooks/set-state-in-effect` errors without changing UI behavior.
+**Current behavior:** `docker compose exec frontend npm run lint` reports synchronous state updates inside effects across cart, home, header, auth, cart context and support menu hooks.
+**Expected behavior:** Components initialize state or synchronize external systems in a way accepted by the React Hooks lint rules.
+**Design notes:** Treat each component/hook as a focused change; avoid broad UI refactors.
+**Tests first:** Use existing component/hook tests and add regression tests when initialization behavior changes.
+**Definition of Done:** No `react-hooks/set-state-in-effect` errors remain.
+**Rollback notes:** Revert individual component/hook changes if hydration or interaction behavior regresses.
+**Security considerations:** Preserve auth/logout behavior and avoid exposing stored tokens.
+
+## LINT-002: TypeScript Any Cleanup
+
+**Related FR-ID:** FR-011, JTBD-004
+**Objective:** Replace remaining `any` usage with narrow local types.
+**Current behavior:** Lint still reports `@typescript-eslint/no-explicit-any` in cart, product detail and profile flows.
+**Expected behavior:** Error responses and API payloads use explicit types.
+**Design notes:** Prefer small local response/error types near the consuming code unless a shared type already exists.
+**Tests first:** Keep existing Jest coverage green for affected screens.
+**Definition of Done:** No `no-explicit-any` errors remain.
+**Rollback notes:** Revert per file if typing changes alter runtime behavior.
+**Security considerations:** Avoid hiding auth/API errors behind overly broad types.
+
+## LINT-003: Next.js Link and Image Compliance
+
+**Related FR-ID:** FR-011, JTBD-004
+**Objective:** Resolve Next.js lint issues for internal navigation and images.
+**Current behavior:** Lint reports raw `<a>` for internal navigation and raw `<img>` usage.
+**Expected behavior:** Internal routes use `next/link`; product images use an approved image strategy.
+**Design notes:** Confirm image domain/config requirements before replacing `<img>` with `next/image`.
+**Tests first:** Run existing card/page tests and build after each conversion.
+**Definition of Done:** No `@next/next/no-html-link-for-pages` or `@next/next/no-img-element` findings remain.
+**Rollback notes:** Revert per component if rendering or remote image loading breaks.
+**Security considerations:** Keep image sources constrained by Next config before production.
+
+## LINT-004: Curly Rule Cleanup
+
+**Related FR-ID:** FR-011, JTBD-004
+**Objective:** Add braces to remaining single-line conditionals required by `curly`.
+**Current behavior:** Lint reports missing braces in cart, orders and profile flows.
+**Expected behavior:** All conditionals satisfy the configured `curly` rule.
+**Design notes:** This is mechanical but should be staged separately to keep review clean.
+**Tests first:** Existing frontend tests are sufficient.
+**Definition of Done:** No `curly` errors remain.
+**Rollback notes:** Revert mechanical brace changes if accidental behavior changes are introduced.
+**Security considerations:** None directly.
+
+## LINT-005: Frontend Config Warnings
+
+**Related FR-ID:** FR-011, JTBD-004
+**Objective:** Resolve non-blocking frontend config warnings.
+**Current behavior:** Lint warns about unused `NextConfig` and anonymous default export in Prettier config.
+**Expected behavior:** Config files are lint-clean without changing runtime behavior.
+**Design notes:** Keep config behavior identical.
+**Tests first:** Run lint and build.
+**Definition of Done:** No config warnings remain.
+**Rollback notes:** Revert config-only changes if build behavior changes.
+**Security considerations:** None directly.
