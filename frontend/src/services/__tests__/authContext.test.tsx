@@ -63,19 +63,23 @@ describe("AuthContext", () => {
 		jest.clearAllMocks();
 	});
 
-	it("deve iniciar com o estado deslogado por padrão", () => {
+	it("deve iniciar carregando e concluir a hidratação deslogado", async () => {
 		render(
 			<AuthProvider>
 				<TestComponent />
 			</AuthProvider>
 		);
 
+		expect(screen.getByTestId("auth-loading")).toHaveTextContent("Carregando");
+
+		await waitFor(() => {
+			expect(screen.getByTestId("auth-loading")).toHaveTextContent("Pronto");
+		});
 		expect(screen.getByTestId("auth-status")).toHaveTextContent("Deslogado");
 		expect(screen.getByTestId("user-name")).toHaveTextContent("Visitante");
-		expect(screen.getByTestId("auth-loading")).toHaveTextContent("Pronto");
 	});
 
-	it("deve restaurar usuário e token salvos no localStorage", () => {
+	it("deve restaurar usuário e token salvos no localStorage após hidratação", async () => {
 		localStorage.setItem("token", "token-existente");
 		localStorage.setItem("user", "mdouglas");
 
@@ -85,9 +89,13 @@ describe("AuthContext", () => {
 			</AuthProvider>
 		);
 
+		expect(screen.getByTestId("auth-loading")).toHaveTextContent("Carregando");
+
+		await waitFor(() => {
+			expect(screen.getByTestId("auth-loading")).toHaveTextContent("Pronto");
+		});
 		expect(screen.getByTestId("auth-status")).toHaveTextContent("Logado");
 		expect(screen.getByTestId("user-name")).toHaveTextContent("mdouglas");
-		expect(screen.getByTestId("auth-loading")).toHaveTextContent("Pronto");
 	});
 
 	it("deve fazer login com sucesso e salvar dados no localStorage", async () => {

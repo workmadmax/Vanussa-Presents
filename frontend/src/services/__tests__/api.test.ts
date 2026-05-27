@@ -23,42 +23,6 @@ type RetryRequestConfig = InternalAxiosRequestConfig & {
 	_retry?: boolean;
 };
 
-type InterceptorHandler<TValue, TError = unknown> = {
-	fulfilled?: ((value: TValue) => TValue | Promise<TValue>) | null;
-	rejected?: ((error: TError) => Promise<AxiosResponse>) | null;
-};
-
-type InterceptorManager<TValue, TError = unknown> = {
-	handlers: InterceptorHandler<TValue, TError>[];
-};
-
-function getRequestInterceptor() {
-	const manager = api.interceptors.request as unknown as InterceptorManager<
-		InternalAxiosRequestConfig
-	>;
-	const fulfilled = manager.handlers[0]?.fulfilled;
-
-	if (!fulfilled) {
-		throw new Error("Request interceptor is not registered");
-	}
-
-	return fulfilled;
-}
-
-function getResponseErrorInterceptor() {
-	const manager = api.interceptors.response as unknown as InterceptorManager<
-		AxiosResponse,
-		AxiosError
-	>;
-	const rejected = manager.handlers[0]?.rejected;
-
-	if (!rejected) {
-		throw new Error("Response interceptor is not registered");
-	}
-
-	return rejected;
-}
-
 function createUnauthorizedError(config: RetryRequestConfig) {
 	const response: AxiosResponse = {
 		config,
@@ -105,14 +69,42 @@ describe("api", () => {
 
 	it("attaches the stored access token to outgoing API requests", async () => {
 		localStorage.setItem("token", "stored-access-token");
-		const config = {
-			headers: new AxiosHeaders(),
-		} as InternalAxiosRequestConfig;
+		const adapterMock: AxiosAdapter = jest.fn((config) =>
+			Promise.resolve({
+				config,
+				data: {},
+				headers: {},
+				status: 200,
+				statusText: "OK",
+			})
+		);
 
-		const result = await getRequestInterceptor()(config);
+		await api.get("/users/profile/", { adapter: adapterMock });
 
-		expect(AxiosHeaders.from(result.headers).get("Authorization")).toBe(
+		const requestConfig = adapterMock.mock.calls[0][0];
+
+		expect(AxiosHeaders.from(requestConfig.headers).get("Authorization")).toBe(
 			"Bearer stored-access-token"
+		);
+	});
+
+	it("does not attach Authorization when no access token is stored", async () => {
+		const adapterMock: AxiosAdapter = jest.fn((config) =>
+			Promise.resolve({
+				config,
+				data: {},
+				headers: {},
+				status: 200,
+				statusText: "OK",
+			})
+		);
+
+		await api.get("/users/profile/", { adapter: adapterMock });
+
+		const requestConfig = adapterMock.mock.calls[0][0];
+
+		expect(AxiosHeaders.from(requestConfig.headers).has("Authorization")).toBe(
+			false
 		);
 	});
 
@@ -122,32 +114,34 @@ describe("api", () => {
 			data: { access: "new-access-token" },
 		});
 
-		const adapterMock = jest.fn();
-		const originalConfig: RetryRequestConfig = {
-			adapter: adapterMock as unknown as AxiosAdapter,
-			headers: new AxiosHeaders(),
-			method: "get",
-			url: "/users/profile/",
-		};
+		let requestCount = 0;
+		const adapterMock: AxiosAdapter = jest.fn((config) => {
+			requestCount += 1;
 
-		adapterMock.mockResolvedValueOnce({
-			config: originalConfig,
-			data: { ok: true },
-			headers: {},
-			status: 200,
-			statusText: "OK",
+			if (requestCount === 1) {
+				return Promise.reject(
+					createUnauthorizedError(config as RetryRequestConfig)
+				);
+			}
+
+			return Promise.resolve({
+				config,
+				data: { ok: true },
+				headers: {},
+				status: 200,
+				statusText: "OK",
+			});
 		});
 
-		const response = await getResponseErrorInterceptor()(
-			createUnauthorizedError(originalConfig)
-		);
+		const response = await api.get("/users/profile/", { adapter: adapterMock });
+		const retryConfig = adapterMock.mock.calls[1][0] as RetryRequestConfig;
 
 		expect(localStorage.getItem("token")).toBe("new-access-token");
-		expect(AxiosHeaders.from(originalConfig.headers).get("Authorization")).toBe(
+		expect(AxiosHeaders.from(retryConfig.headers).get("Authorization")).toBe(
 			"Bearer new-access-token"
 		);
-		expect(originalConfig._retry).toBe(true);
-		expect(adapterMock).toHaveBeenCalledTimes(1);
+		expect(retryConfig._retry).toBe(true);
+		expect(adapterMock).toHaveBeenCalledTimes(2);
 		expect(response.data).toEqual({ ok: true });
 	});
 
@@ -157,19 +151,19 @@ describe("api", () => {
 		localStorage.setItem("user", "mdouglas");
 		jest.spyOn(axios, "post").mockRejectedValueOnce(new Error("refresh failed"));
 
-		const originalConfig: RetryRequestConfig = {
-			headers: new AxiosHeaders(),
-			method: "get",
-			url: "/users/profile/",
-		};
+		const adapterMock: AxiosAdapter = jest.fn((config) =>
+			Promise.reject(createUnauthorizedError(config as RetryRequestConfig))
+		);
 
 		await expect(
-			getResponseErrorInterceptor()(createUnauthorizedError(originalConfig))
+			api.get("/users/profile/", { adapter: adapterMock })
 		).rejects.toThrow("Unauthorized");
+
+		const failedConfig = adapterMock.mock.calls[0][0] as RetryRequestConfig;
 
 		expect(localStorage.getItem("token")).toBeNull();
 		expect(localStorage.getItem("refresh_token")).toBeNull();
 		expect(localStorage.getItem("user")).toBeNull();
-		expect(originalConfig._retry).toBe(true);
+		expect(failedConfig._retry).toBe(true);
 	});
 });

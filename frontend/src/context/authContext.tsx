@@ -12,7 +12,7 @@
 
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "@/services/api";
 
 type AuthResponse = {
@@ -55,6 +55,10 @@ type StoredAuth = {
 	token: string | null;
 };
 
+type AuthState = StoredAuth & {
+	isLoading: boolean;
+};
+
 function readStoredAuth(): StoredAuth {
 	if (typeof window === "undefined") {
 		return { user: null, token: null };
@@ -95,9 +99,26 @@ async function registerUser(
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [auth, setAuth] = useState<StoredAuth>(readStoredAuth);
-	const { user, token } = auth;
-	const isLoading = false;
+	const [auth, setAuth] = useState<AuthState>({
+		user: null,
+		token: null,
+		isLoading: true,
+	});
+	const { user, token, isLoading } = auth;
+
+	useEffect(() => {
+		let isMounted = true;
+
+		queueMicrotask(() => {
+			if (isMounted) {
+				setAuth({ ...readStoredAuth(), isLoading: false });
+			}
+		});
+
+		return () => {
+			isMounted = false;
+		};
+	}, []);
 
 	async function loginUser(username: string, password: string) {
 		try {
@@ -108,7 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			const accessToken = response.data.access;
 			const refreshToken = response.data.refresh;
 
-			setAuth({ user: username, token: accessToken });
+			setAuth({ user: username, token: accessToken, isLoading: false });
 
 			localStorage.setItem("token", accessToken);
 			localStorage.setItem("user", username);
@@ -127,7 +148,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	function logout() {
-		setAuth({ user: null, token: null });
+		setAuth({ user: null, token: null, isLoading: false });
 		localStorage.removeItem("token");
 		localStorage.removeItem("user");
 		localStorage.removeItem("refresh_token");
