@@ -4,3 +4,8 @@ agents:
   available:
   - codex
   auto_commit: true
+project:
+  uuid: a681c85a-e9b4-436f-9547-44ff027dfb94
+  slug: vanussa-presents
+  node_id: eb37ca9d223f
+  build_id: ce083b02-2311-45b7-95c8-ea3db70919c0
