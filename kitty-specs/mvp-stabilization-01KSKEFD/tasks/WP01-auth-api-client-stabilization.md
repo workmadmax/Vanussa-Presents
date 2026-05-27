@@ -123,3 +123,4 @@ network mocking. Reject broad UI refactors or backend changes in this WP.
 
 - 2026-05-27T01:23:08Z – codex – shell_pid=5054 – Assigned agent via action command
 - 2026-05-27T01:30:20Z – codex – shell_pid=5054 – Ready for review: auth API client storage, refresh retry, and tests stabilized
+- 2026-05-27T01:54:54Z – codex – shell_pid=5054 – Review passed: WP01 accepted after correcting the AuthProvider hydration contract; isLoading starts true, client hydration completes before false, and API client behavior tests pass.
