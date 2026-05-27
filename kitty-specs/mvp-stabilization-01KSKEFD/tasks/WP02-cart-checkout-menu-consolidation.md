@@ -126,3 +126,4 @@ move auth-client internals into cart code or alter backend order contracts.
 ## Activity Log
 
 - 2026-05-27T02:07:43Z – codex – shell_pid=5054 – Started implementation via action command
+- 2026-05-27T02:13:46Z – codex – shell_pid=5054 – Ready for review: cart checkout/menu uses central API client, canonical cart menu hook behavior is covered, and WP02 tests pass
