@@ -6,5 +6,7 @@
   "mission_slug": "mvp-stabilization-01KSKEFD",
   "mission_type": "software-dev",
   "slug": "mvp-stabilization-01KSKEFD",
-  "target_branch": "main"
+  "target_branch": "main",
+  "vcs": "git",
+  "vcs_locked_at": "2026-05-27T01:22:22.961566+00:00"
 }
