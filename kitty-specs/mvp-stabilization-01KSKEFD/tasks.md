@@ -22,10 +22,10 @@ gates and CI.
 | T002 | Keep auth registration/login on the central API client with typed errors | WP01 | No | [D] |
 | T003 | Update auth/API tests to mock axios/client behavior without real network | WP01 | No | [D] |
 | T004 | Re-run frontend Jest for auth/API surfaces and record any remaining gate risk | WP01 | No | [D] |
-| T005 | Keep cart checkout submission on central API client with `/checkout/{id}` redirect | WP02 | No |
-| T006 | Consolidate cart menu hook ownership and remove duplicate/dead hook paths | WP02 | No |
-| T007 | Preserve cart/menu interactions: login prompt, checkout, close on navigation, Escape and outside click | WP02 | No |
-| T008 | Update cart/menu tests and keep network calls mocked | WP02 | No |
+| T005 | Keep cart checkout submission on central API client with `/checkout/{id}` redirect | WP02 | No | [D] |
+| T006 | Consolidate cart menu hook ownership and remove duplicate/dead hook paths | WP02 | No | [D] |
+| T007 | Preserve cart/menu interactions: login prompt, checkout, close on navigation, Escape and outside click | WP02 | No | [D] |
+| T008 | Update cart/menu tests and keep network calls mocked | WP02 | No | [D] |
 | T009 | Resolve React Hooks `set-state-in-effect` findings outside WP01/WP02-owned files | WP03 | No |
 | T010 | Replace remaining `any` usage with narrow local types outside WP01/WP02-owned files | WP03 | No |
 | T011 | Resolve `curly`, internal Link/Image, and frontend config lint findings | WP03 | No |
@@ -80,10 +80,10 @@ canonical cart-menu hook path.
 
 Included subtasks:
 
-- [ ] T005 Keep cart checkout submission on central API client with `/checkout/{id}` redirect (WP02)
-- [ ] T006 Consolidate cart menu hook ownership and remove duplicate/dead hook paths (WP02)
-- [ ] T007 Preserve cart/menu interactions: login prompt, checkout, close on navigation, Escape and outside click (WP02)
-- [ ] T008 Update cart/menu tests and keep network calls mocked (WP02)
+- [x] T005 Keep cart checkout submission on central API client with `/checkout/{id}` redirect (WP02)
+- [x] T006 Consolidate cart menu hook ownership and remove duplicate/dead hook paths (WP02)
+- [x] T007 Preserve cart/menu interactions: login prompt, checkout, close on navigation, Escape and outside click (WP02)
+- [x] T008 Update cart/menu tests and keep network calls mocked (WP02)
 
 Implementation sketch:
 
