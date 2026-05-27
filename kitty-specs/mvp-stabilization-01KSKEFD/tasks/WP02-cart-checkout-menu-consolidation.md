@@ -21,7 +21,8 @@ subtasks:
 - T008
 phase: Phase 2 - Cart/Menu
 assignee: ''
-agent: ''
+agent: "codex"
+shell_pid: "5054"
 history:
 - timestamp: '2026-05-27T00:53:50Z'
   agent: codex
@@ -121,3 +122,7 @@ into `main`. Spec Kitty will allocate execution worktrees per `lanes.json`.
 
 Review for behavioral preservation and ownership discipline. Reject changes that
 move auth-client internals into cart code or alter backend order contracts.
+
+## Activity Log
+
+- 2026-05-27T02:07:43Z – codex – shell_pid=5054 – Started implementation via action command
