@@ -1,0 +1,49 @@
+# Quickstart: MVP Stabilization Validation
+
+Use Docker Compose for official validation. Host-only commands are useful for
+inspection but are not the acceptance surface for this mission.
+
+## Start Services
+
+```bash
+docker compose up -d --build
+```
+
+## Backend Gates
+
+```bash
+docker compose exec backend python manage.py check
+docker compose exec backend python manage.py test
+```
+
+Expected target: both commands pass. Existing docs record the full backend suite
+passing in Compose with 102 tests.
+
+## Frontend Gates
+
+```bash
+docker compose exec frontend npm test -- --runInBand
+docker compose exec frontend npm run lint
+docker compose exec frontend npm run build
+```
+
+Current known state before implementation WPs:
+
+- Jest passes on host with 11 suites and 58 tests.
+- Lint fails with React Hooks, `curly`, `no-explicit-any`, Link/Image and config
+  findings.
+- Host build is blocked by permissions in `frontend/.next`; do not delete that
+  directory without explicit authorization.
+
+## Mission Validation
+
+```bash
+spec-kitty agent mission finalize-tasks --validate-only --mission mvp-stabilization-01KSKEFD --json
+spec-kitty agent mission finalize-tasks --mission mvp-stabilization-01KSKEFD --json
+```
+
+After finalization, implementation must start only when authorized:
+
+```bash
+spec-kitty next --agent codex --mission mvp-stabilization-01KSKEFD
+```
