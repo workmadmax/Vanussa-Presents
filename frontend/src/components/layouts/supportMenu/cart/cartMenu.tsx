@@ -21,6 +21,7 @@ import { useAuth } from "@/context/authContext";
 import { CartMenuDropdown } from "./cartMenuDropdown";
 import { CartMenuGuest } from "./cartMenuGuest";
 import { CartMenuLogged } from "./cartMenuLogged";
+import { api } from "@/services/api";
 
 type CartMenuProps = {
 	children: React.ReactNode;
@@ -52,36 +53,21 @@ export function CartMenu({ children, onLoginClick }: CartMenuProps) {
 
 	async function handleCheckout() {
 		try {
-			const token = localStorage.getItem("token");
-
-			if (!token) {
+			if (!isAuthenticated) {
 				onLoginClick();
 				return;
 			}
 
-			const response = await fetch("http://127.0.0.1:8000/api/orders/create/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify({
+			const response = await api.post("/orders/create/", {
 					items: cartItems.map((item) => ({
 						product_id: item.id,
 						quantity: item.quantity,
 					})),
-				}),
 			});
-
-			if (!response.ok) {
-				throw new Error("Erro ao criar pedido");
-			}
-
-			const order = await response.json();
 
 			closeMenu();
 
-			router.push(`/checkout/${order.id}`);
+			router.push(`/checkout/${response.data.id}`);
 		} catch (error) {
 			console.error(error);
 			alert("Erro ao finalizar compra");

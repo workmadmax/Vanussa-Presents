@@ -13,6 +13,25 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
+import { api } from "@/services/api";
+
+type AuthResponse = {
+	access: string;
+	refresh?: string;
+};
+
+type AuthErrorData = {
+	username?: string[];
+	email?: string[];
+	password?: string[];
+	detail?: string;
+};
+
+type ApiError = {
+	response?: {
+		data?: AuthErrorData;
+	};
+};
 
 type AuthContextType = {
 	user: string | null;
@@ -36,18 +55,11 @@ async function registerUser(
 	email: string,
 	password: string
 ): Promise<{ success: boolean; message?: string }> {
-	const response = await fetch("http://127.0.0.1:8000/api/users/register/", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ username, email, password }),
-	});
-
-	let data: any = {};
 	try {
-		data = await response.json();
-	} catch {}
-
-	if (!response.ok) {
+		await api.post("/users/register/", { username, email, password });
+		return { success: true };
+	} catch (error) {
+		const data = (error as ApiError).response?.data ?? {};
 		return {
 			success: false,
 			message:
@@ -58,7 +70,6 @@ async function registerUser(
 				"Registration failed. Please try again.",
 		};
 	}
-	return { success: true };
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -80,37 +91,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	}, []);
 
 	async function loginUser(username: string, password: string) {
-		const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ username, password }),
-		});
-
-		let data: any = null;
 		try {
-			data = await response.json();
-		} catch {
-			data = {};
-		}
+			const response = await api.post<AuthResponse>("/users/login/", {
+				username,
+				password,
+			});
+			const accessToken = response.data.access;
+			const refreshToken = response.data.refresh;
 
-		if (!response.ok) {
+			setToken(accessToken);
+			setUser(username);
+
+			localStorage.setItem("token", accessToken);
+			localStorage.setItem("user", username);
+			if (refreshToken) {
+				localStorage.setItem("refresh_token", refreshToken);
+			}
+
+			return { success: true };
+		} catch (error) {
+			const data = (error as ApiError).response?.data ?? {};
 			return {
 				success: false,
 				message: data.detail || "Login failed. Please try again.",
 			};
 		}
-
-		const accessToken = data.access;
-		const refreshToken = data.refresh;
-
-		setToken(accessToken);
-		setUser(username);
-
-		localStorage.setItem("token", accessToken);
-		localStorage.setItem("user", username);
-		localStorage.setItem("refresh_token", refreshToken);
-
-		return { success: true };
 	}
 
 	function logout() {

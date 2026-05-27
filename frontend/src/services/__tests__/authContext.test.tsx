@@ -13,10 +13,19 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AuthProvider, useAuth } from "@/context/authContext";
+import { api } from "@/services/api";
+
+jest.mock("@/services/api", () => ({
+	api: {
+		post: jest.fn(),
+	},
+}));
+
+const mockApiPost = api.post as jest.Mock;
 
 // 1. Criamos um componente de teste para "espiar" o que o AuthContext está fazendo
 const TestComponent = () => {
-	const { user, isAuthenticated, loginUser, logout } = useAuth();
+	const { user, isAuthenticated, loginUser, registerUser, logout } = useAuth();
 
 	return (
 		<div>
@@ -28,6 +37,15 @@ const TestComponent = () => {
 			<button onClick={() => loginUser("mdouglas", "senha123").catch(() => {})}>
 				Fazer Login
 			</button>
+			<button
+				onClick={() =>
+					registerUser("newuser", "newuser@test.com", "senha123").catch(
+						() => {}
+					)
+				}
+			>
+				Fazer Cadastro
+			</button>
 			<button onClick={logout}>Sair</button>
 		</div>
 	);
@@ -38,7 +56,6 @@ describe("AuthContext", () => {
 	beforeEach(() => {
 		// Limpa o localStorage e os mocks de fetch para um teste não interferir no outro
 		localStorage.clear();
-		global.fetch = jest.fn();
 		jest.clearAllMocks();
 	});
 
@@ -55,9 +72,11 @@ describe("AuthContext", () => {
 
 	it("deve fazer login com sucesso e salvar dados no localStorage", async () => {
 		// Mockamos a resposta de SUCESSO da API do Django
-		(global.fetch as jest.Mock).mockResolvedValueOnce({
-			ok: true,
-			json: async () => ({ access: "fake-jwt-token" }),
+		mockApiPost.mockResolvedValueOnce({
+			data: {
+				access: "fake-jwt-token",
+				refresh: "fake-refresh-token",
+			},
 		});
 
 		render(
@@ -76,23 +95,25 @@ describe("AuthContext", () => {
 			expect(screen.getByTestId("user-name")).toHaveTextContent("mdouglas");
 		});
 
-		// Verificamos se o fetch chamou a URL correta do Django
-		expect(global.fetch).toHaveBeenCalledWith(
-			"http://127.0.0.1:8000/api/users/login/",
-			expect.objectContaining({ method: "POST" })
-		);
+		// Verificamos se a chamada passou pelo cliente API central
+		expect(mockApiPost).toHaveBeenCalledWith("/users/login/", {
+			username: "mdouglas",
+			password: "senha123",
+		});
 
 		// Verificamos se o token foi parar no localStorage
 		expect(localStorage.getItem("token")).toBe("fake-jwt-token");
+		expect(localStorage.getItem("refresh_token")).toBe("fake-refresh-token");
 	});
 
 	it("deve falhar no login com credenciais incorretas", async () => {
 		// Mockamos a resposta de ERRO da API (ex: 401 Unauthorized)
-		(global.fetch as jest.Mock).mockResolvedValueOnce({
-			ok: false,
-			json: async () => ({
+		mockApiPost.mockRejectedValueOnce({
+			response: {
+				data: {
 				detail: "Nenhuma conta ativa encontrada com essas credenciais.",
-			}),
+				},
+			},
 		});
 
 		render(
@@ -111,6 +132,27 @@ describe("AuthContext", () => {
 
 		// E o localStorage não deve ter recebido token
 		expect(localStorage.getItem("token")).toBeNull();
+	});
+
+	it("deve cadastrar usando o cliente API central", async () => {
+		mockApiPost.mockResolvedValueOnce({ data: {} });
+
+		render(
+			<AuthProvider>
+				<TestComponent />
+			</AuthProvider>
+		);
+
+		const user = userEvent.setup();
+		await user.click(screen.getByText("Fazer Cadastro"));
+
+		await waitFor(() => {
+			expect(mockApiPost).toHaveBeenCalledWith("/users/register/", {
+				username: "newuser",
+				email: "newuser@test.com",
+				password: "senha123",
+			});
+		});
 	});
 
 	it("deve limpar o estado e o localStorage ao fazer logout", async () => {

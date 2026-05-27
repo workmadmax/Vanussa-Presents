@@ -10,10 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import axios from "axios";
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+
+type RetryRequestConfig = InternalAxiosRequestConfig & {
+	_retry?: boolean;
+};
+
+export const API_BASE_URL =
+	process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/";
+
+function clearAuthStorage() {
+	localStorage.removeItem("token");
+	localStorage.removeItem("user");
+	localStorage.removeItem("refresh_token");
+}
+
+export async function refreshAccessToken(refresh: string) {
+	const res = await axios.post(`${API_BASE_URL}users/token/refresh/`, {
+		refresh,
+	});
+	return res.data.access as string;
+}
 
 export const api = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/",
+	baseURL: API_BASE_URL,
 });
 
 api.interceptors.request.use((config) => {
@@ -26,36 +46,26 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
 	(response) => response,
-	async (error) => {
-		const original = error.config;
+	async (error: AxiosError) => {
+		const original = error.config as RetryRequestConfig | undefined;
 
-		if (error.response?.status === 401 && !original._retry) {
+		if (error.response?.status === 401 && original && !original._retry) {
 			original._retry = true;
 
 			const refresh = localStorage.getItem("refresh_token");
 			if (!refresh) {
-				localStorage.removeItem("token");
-				localStorage.removeItem("user");
-				localStorage.removeItem("refresh_token");
+				clearAuthStorage();
 				window.location.href = "/";
 				return Promise.reject(error);
 			}
 
 			try {
-				const res = await axios.post(
-					`${
-						process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/"
-					}users/token/refresh/`,
-					{ refresh }
-				);
-				const newToken = res.data.access;
+				const newToken = await refreshAccessToken(refresh);
 				localStorage.setItem("token", newToken);
-				original.headers.Authorization = `Bearer ${newToken}`;
+				original.headers.set("Authorization", `Bearer ${newToken}`);
 				return api(original);
 			} catch {
-				localStorage.removeItem("token");
-				localStorage.removeItem("user");
-				localStorage.removeItem("refresh_token");
+				clearAuthStorage();
 				window.location.href = "/";
 				return Promise.reject(error);
 			}

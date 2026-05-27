@@ -10,13 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+import axios from "axios";
 import { describe } from "node:test";
-import { api } from "../api";
+import { api, API_BASE_URL, refreshAccessToken } from "../api";
 
 describe("api", () => {
 	it("should be defined", () => {
-		expect(api.defaults.baseURL).toBe(
+		expect(API_BASE_URL).toBe(
 			process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/"
 		);
+		expect(api.defaults.baseURL).toBe(API_BASE_URL);
+	});
+
+	it("refreshes the access token through the configured API base URL", async () => {
+		const postSpy = jest.spyOn(axios, "post").mockResolvedValueOnce({
+			data: { access: "new-access-token" },
+		});
+
+		await expect(refreshAccessToken("refresh-token")).resolves.toBe(
+			"new-access-token"
+		);
+		expect(postSpy).toHaveBeenCalledWith(`${API_BASE_URL}users/token/refresh/`, {
+			refresh: "refresh-token",
+		});
 	});
 });
