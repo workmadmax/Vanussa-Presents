@@ -122,3 +122,4 @@ network mocking. Reject broad UI refactors or backend changes in this WP.
 ## Activity Log
 
 - 2026-05-27T01:23:08Z – codex – shell_pid=5054 – Assigned agent via action command
+- 2026-05-27T01:30:20Z – codex – shell_pid=5054 – Ready for review: auth API client storage, refresh retry, and tests stabilized
