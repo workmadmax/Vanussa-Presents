@@ -10,7 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, {
+	AxiosError,
+	AxiosHeaders,
+	InternalAxiosRequestConfig,
+} from "axios";
 
 type RetryRequestConfig = InternalAxiosRequestConfig & {
 	_retry?: boolean;
@@ -19,10 +23,29 @@ type RetryRequestConfig = InternalAxiosRequestConfig & {
 export const API_BASE_URL =
 	process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/";
 
+function getAuthStorage() {
+	if (typeof window === "undefined") {
+		return null;
+	}
+	return window.localStorage;
+}
+
 function clearAuthStorage() {
-	localStorage.removeItem("token");
-	localStorage.removeItem("user");
-	localStorage.removeItem("refresh_token");
+	const storage = getAuthStorage();
+
+	if (!storage) {
+		return;
+	}
+
+	storage.removeItem("token");
+	storage.removeItem("user");
+	storage.removeItem("refresh_token");
+}
+
+function redirectToHome() {
+	if (typeof window !== "undefined") {
+		window.location.href = "/";
+	}
 }
 
 export async function refreshAccessToken(refresh: string) {
@@ -37,9 +60,10 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-	const token = localStorage.getItem("token");
+	const token = getAuthStorage()?.getItem("token");
 	if (token) {
-		config.headers.Authorization = `Bearer ${token}`;
+		config.headers = AxiosHeaders.from(config.headers);
+		config.headers.set("Authorization", `Bearer ${token}`);
 	}
 	return config;
 });
@@ -52,21 +76,22 @@ api.interceptors.response.use(
 		if (error.response?.status === 401 && original && !original._retry) {
 			original._retry = true;
 
-			const refresh = localStorage.getItem("refresh_token");
+			const refresh = getAuthStorage()?.getItem("refresh_token");
 			if (!refresh) {
 				clearAuthStorage();
-				window.location.href = "/";
+				redirectToHome();
 				return Promise.reject(error);
 			}
 
 			try {
 				const newToken = await refreshAccessToken(refresh);
-				localStorage.setItem("token", newToken);
+				getAuthStorage()?.setItem("token", newToken);
+				original.headers = AxiosHeaders.from(original.headers);
 				original.headers.set("Authorization", `Bearer ${newToken}`);
 				return api(original);
 			} catch {
 				clearAuthStorage();
-				window.location.href = "/";
+				redirectToHome();
 				return Promise.reject(error);
 			}
 		}

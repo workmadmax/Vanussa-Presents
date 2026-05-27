@@ -12,7 +12,7 @@
 
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { api } from "@/services/api";
 
 type AuthResponse = {
@@ -50,6 +50,26 @@ type AuthContextType = {
 	logout: () => void;
 };
 
+type StoredAuth = {
+	user: string | null;
+	token: string | null;
+};
+
+function readStoredAuth(): StoredAuth {
+	if (typeof window === "undefined") {
+		return { user: null, token: null };
+	}
+
+	const token = window.localStorage.getItem("token");
+	const user = window.localStorage.getItem("user");
+
+	if (!token || !user) {
+		return { user: null, token: null };
+	}
+
+	return { user, token };
+}
+
 async function registerUser(
 	username: string,
 	email: string,
@@ -75,20 +95,9 @@ async function registerUser(
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [user, setUser] = useState<string | null>(null);
-	const [token, setToken] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		const storedToken = localStorage.getItem("token");
-		const storedUser = localStorage.getItem("user");
-
-		if (storedToken && storedUser) {
-			setToken(storedToken);
-			setUser(storedUser);
-		}
-		setIsLoading(false);
-	}, []);
+	const [auth, setAuth] = useState<StoredAuth>(readStoredAuth);
+	const { user, token } = auth;
+	const isLoading = false;
 
 	async function loginUser(username: string, password: string) {
 		try {
@@ -99,8 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			const accessToken = response.data.access;
 			const refreshToken = response.data.refresh;
 
-			setToken(accessToken);
-			setUser(username);
+			setAuth({ user: username, token: accessToken });
 
 			localStorage.setItem("token", accessToken);
 			localStorage.setItem("user", username);
@@ -119,8 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	function logout() {
-		setUser(null);
-		setToken(null);
+		setAuth({ user: null, token: null });
 		localStorage.removeItem("token");
 		localStorage.removeItem("user");
 		localStorage.removeItem("refresh_token");
