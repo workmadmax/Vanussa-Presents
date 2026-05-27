@@ -22,7 +22,17 @@ export function useCartMenu() {
 	const toggleMenu = () => setIsOpen((prev) => !prev);
 
 	useEffect(() => {
-		closeMenu();
+		let isActive = true;
+
+		queueMicrotask(() => {
+			if (isActive) {
+				closeMenu();
+			}
+		});
+
+		return () => {
+			isActive = false;
+		};
 	}, [pathName, closeMenu]);
 
 	useEffect(() => {

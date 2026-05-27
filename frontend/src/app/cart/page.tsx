@@ -17,26 +17,60 @@ import { useAuth } from "@/context/authContext";
 import { CartItemCard } from "@/components/cards/cartItens";
 import { LoginModal } from "@/components/ui/modal/loginModal";
 import { RegisterModal } from "@/components/ui/modal/registerModal";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/services/api";
+
+type CheckoutError = {
+	response?: {
+		data?: {
+			detail?: string;
+		} | string[];
+	};
+};
+
+function subscribeToHydration(onStoreChange: () => void) {
+	queueMicrotask(onStoreChange);
+	return () => {};
+}
+
+function getClientSnapshot() {
+	return true;
+}
+
+function getServerSnapshot() {
+	return false;
+}
+
+function getCheckoutErrorMessage(error: unknown) {
+	const data = (error as CheckoutError).response?.data;
+
+	if (Array.isArray(data)) {
+		return data[0] || "Erro ao criar pedido. Tente novamente.";
+	}
+
+	return data?.detail || "Erro ao criar pedido. Tente novamente.";
+}
 
 export default function CartPage() {
 	const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
 	const { isAuthenticated } = useAuth();
 	const router = useRouter();
 
-	const [mounted, setMounted] = useState(false);
+	const mounted = useSyncExternalStore(
+		subscribeToHydration,
+		getClientSnapshot,
+		getServerSnapshot
+	);
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	useEffect(() => {
-		setMounted(true);
-	}, []);
-
-	if (!mounted) return null;
+	if (!mounted) {
+		return null;
+	}
 
 	const total = cartItems.reduce(
 		(acc, item) => acc + Number(item.price) * item.quantity,
@@ -55,12 +89,8 @@ export default function CartPage() {
 			});
 			clearCart();
 			router.push(`/checkout/${res.data.id}`);
-		} catch (err: any) {
-			const msg =
-				err.response?.data?.detail ||
-				err.response?.data?.[0] ||
-				"Erro ao criar pedido. Tente novamente.";
-			setError(msg);
+		} catch (err: unknown) {
+			setError(getCheckoutErrorMessage(err));
 		} finally {
 			setLoading(false);
 		}
@@ -84,12 +114,12 @@ export default function CartPage() {
 				<div className="text-center py-16 text-gray-400">
 					<p className="text-4xl mb-3">🛒</p>
 					<p className="text-lg">Seu carrinho está vazio</p>
-					<a
+					<Link
 						href="/"
 						className="text-pink-500 hover:underline text-sm mt-2 inline-block"
 					>
 						Continuar comprando
-					</a>
+					</Link>
 				</div>
 			) : (
 				cartItems.map((item) => (
