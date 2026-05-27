@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "mission_slug": "mvp-stabilization-01KSKEFD",
+  "mission_id": "01KSKEFDQ37GNMP51CAAFGR3RG",
+  "mission_branch": "kitty/mission-mvp-stabilization-01KSKEFD",
+  "target_branch": "main",
+  "lanes": [
+    {
+      "lane_id": "lane-a",
+      "wp_ids": [
+        "WP01",
+        "WP02",
+        "WP03",
+        "WP04"
+      ],
+      "write_scope": [
+        ".github/workflows/mvp-stabilization.yml",
+        "frontend/next.config.ts",
+        "frontend/prettier.config.mjs",
+        "frontend/src/app/cart/page.tsx",
+        "frontend/src/app/homeClient.tsx",
+        "frontend/src/app/orders/page.tsx",
+        "frontend/src/app/products/**/page.tsx",
+        "frontend/src/app/profile/page.tsx",
+        "frontend/src/components/cards/cartItens.tsx",
+        "frontend/src/components/cards/productCard.tsx",
+        "frontend/src/components/layouts/header/header.tsx",
+        "frontend/src/components/layouts/supportMenu/cart/**",
+        "frontend/src/components/layouts/supportMenu/contact/useMenuControl.tsx",
+        "frontend/src/components/layouts/supportMenu/hooks/useCartMenu.ts",
+        "frontend/src/components/layouts/supportMenu/hooks/useSupportMenu.ts",
+        "frontend/src/context/authContext.tsx",
+        "frontend/src/context/cartContext.tsx",
+        "frontend/src/services/__tests__/api.test.ts",
+        "frontend/src/services/__tests__/authContext.test.tsx",
+        "frontend/src/services/__tests__/cartMenu.test.tsx",
+        "frontend/src/services/__tests__/cartMenuGuest.test.tsx",
+        "frontend/src/services/__tests__/cartMenuLogged.test.tsx",
+        "frontend/src/services/__tests__/cartPage.test.tsx",
+        "frontend/src/services/__tests__/loginModal.test.tsx",
+        "frontend/src/services/__tests__/registerModal.test.tsx",
+        "frontend/src/services/api.ts",
+        "frontend/src/services/auth.ts"
+      ],
+      "predicted_surfaces": [
+        "api",
+        "app-shell",
+        "artifact-rendering",
+        "legacy-cleanup",
+        "tracker-integration"
+      ],
+      "depends_on_lanes": [],
+      "parallel_group": 0
+    }
+  ],
+  "computed_at": "2026-05-27T00:57:49.495073+00:00",
+  "computed_from": "dependency_graph+ownership",
+  "planning_artifact_wps": [],
+  "collapse_report": {
+    "events": [
+      {
+        "wp_a": "WP02",
+        "wp_b": "WP01",
+        "rule": "dependency",
+        "evidence": "WP02 depends on WP01"
+      },
+      {
+        "wp_a": "WP03",
+        "wp_b": "WP01",
+        "rule": "dependency",
+        "evidence": "WP03 depends on WP01"
+      },
+      {
+        "wp_a": "WP04",
+        "wp_b": "WP03",
+        "rule": "dependency",
+        "evidence": "WP04 depends on WP03"
+      }
+    ],
+    "total_merges": 3,
+    "independent_wps_collapsed": 0,
+    "by_rule": {
+      "dependency": 3
+    }
+  }
+}

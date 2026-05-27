@@ -1,0 +1,49 @@
+{
+  "event_count": 4,
+  "last_event_id": "01KSKF045FP85HM1SJA00CZ8XR",
+  "materialized_at": "2026-05-27T00:57:49.487582+00:00",
+  "mission_number": "",
+  "mission_slug": "mvp-stabilization-01KSKEFD",
+  "mission_type": "software-dev",
+  "summary": {
+    "approved": 0,
+    "blocked": 0,
+    "canceled": 0,
+    "claimed": 0,
+    "done": 0,
+    "for_review": 0,
+    "in_progress": 0,
+    "in_review": 0,
+    "planned": 4
+  },
+  "work_packages": {
+    "WP01": {
+      "actor": "finalize-tasks",
+      "force_count": 1,
+      "lane": "planned",
+      "last_event_id": "01KSKF040SK3QZNQF12QGJDGXY",
+      "last_transition_at": "2026-05-27T00:57:49.337954+00:00"
+    },
+    "WP02": {
+      "actor": "finalize-tasks",
+      "force_count": 1,
+      "lane": "planned",
+      "last_event_id": "01KSKF0454850WBR6J926WCABR",
+      "last_transition_at": "2026-05-27T00:57:49.476945+00:00"
+    },
+    "WP03": {
+      "actor": "finalize-tasks",
+      "force_count": 1,
+      "lane": "planned",
+      "last_event_id": "01KSKF045AHX7DCMWXG8SYF5E9",
+      "last_transition_at": "2026-05-27T00:57:49.482480+00:00"
+    },
+    "WP04": {
+      "actor": "finalize-tasks",
+      "force_count": 1,
+      "lane": "planned",
+      "last_event_id": "01KSKF045FP85HM1SJA00CZ8XR",
+      "last_transition_at": "2026-05-27T00:57:49.487582+00:00"
+    }
+  }
+}
