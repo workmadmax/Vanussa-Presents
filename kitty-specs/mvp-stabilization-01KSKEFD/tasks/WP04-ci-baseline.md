@@ -139,3 +139,4 @@ the workflow depends on local-only paths or hidden state.
 ## Activity Log
 
 - 2026-05-28T02:52:48Z – codex – shell_pid=7358 – Started implementation via action command
+- 2026-05-28T14:58:05Z – codex – shell_pid=7358 – Ready for review: CI workflow added, jsdom navigation noise handled locally, product no-image coverage added, and Docker Compose gates passed.
