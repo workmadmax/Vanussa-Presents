@@ -44,17 +44,27 @@ export default function ProductPage({
 		return <p>Carregando...</p>;
 	}
 
+	const productImageUrl = product.images?.[0]?.image;
+
 	return (
 		<main className="p-6">
 			<div className="grid md:grid-cols-2 gap-8">
 				{/* Imagem */}
-				<Image
-					src={product.images?.[0]?.image}
-					alt={product.name}
-					width={800}
-					height={800}
-					className="w-full rounded-xl"
-				/>
+				{productImageUrl ? (
+					<Image
+						src={productImageUrl}
+						alt={product.name}
+						width={800}
+						height={800}
+						className="w-full rounded-xl"
+					/>
+				) : (
+					<div
+						role="img"
+						aria-label={`Imagem indisponível para ${product.name}`}
+						className="w-full aspect-square rounded-xl bg-gray-100"
+					/>
+				)}
 
 				{/* Info */}
 				<div>
