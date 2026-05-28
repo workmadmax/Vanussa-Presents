@@ -1,0 +1,49 @@
+{
+  "mission_slug": "mvp-stabilization-01KSKEFD",
+  "mission_number": null,
+  "mission_type": "software-dev",
+  "overall_verdict": "pass",
+  "criteria": [
+    {
+      "criterion_id": "AC-WP01",
+      "description": "WP01 Auth/API Client Stabilization is reviewed and approved with AuthProvider hydration contract preserved and API client behavior covered.",
+      "proof_type": "automated_test",
+      "evidence": "WP01 accepted after frontend Jest coverage for auth/API client behavior passed.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-05-28T15:18:52Z",
+      "notes": "Recorded in WP01 activity log and status events."
+    },
+    {
+      "criterion_id": "AC-WP02",
+      "description": "WP02 Cart Checkout/Menu Consolidation is reviewed and approved with central API client usage and canonical cart menu behavior preserved.",
+      "proof_type": "automated_test",
+      "evidence": "WP02 accepted after cart/menu tests passed.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-05-28T15:18:52Z",
+      "notes": "Recorded in WP02 activity log and status events."
+    },
+    {
+      "criterion_id": "AC-WP03",
+      "description": "WP03 Frontend Lint/Build Gates is reviewed and approved with lint, Jest, and build gates green through Docker Compose validation.",
+      "proof_type": "automated_test",
+      "evidence": "docker compose frontend lint, test -- --runInBand, and build passed in the WP03/WP04 lane validation path.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-05-28T15:18:52Z",
+      "notes": "Recorded in WP03 activity log and status events."
+    },
+    {
+      "criterion_id": "AC-WP04",
+      "description": "WP04 CI Baseline is reviewed and approved with GitHub Actions backend PostgreSQL gates, frontend gates, CI/local divergence notes, jsdom noise handling, and product no-image coverage.",
+      "proof_type": "automated_test",
+      "evidence": "docker compose backend check/test and frontend lint/test/build passed during WP04 review.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-05-28T15:18:52Z",
+      "notes": "Remote GitHub Actions execution remains a non-blocking post-merge validation."
+    }
+  ],
+  "negative_invariants": []
+}
