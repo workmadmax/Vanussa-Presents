@@ -19,6 +19,7 @@ import {
 	ReactNode,
 	useContext,
 	useMemo,
+	useRef,
 } from "react";
 
 import { Product } from "@/types";
@@ -43,16 +44,34 @@ const CartContext = createContext<CartContextType | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
+	const hasHydrated = useRef(false);
 
 	useEffect(() => {
-		const stored = localStorage.getItem(STORAGE_KEY);
+		let isActive = true;
 
-		if (stored) {
-			setCartItems(JSON.parse(stored));
-		}
+		queueMicrotask(() => {
+			if (!isActive) {
+				return;
+			}
+
+			const stored = localStorage.getItem(STORAGE_KEY);
+
+			if (stored) {
+				setCartItems(JSON.parse(stored));
+			}
+			hasHydrated.current = true;
+		});
+
+		return () => {
+			isActive = false;
+		};
 	}, []);
 
 	useEffect(() => {
+		if (!hasHydrated.current) {
+			return;
+		}
+
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems));
 	}, [cartItems]);
 

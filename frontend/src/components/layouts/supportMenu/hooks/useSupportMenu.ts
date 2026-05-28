@@ -13,17 +13,38 @@
 import { useState, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 
+type MenuState = {
+	pathname: string;
+	isOpen: boolean;
+};
+
 export function useSupportMenu() {
-	const [isOpen, setIsOpen] = useState(false);
-
 	const pathname = usePathname();
+	const [menuState, setMenuState] = useState<MenuState>({
+		pathname,
+		isOpen: false,
+	});
+	const isOpen = menuState.pathname === pathname ? menuState.isOpen : false;
 
-	const closeMenu = useCallback(() => setIsOpen(false), []);
-	const toggleMenu = () => setIsOpen((prev) => !prev);
+	const closeMenu = useCallback(() => {
+		setMenuState((prev) => {
+			const isCurrentPath = prev.pathname === pathname;
 
-	useEffect(() => {
-		closeMenu();
-	}, [pathname, closeMenu]);
+			if (isCurrentPath && !prev.isOpen) {
+				return prev;
+			}
+
+			return { pathname, isOpen: false };
+		});
+	}, [pathname]);
+
+	const toggleMenu = () => {
+		setMenuState((prev) => {
+			const currentOpen = prev.pathname === pathname ? prev.isOpen : false;
+
+			return { pathname, isOpen: !currentOpen };
+		});
+	};
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {

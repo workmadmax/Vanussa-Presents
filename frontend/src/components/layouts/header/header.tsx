@@ -16,22 +16,35 @@ import Link from "next/link";
 import { useCart } from "@/context/cartContext";
 import { Search, User, ShoppingBag, Phone, LogOut } from "lucide-react";
 import { SupportMenu } from "../supportMenu/supportMenu";
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { LoginModal } from "@/components/ui/modal/loginModal";
 import { useAuth } from "@/context/authContext";
 import { RegisterModal } from "@/components/ui/modal/registerModal";
 import { CartMenu } from "@/components/layouts/supportMenu/cart/cartMenu";
+
+function subscribeToHydration(onStoreChange: () => void) {
+	queueMicrotask(onStoreChange);
+	return () => {};
+}
+
+function getClientHydrationSnapshot() {
+	return true;
+}
+
+function getServerHydrationSnapshot() {
+	return false;
+}
 
 export function Header() {
 	const { cartItems } = useCart();
 	const { user, isAuthenticated, logout } = useAuth();
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-	const [mounted, setMounted] = useState(false);
-
-	useEffect(() => {
-		setMounted(true);
-	}, []);
+	const mounted = useSyncExternalStore(
+		subscribeToHydration,
+		getClientHydrationSnapshot,
+		getServerHydrationSnapshot
+	);
 
 	const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 

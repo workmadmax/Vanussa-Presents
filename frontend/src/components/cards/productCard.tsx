@@ -12,6 +12,7 @@
 
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Product } from "@/types";
@@ -37,10 +38,12 @@ export function ProductCard({ product, onLoginClick }: ProductCardProps) {
 		>
 			<Link href={`/products/${product.slug}`}>
 				<div className="relative w-full h-56 bg-gray-50 overflow-hidden">
-					<img
+					<Image
 						src={imageUrl}
 						alt={product.name}
-						className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+						fill
+						sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+						className="object-cover group-hover:scale-105 transition duration-500"
 					/>
 					<Badge label="Novo" />
 				</div>

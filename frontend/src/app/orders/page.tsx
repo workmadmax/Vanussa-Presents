@@ -53,7 +53,10 @@ export default function OrdersPage() {
 	const [expanded, setExpanded] = useState<number | null>(null);
 
 	useEffect(() => {
-		if (authLoading) return;
+		if (authLoading) {
+			return;
+		}
+
 		if (!isAuthenticated) {
 			router.push("/");
 			return;
@@ -62,7 +65,7 @@ export default function OrdersPage() {
 			.get("/orders/my-orders/")
 			.then((res) => setOrders(res.data))
 			.finally(() => setLoading(false));
-	}, [isAuthenticated, authLoading]);
+	}, [isAuthenticated, authLoading, router]);
 
 	if (authLoading || loading) {
 		return (

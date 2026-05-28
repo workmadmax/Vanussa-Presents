@@ -12,9 +12,11 @@
 
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState, use } from "react";
 import { api } from "@/services/api";
 import { useCart } from "@/context/cartContext";
+import { Product } from "@/types";
 
 export default function ProductPage({
 	params,
@@ -25,7 +27,7 @@ export default function ProductPage({
 	const slug = resolveParams.slug;
 
 	const { addToCart } = useCart();
-	const [product, setProduct] = useState<any>(null);
+	const [product, setProduct] = useState<Product | null>(null);
 
 	useEffect(() => {
 		api
@@ -46,9 +48,11 @@ export default function ProductPage({
 		<main className="p-6">
 			<div className="grid md:grid-cols-2 gap-8">
 				{/* Imagem */}
-				<img
+				<Image
 					src={product.images?.[0]?.image}
 					alt={product.name}
+					width={800}
+					height={800}
 					className="w-full rounded-xl"
 				/>
 

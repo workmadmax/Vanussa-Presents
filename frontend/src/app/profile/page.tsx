@@ -33,6 +33,27 @@ type Profile = {
 	date_joined: string;
 };
 
+type ProfileFieldName =
+	| "first_name"
+	| "last_name"
+	| "phone"
+	| "street"
+	| "city"
+	| "state"
+	| "zipcode"
+	| "country";
+
+const PROFILE_FIELDS: { label: string; name: ProfileFieldName }[] = [
+	{ label: "Nome", name: "first_name" },
+	{ label: "Sobrenome", name: "last_name" },
+	{ label: "Telefone", name: "phone" },
+	{ label: "Rua", name: "street" },
+	{ label: "Cidade", name: "city" },
+	{ label: "Estado", name: "state" },
+	{ label: "CEP", name: "zipcode" },
+	{ label: "País", name: "country" },
+];
+
 export default function ProfilePage() {
 	const { isAuthenticated, isLoading: authLoading, logout } = useAuth();
 	const router = useRouter();
@@ -45,7 +66,10 @@ export default function ProfilePage() {
 	const [form, setForm] = useState<Partial<Profile>>({});
 
 	useEffect(() => {
-		if (authLoading) return;
+		if (authLoading) {
+			return;
+		}
+
 		if (!isAuthenticated) {
 			router.push("/");
 			return;
@@ -57,7 +81,7 @@ export default function ProfilePage() {
 				setForm(res.data);
 			})
 			.finally(() => setLoading(false));
-	}, [isAuthenticated, authLoading]);
+	}, [isAuthenticated, authLoading, router]);
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -101,7 +125,9 @@ export default function ProfilePage() {
 		);
 	}
 
-	if (!profile) return null;
+	if (!profile) {
+		return null;
+	}
 
 	return (
 		<main className="max-w-2xl mx-auto p-6">
@@ -143,29 +169,20 @@ export default function ProfilePage() {
 				</div>
 
 				<div className="grid grid-cols-2 gap-4">
-					{[
-						{ label: "Nome", name: "first_name" },
-						{ label: "Sobrenome", name: "last_name" },
-						{ label: "Telefone", name: "phone" },
-						{ label: "Rua", name: "street" },
-						{ label: "Cidade", name: "city" },
-						{ label: "Estado", name: "state" },
-						{ label: "CEP", name: "zipcode" },
-						{ label: "País", name: "country" },
-					].map(({ label, name }) => (
+					{PROFILE_FIELDS.map(({ label, name }) => (
 						<div key={name}>
 							<p className="text-xs text-gray-500 mb-1">{label}</p>
 							{editing ? (
 								<input
 									name={name}
-									value={(form as any)[name] || ""}
+									value={form[name] || ""}
 									onChange={handleChange}
 									className="w-full border rounded-lg px-3 py-2 text-sm
 									focus:outline-none focus:ring-2 focus:ring-pink-300"
 								/>
 							) : (
 								<p className="font-medium text-sm">
-									{(profile as any)[name] || (
+									{profile[name] || (
 										<span className="text-gray-400">—</span>
 									)}
 								</p>
