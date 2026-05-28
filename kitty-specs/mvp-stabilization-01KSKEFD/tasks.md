@@ -26,10 +26,10 @@ gates and CI.
 | T006 | Consolidate cart menu hook ownership and remove duplicate/dead hook paths | WP02 | No | [D] |
 | T007 | Preserve cart/menu interactions: login prompt, checkout, close on navigation, Escape and outside click | WP02 | No | [D] |
 | T008 | Update cart/menu tests and keep network calls mocked | WP02 | No | [D] |
-| T009 | Resolve React Hooks `set-state-in-effect` findings outside WP01/WP02-owned files | WP03 | No |
-| T010 | Replace remaining `any` usage with narrow local types outside WP01/WP02-owned files | WP03 | No |
-| T011 | Resolve `curly`, internal Link/Image, and frontend config lint findings | WP03 | No |
-| T012 | Validate frontend Jest, lint and build through the intended Docker Compose path | WP03 | No |
+| T009 | Resolve React Hooks `set-state-in-effect` findings outside WP01/WP02-owned files | WP03 | No | [D] |
+| T010 | Replace remaining `any` usage with narrow local types outside WP01/WP02-owned files | WP03 | No | [D] |
+| T011 | Resolve `curly`, internal Link/Image, and frontend config lint findings | WP03 | No | [D] |
+| T012 | Validate frontend Jest, lint and build through the intended Docker Compose path | WP03 | No | [D] |
 | T013 | Add CI workflow with PostgreSQL backend gates and frontend gates | WP04 | No |
 | T014 | Keep CI credentials/secrets local to workflow service configuration | WP04 | No |
 | T015 | Document any CI/local command divergence in workflow comments or mission notes | WP04 | No |
@@ -110,10 +110,10 @@ refactors or product behavior changes.
 
 Included subtasks:
 
-- [ ] T009 Resolve React Hooks `set-state-in-effect` findings outside WP01/WP02-owned files (WP03)
-- [ ] T010 Replace remaining `any` usage with narrow local types outside WP01/WP02-owned files (WP03)
-- [ ] T011 Resolve `curly`, internal Link/Image, and frontend config lint findings (WP03)
-- [ ] T012 Validate frontend Jest, lint and build through the intended Docker Compose path (WP03)
+- [x] T009 Resolve React Hooks `set-state-in-effect` findings outside WP01/WP02-owned files (WP03)
+- [x] T010 Replace remaining `any` usage with narrow local types outside WP01/WP02-owned files (WP03)
+- [x] T011 Resolve `curly`, internal Link/Image, and frontend config lint findings (WP03)
+- [x] T012 Validate frontend Jest, lint and build through the intended Docker Compose path (WP03)
 
 Implementation sketch:
 
