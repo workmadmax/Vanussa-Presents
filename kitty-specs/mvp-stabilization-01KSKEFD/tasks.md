@@ -30,11 +30,11 @@ gates and CI.
 | T010 | Replace remaining `any` usage with narrow local types outside WP01/WP02-owned files | WP03 | No | [D] |
 | T011 | Resolve `curly`, internal Link/Image, and frontend config lint findings | WP03 | No | [D] |
 | T012 | Validate frontend Jest, lint and build through the intended Docker Compose path | WP03 | No | [D] |
-| T013 | Add CI workflow with PostgreSQL backend gates and frontend gates | WP04 | No |
-| T014 | Keep CI credentials/secrets local to workflow service configuration | WP04 | No |
-| T015 | Document any CI/local command divergence in workflow comments or mission notes | WP04 | No |
-| T016 | Treat or document known jsdom navigation console noise without masking real test errors | WP04 | No |
-| T017 | Add dedicated `/products/[slug]` no-image regression coverage | WP04 | No |
+| T013 | Add CI workflow with PostgreSQL backend gates and frontend gates | WP04 | No | [D] |
+| T014 | Keep CI credentials/secrets local to workflow service configuration | WP04 | No | [D] |
+| T015 | Document any CI/local command divergence in workflow comments or mission notes | WP04 | No | [D] |
+| T016 | Treat or document known jsdom navigation console noise without masking real test errors | WP04 | No | [D] |
+| T017 | Add dedicated `/products/[slug]` no-image regression coverage | WP04 | No | [D] |
 
 ## Work Packages
 
@@ -142,11 +142,11 @@ for backend and frontend.
 
 Included subtasks:
 
-- [ ] T013 Add CI workflow with PostgreSQL backend gates and frontend gates (WP04)
-- [ ] T014 Keep CI credentials/secrets local to workflow service configuration (WP04)
-- [ ] T015 Document any CI/local command divergence in workflow comments or mission notes (WP04)
-- [ ] T016 Treat or document known jsdom navigation console noise without masking real test errors (WP04)
-- [ ] T017 Add dedicated `/products/[slug]` no-image regression coverage (WP04)
+- [x] T013 Add CI workflow with PostgreSQL backend gates and frontend gates (WP04)
+- [x] T014 Keep CI credentials/secrets local to workflow service configuration (WP04)
+- [x] T015 Document any CI/local command divergence in workflow comments or mission notes (WP04)
+- [x] T016 Treat or document known jsdom navigation console noise without masking real test errors (WP04)
+- [x] T017 Add dedicated `/products/[slug]` no-image regression coverage (WP04)
 
 Implementation sketch:
 
