@@ -1,4 +1,16 @@
 {
+  "acceptance_history": [
+    {
+      "acceptance_mode": "pr",
+      "accepted_at": "2026-05-28T15:22:13.359687+00:00",
+      "accepted_by": "codex",
+      "accepted_from_commit": "6c3a93cad8ffa3ec79c5f4964958bfdb85895fda"
+    }
+  ],
+  "acceptance_mode": "pr",
+  "accepted_at": "2026-05-28T15:22:13.359687+00:00",
+  "accepted_by": "codex",
+  "accepted_from_commit": "6c3a93cad8ffa3ec79c5f4964958bfdb85895fda",
   "created_at": "2026-05-27T00:48:42.238689+00:00",
   "friendly_name": "mvp stabilization",
   "mission_id": "01KSKEFDQ37GNMP51CAAFGR3RG",
