@@ -33,6 +33,8 @@ gates and CI.
 | T013 | Add CI workflow with PostgreSQL backend gates and frontend gates | WP04 | No |
 | T014 | Keep CI credentials/secrets local to workflow service configuration | WP04 | No |
 | T015 | Document any CI/local command divergence in workflow comments or mission notes | WP04 | No |
+| T016 | Treat or document known jsdom navigation console noise without masking real test errors | WP04 | No |
+| T017 | Add dedicated `/products/[slug]` no-image regression coverage | WP04 | No |
 
 ## Work Packages
 
@@ -143,6 +145,8 @@ Included subtasks:
 - [ ] T013 Add CI workflow with PostgreSQL backend gates and frontend gates (WP04)
 - [ ] T014 Keep CI credentials/secrets local to workflow service configuration (WP04)
 - [ ] T015 Document any CI/local command divergence in workflow comments or mission notes (WP04)
+- [ ] T016 Treat or document known jsdom navigation console noise without masking real test errors (WP04)
+- [ ] T017 Add dedicated `/products/[slug]` no-image regression coverage (WP04)
 
 Implementation sketch:
 
@@ -150,8 +154,13 @@ Implementation sketch:
 - Use an ephemeral PostgreSQL service for backend tests.
 - Run backend check/tests and frontend lint/test/build.
 - Keep credentials non-secret and CI-local.
+- Keep jsdom console handling local to the affected menu test if it can be
+  done safely; otherwise document it as known noise.
+- Add a focused product detail test for an API product with no images, without
+  changing product behavior.
 
 Parallel opportunities: WP04 waits for WP03 so CI captures stable gates.
 
 Risks: workflow drift from Compose, CI-only environment differences, noisy gate
-failures if local lint/build are not green first.
+failures if local lint/build are not green first, test mocks hiding real
+navigation failures if applied too broadly.

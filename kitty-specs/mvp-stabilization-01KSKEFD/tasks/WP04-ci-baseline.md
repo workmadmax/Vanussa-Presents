@@ -18,6 +18,8 @@ subtasks:
 - T013
 - T014
 - T015
+- T016
+- T017
 phase: Phase 4 - CI
 assignee: ''
 agent: "codex"
@@ -30,6 +32,8 @@ authoritative_surface: .github/workflows/
 execution_mode: code_change
 owned_files:
 - .github/workflows/mvp-stabilization.yml
+- frontend/src/services/__tests__/cartMenuLogged.test.tsx
+- frontend/src/app/products/[slug]/__tests__/page.test.tsx
 tags: []
 ---
 
@@ -54,9 +58,9 @@ build commands.
 
 ## Owned Surface
 
-Only create/edit `.github/workflows/mvp-stabilization.yml`. Do not modify source
-code, package files, backend settings or mission docs in this WP unless a later
-review explicitly asks for a follow-up.
+Create/edit `.github/workflows/mvp-stabilization.yml` and the specific frontend
+tests listed in `owned_files`. Do not modify source code, package files, backend
+settings, migrations, database schema, or unrelated mission docs in this WP.
 
 ## Detailed Guidance
 
@@ -81,6 +85,21 @@ review explicitly asks for a follow-up.
   explaining the difference.
 - Keep the local command matrix in Spec Kitty quickstart as the operational
   source for developers.
+
+### T016 - Known jsdom Navigation Noise
+
+- Treat or document the known `console.error` from jsdom navigation in cart menu
+  tests.
+- If treating it, keep the change local to the affected test and do not silence
+  `console.error` globally.
+- Do not mask real application errors.
+
+### T017 - Product Detail No-Image Coverage
+
+- Add a dedicated frontend test for `/products/[slug]` when the API returns a
+  product with an empty `images` array.
+- Assert the existing no-image behavior from WP03 without changing product
+  runtime behavior.
 
 ## Validation
 
@@ -108,6 +127,9 @@ into `main`. Spec Kitty will allocate execution worktrees per `lanes.json`.
 - Workflow uses PostgreSQL for backend tests.
 - Workflow includes frontend lint/test/build gates.
 - No production secrets are committed.
+- Known jsdom navigation console noise is either narrowly handled or explicitly
+  documented.
+- Product detail has a regression test for an API product with no images.
 
 ## Reviewer Guidance
 
