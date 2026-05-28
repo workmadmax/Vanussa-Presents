@@ -81,3 +81,4 @@ madbloco.txt
 .kittify/missions/__pycache__/
 .kittify/runtime/
 .kittify/workspaces/
+.worktrees/
