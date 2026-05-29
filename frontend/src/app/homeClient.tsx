@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 21:43:32 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/25 18:18:29 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/28 23:22:19 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ export function HomeClient({ category }: HomeClientProps) {
 	const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setLoading(true);
 		let url = `/products/?page=${currentPage}`;
 		if (category) {
@@ -49,6 +50,7 @@ export function HomeClient({ category }: HomeClientProps) {
 	}, [category, currentPage]);
 
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setCurrentPage(1);
 	}, [category]);
 

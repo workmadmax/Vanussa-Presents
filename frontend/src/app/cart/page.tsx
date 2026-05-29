@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 17:40:14 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/26 12:40:03 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/28 23:22:18 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,14 @@ import { LoginModal } from "@/components/ui/modal/loginModal";
 import { RegisterModal } from "@/components/ui/modal/registerModal";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { api } from "@/services/api";
+
+type ApiError = {
+	response?: {
+		data?: unknown;
+	};
+};
 
 export default function CartPage() {
 	const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -33,10 +40,13 @@ export default function CartPage() {
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setMounted(true);
 	}, []);
 
-	if (!mounted) return null;
+	if (!mounted) {
+		return null;
+	}
 
 	const total = cartItems.reduce(
 		(acc, item) => acc + Number(item.price) * item.quantity,
@@ -55,10 +65,15 @@ export default function CartPage() {
 			});
 			clearCart();
 			router.push(`/checkout/${res.data.id}`);
-		} catch (err: any) {
+		} catch (err: unknown) {
+			const data = (err as ApiError).response?.data;
 			const msg =
-				err.response?.data?.detail ||
-				err.response?.data?.[0] ||
+				(typeof (data as { detail?: string } | undefined)?.detail ===
+					"string" &&
+					(data as { detail?: string }).detail) ||
+				(Array.isArray(data) && typeof data[0] === "string"
+					? data[0]
+					: undefined) ||
 				"Erro ao criar pedido. Tente novamente.";
 			setError(msg);
 		} finally {
@@ -84,12 +99,12 @@ export default function CartPage() {
 				<div className="text-center py-16 text-gray-400">
 					<p className="text-4xl mb-3">🛒</p>
 					<p className="text-lg">Seu carrinho está vazio</p>
-					<a
+					<Link
 						href="/"
 						className="text-pink-500 hover:underline text-sm mt-2 inline-block"
 					>
 						Continuar comprando
-					</a>
+					</Link>
 				</div>
 			) : (
 				cartItems.map((item) => (
