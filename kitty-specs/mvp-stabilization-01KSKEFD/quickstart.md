@@ -27,13 +27,12 @@ docker compose exec frontend npm run lint
 docker compose exec frontend npm run build
 ```
 
-Current known state before implementation WPs:
+Current validation status (2026-05-29):
 
-- Jest passes on host with 11 suites and 58 tests.
-- Lint fails with React Hooks, `curly`, `no-explicit-any`, Link/Image and config
-  findings.
-- Host build is blocked by permissions in `frontend/.next`; do not delete that
-  directory without explicit authorization.
+- `docker compose exec frontend npm test -- --runInBand`: PASS, 12 suites / 67
+  tests.
+- `docker compose exec frontend npm run lint`: PASS.
+- `docker compose exec frontend npm run build`: PASS.
 
 ## Mission Validation
 

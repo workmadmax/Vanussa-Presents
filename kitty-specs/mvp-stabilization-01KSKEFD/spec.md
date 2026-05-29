@@ -6,7 +6,7 @@
 **Planning/base branch:** `main`  
 **Merge target:** `main`  
 **Source of truth migrated from:** `/specs/` manual SDD docs  
-**Status:** Ready for Spec Kitty plan/tasks generation
+**Status:** Merged; artifacts reconciled and gates validated on 2026-05-29
 
 ## Summary
 
@@ -19,6 +19,11 @@ The mission does not add new product features. It preserves the current public
 API surface and focuses on reliable gates, frontend cleanup, API-client
 consistency, CI, and documentation alignment before future Pix, shipping, custom
 admin, production deploy, or observability work.
+
+**Repository sync note:** Spec Kitty status artifacts report WP01-WP04 approved
+and the mission merged. Missing code artifacts were reconciled from the
+`kitty/mission-mvp-stabilization-01KSKEFD-lane-a` branch and validated via
+Docker Compose on 2026-05-29.
 
 ## Source Material Analyzed
 
@@ -107,29 +112,28 @@ Provide a production-oriented e-commerce MVP where:
   the authenticated user.
 - **FR-008 [Implemented]:** Customers can list only their own orders.
 - **FR-009 [Implemented]:** Django Admin remains the MVP admin surface.
-- **FR-010 [Partially Implemented]:** Frontend API calls must go through the
-  central configurable API client. Recent preflight work moved auth and cart menu
-  calls to the client; remaining validation is required.
-- **FR-011 [Partially Implemented]:** Frontend production/build/lint gates must
-  pass. Jest passes; lint still fails; host build is blocked by `.next`
-  permissions and should be validated through Docker Compose.
+- **FR-010 [Implemented]:** Frontend API calls go through the central
+  configurable API client. Auth/cart tests passed via Docker Compose on
+  2026-05-29.
+- **FR-011 [Implemented]:** Frontend production/build/lint gates pass via Docker
+  Compose on 2026-05-29.
 - **FR-012 [Implemented]:** Backend tests run reproducibly through Docker
   Compose/PostgreSQL according to `docs/estado-atual-v2.md`.
-- **FR-013 [Not Implemented]:** CI must run backend check/tests and frontend
-  lint/test/build on pull requests or main updates.
+- **FR-013 [Implemented]:** CI workflow exists for backend check/tests and
+  frontend lint/test/build. Remote CI execution remains pending.
 
 ### Non-Functional Requirements
 
-- **NFR-001 [Pending Gate]:** `docker compose exec frontend npm run lint` must
-  pass with zero blocking errors.
-- **NFR-002 [Pending Gate]:** `docker compose exec frontend npm run build` must
-  pass without relying on host-owned `.next` artifacts.
+- **NFR-001 [Implemented]:** `docker compose exec frontend npm run lint` passes
+  with zero blocking errors (2026-05-29).
+- **NFR-002 [Implemented]:** `docker compose exec frontend npm run build` passes
+  without relying on host-owned `.next` artifacts (2026-05-29).
 - **NFR-003 [Implemented]:** `docker compose exec backend python manage.py test`
   must discover and pass the backend test suite.
 - **NFR-004 [Implemented]:** `docker compose exec frontend npm test --
-  --runInBand` must pass without real network calls.
-- **NFR-005 [Pending]:** CI must mirror the local Docker Compose validation
-  intent using PostgreSQL for backend tests.
+--runInBand` must pass without real network calls.
+- **NFR-005 [Implemented]:** CI mirrors the local Docker Compose validation
+  intent using PostgreSQL for backend tests; remote CI run remains pending.
 - **NFR-006 [Pending Future Hardening]:** Production secrets, CORS, allowed
   hosts, secure headers, rate limiting and media storage require a future deploy
   security mission before launch.
@@ -151,18 +155,14 @@ Provide a production-oriented e-commerce MVP where:
 
 ## Current Gate Status
 
-- `npm test -- --runInBand` from `frontend/`: PASS, 11 suites and 58 tests.
-- `npm run lint` from `frontend/`: FAIL, 18 errors and 6 warnings, mainly
-  React Hooks `set-state-in-effect`, `curly`, `no-explicit-any`, Next Link/Image
-  warnings and config warnings.
-- `npm run build` from `frontend/` on host: FAIL before Next.js build due to
-  `EACCES` on `frontend/.next/build/package.json`, owned by `nobody:nogroup`.
-- `backend/.venv/bin/python backend/manage.py check` from repo root: PASS.
-- `backend/.venv/bin/python backend/manage.py test` from repo root: finds 0
-  tests because of working-directory behavior.
-- `../backend/.venv/bin/python manage.py test` from `backend/`: discovers 102
-  tests but cannot connect/create PostgreSQL test DB on host without Compose.
-- `docs/estado-atual-v2.md` records Compose backend suite PASS, 102 tests.
+- `docker compose exec backend python manage.py check`: PASS (2026-05-29).
+- `docker compose exec backend python manage.py test`: PASS, 102 tests
+  (2026-05-29). Warnings observed: UnorderedObjectListWarning for Product
+  pagination; InsecureKeyLengthWarning for JWT test key length.
+- `docker compose exec frontend npm test -- --runInBand`: PASS, 12 suites / 67
+  tests (2026-05-29).
+- `docker compose exec frontend npm run lint`: PASS (2026-05-29).
+- `docker compose exec frontend npm run build`: PASS (2026-05-29).
 
 ## Decisions Imported
 
@@ -228,8 +228,11 @@ Provide a production-oriented e-commerce MVP where:
 - Work packages cover the remaining stabilization work without adding new
   features.
 - `spec-kitty agent mission finalize-tasks --validate-only --mission
-  mvp-stabilization-01KSKEFD --json` passes.
+mvp-stabilization-01KSKEFD --json` passes (recorded in status events).
 - `spec-kitty agent mission finalize-tasks --mission
-  mvp-stabilization-01KSKEFD --json` completes and creates lane metadata.
-- Next implementation action is explicitly `spec-kitty next --agent codex
-  --mission mvp-stabilization-01KSKEFD`, only after user authorization.
+mvp-stabilization-01KSKEFD --json` completed and created lane metadata.
+- Spec Kitty status reports the mission merged on 2026-05-28 with merge commit
+  `244a111`. Code artifacts were reconciled into `main` via merge commit
+  `68e5742` on 2026-05-29.
+- Next implementation action remains explicitly `spec-kitty next --agent codex
+--mission mvp-stabilization-01KSKEFD`, only after user authorization.

@@ -5,7 +5,7 @@
 **Planning/base branch:** `main`  
 **Merge target:** `main`  
 **Spec:** `kitty-specs/mvp-stabilization-01KSKEFD/spec.md`  
-**Status:** Ready for task generation
+**Status:** Tasks generated; artifacts reconciled and gates validated on 2026-05-29
 
 ## Summary
 
@@ -18,6 +18,11 @@ Already completed work must be recorded, not reimplemented: Docker Compose,
 positive product pricing, order quantity/total invariants, category test
 alignment, checkout route alignment, Allman lint removal, and part of central
 API-client consolidation.
+
+**Repository sync note:** Spec Kitty status artifacts report WP01-WP04 approved
+and the mission merged. Missing code artifacts were reconciled from the
+`kitty/mission-mvp-stabilization-01KSKEFD-lane-a` branch and validated via
+Docker Compose on 2026-05-29.
 
 ## Technical Context
 
@@ -143,7 +148,7 @@ code should not hardcode API hosts.
 ## Acceptance Gates
 
 - `spec-kitty agent mission finalize-tasks --validate-only --mission
-  mvp-stabilization-01KSKEFD --json` passes.
+mvp-stabilization-01KSKEFD --json` passes.
 - Work package ownership has no overlapping file globs.
 - Frontend Jest remains green.
 - Remaining implementation WPs, when executed later, make lint/build/CI gates

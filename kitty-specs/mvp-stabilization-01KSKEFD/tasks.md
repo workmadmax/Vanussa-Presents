@@ -5,7 +5,7 @@
 **Plan:** `kitty-specs/mvp-stabilization-01KSKEFD/plan.md`  
 **Planning/base branch:** `main`  
 **Merge target:** `main`  
-**Status:** Work packages generated
+**Status:** Work packages generated; approved/merged and validated on 2026-05-29
 
 ## Summary
 
@@ -14,27 +14,32 @@ adding product scope. Completed manual SDD work is treated as baseline. The
 remaining implementation is grouped into frontend API/auth, cart/menu, lint/build
 gates and CI.
 
+**Verification note:** Spec Kitty status/events indicate WP01-WP04 are approved
+and the mission is merged. Missing code artifacts were reconciled from the
+`kitty/mission-mvp-stabilization-01KSKEFD-lane-a` branch and validated via
+Docker Compose on 2026-05-29.
+
 ## Subtask Index
 
-| ID | Description | WP | Parallel |
-|----|-------------|----|----------|
-| T001 | Verify central API client base URL, token attachment and refresh behavior | WP01 | No | [D] |
-| T002 | Keep auth registration/login on the central API client with typed errors | WP01 | No | [D] |
-| T003 | Update auth/API tests to mock axios/client behavior without real network | WP01 | No | [D] |
-| T004 | Re-run frontend Jest for auth/API surfaces and record any remaining gate risk | WP01 | No | [D] |
-| T005 | Keep cart checkout submission on central API client with `/checkout/{id}` redirect | WP02 | No | [D] |
-| T006 | Consolidate cart menu hook ownership and remove duplicate/dead hook paths | WP02 | No | [D] |
-| T007 | Preserve cart/menu interactions: login prompt, checkout, close on navigation, Escape and outside click | WP02 | No | [D] |
-| T008 | Update cart/menu tests and keep network calls mocked | WP02 | No | [D] |
-| T009 | Resolve React Hooks `set-state-in-effect` findings outside WP01/WP02-owned files | WP03 | No | [D] |
-| T010 | Replace remaining `any` usage with narrow local types outside WP01/WP02-owned files | WP03 | No | [D] |
-| T011 | Resolve `curly`, internal Link/Image, and frontend config lint findings | WP03 | No | [D] |
-| T012 | Validate frontend Jest, lint and build through the intended Docker Compose path | WP03 | No | [D] |
-| T013 | Add CI workflow with PostgreSQL backend gates and frontend gates | WP04 | No | [D] |
-| T014 | Keep CI credentials/secrets local to workflow service configuration | WP04 | No | [D] |
-| T015 | Document any CI/local command divergence in workflow comments or mission notes | WP04 | No | [D] |
-| T016 | Treat or document known jsdom navigation console noise without masking real test errors | WP04 | No | [D] |
-| T017 | Add dedicated `/products/[slug]` no-image regression coverage | WP04 | No | [D] |
+| ID   | Description                                                                                            | WP   | Parallel |
+| ---- | ------------------------------------------------------------------------------------------------------ | ---- | -------- | --- |
+| T001 | Verify central API client base URL, token attachment and refresh behavior                              | WP01 | No       | [D] |
+| T002 | Keep auth registration/login on the central API client with typed errors                               | WP01 | No       | [D] |
+| T003 | Update auth/API tests to mock axios/client behavior without real network                               | WP01 | No       | [D] |
+| T004 | Re-run frontend Jest for auth/API surfaces and record any remaining gate risk                          | WP01 | No       | [D] |
+| T005 | Keep cart checkout submission on central API client with `/checkout/{id}` redirect                     | WP02 | No       | [D] |
+| T006 | Consolidate cart menu hook ownership and remove duplicate/dead hook paths                              | WP02 | No       | [D] |
+| T007 | Preserve cart/menu interactions: login prompt, checkout, close on navigation, Escape and outside click | WP02 | No       | [D] |
+| T008 | Update cart/menu tests and keep network calls mocked                                                   | WP02 | No       | [D] |
+| T009 | Resolve React Hooks `set-state-in-effect` findings outside WP01/WP02-owned files                       | WP03 | No       | [D] |
+| T010 | Replace remaining `any` usage with narrow local types outside WP01/WP02-owned files                    | WP03 | No       | [D] |
+| T011 | Resolve `curly`, internal Link/Image, and frontend config lint findings                                | WP03 | No       | [D] |
+| T012 | Validate frontend Jest, lint and build through the intended Docker Compose path                        | WP03 | No       | [D] |
+| T013 | Add CI workflow with PostgreSQL backend gates and frontend gates                                       | WP04 | No       | [D] |
+| T014 | Keep CI credentials/secrets local to workflow service configuration                                    | WP04 | No       | [D] |
+| T015 | Document any CI/local command divergence in workflow comments or mission notes                         | WP04 | No       | [D] |
+| T016 | Treat or document known jsdom navigation console noise without masking real test errors                | WP04 | No       | [D] |
+| T017 | Add dedicated `/products/[slug]` no-image regression coverage                                          | WP04 | No       | [D] |
 
 ## Work Packages
 
