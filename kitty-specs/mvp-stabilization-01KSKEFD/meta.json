@@ -19,6 +19,22 @@
   "mission_number": null,
   "mission_slug": "mvp-stabilization-01KSKEFD",
   "mission_type": "software-dev",
+  "merge_history": [
+    {
+      "merged_at": "2026-05-28T15:43:25.971930Z",
+      "merged_by": "codex",
+      "merged_commit": "244a111",
+      "merged_into": "main",
+      "merged_push": false,
+      "merged_strategy": "merge"
+    }
+  ],
+  "merged_at": "2026-05-28T15:43:25.971930Z",
+  "merged_by": "codex",
+  "merged_commit": "244a111",
+  "merged_into": "main",
+  "merged_push": false,
+  "merged_strategy": "merge",
   "slug": "mvp-stabilization-01KSKEFD",
   "target_branch": "main",
   "vcs": "git",

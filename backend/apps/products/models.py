@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/13 14:12:23 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/13 14:15:16 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/05/29 17:24:29 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ class Product(models.Model):
     )
 
     class Meta:
+        ordering = ['-created_at']
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(is_active=False) | models.Q(price__gt=0),

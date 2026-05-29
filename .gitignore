@@ -82,3 +82,8 @@ madbloco.txt
 .kittify/runtime/
 .kittify/workspaces/
 .worktrees/
+
+# Deliberate legacy archives should remain versionable, even when they contain
+# generated Spec Kitty folders that are ignored in the active project surface.
+!archive/
+!archive/**
