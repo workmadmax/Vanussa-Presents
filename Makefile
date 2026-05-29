@@ -33,6 +33,9 @@ backend-test: ## Run Django test suite
 frontend-test: ## Run frontend Jest tests
 	$(COMPOSE) exec frontend npm run test
 
+frontend-lint: ## Run frontend ESLint
+	$(COMPOSE) exec frontend npm run lint
+
 logs: ## Tail logs (optionally LOGS_SERVICE=backend)
 	$(COMPOSE) logs -f $(LOGS_SERVICE)
 
@@ -40,4 +43,4 @@ build: ## Rebuild images without using cache
 	$(COMPOSE) build --no-cache
 
 restart: ## Restart services
-	$(COMPOSE) restart
+
