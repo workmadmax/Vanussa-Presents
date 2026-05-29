@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 09:35:22 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/22 16:25:09 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/28 23:50:37 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Product } from "@/types";
 import { useAuth } from "@/context/authContext";
 import { useCart } from "@/context/cartContext";
@@ -37,10 +38,13 @@ export function ProductCard({ product, onLoginClick }: ProductCardProps) {
 		>
 			<Link href={`/products/${product.slug}`}>
 				<div className="relative w-full h-56 bg-gray-50 overflow-hidden">
-					<img
+					<Image
 						src={imageUrl}
 						alt={product.name}
-						className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+						fill
+						sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
+						className="object-cover group-hover:scale-105 transition duration-500"
+						unoptimized
 					/>
 					<Badge label="Novo" />
 				</div>

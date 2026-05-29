@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 17:18:33 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/25 23:33:53 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/28 23:23:35 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		const stored = localStorage.getItem(STORAGE_KEY);
 
 		if (stored) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setCartItems(JSON.parse(stored));
 		}
 	}, []);

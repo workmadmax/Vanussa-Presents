@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:33:00 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/14 21:54:31 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/28 23:22:49 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ export function useMenuControl() {
 	const toggleMenu = () => setOpen((prev) => !prev);
 
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setOpen(false);
 	}, [pathname]);
 

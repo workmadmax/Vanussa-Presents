@@ -1,18 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   authContext.tsx                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/15 22:11:12 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/26 11:49:08 by mdouglas         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { api } from "@/services/api";
 
 type AuthResponse = {
@@ -75,20 +65,13 @@ async function registerUser(
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [user, setUser] = useState<string | null>(null);
-	const [token, setToken] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		const storedToken = localStorage.getItem("token");
-		const storedUser = localStorage.getItem("user");
-
-		if (storedToken && storedUser) {
-			setToken(storedToken);
-			setUser(storedUser);
-		}
-		setIsLoading(false);
-	}, []);
+	const [token, setToken] = useState<string | null>(() =>
+		typeof window !== "undefined" ? localStorage.getItem("token") : null
+	);
+	const [user, setUser] = useState<string | null>(() =>
+		typeof window !== "undefined" ? localStorage.getItem("user") : null
+	);
+	const [isLoading] = useState(false);
 
 	async function loginUser(username: string, password: string) {
 		try {

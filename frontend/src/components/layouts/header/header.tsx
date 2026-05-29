@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 20:31:47 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/22 16:11:14 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/28 23:22:45 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ export function Header() {
 	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setMounted(true);
 	}, []);
 
