@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 21:43:32 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/05/28 23:22:19 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/25 18:18:29 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,36 +23,70 @@ type HomeClientProps = {
 	category: string | null;
 };
 
+type PaginationState = {
+	category: string | null;
+	page: number;
+};
+
 export function HomeClient({ category }: HomeClientProps) {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [loading, setLoading] = useState(true);
-	const [currentPage, setCurrentPage] = useState(1);
+	const [pagination, setPagination] = useState<PaginationState>({
+		category,
+		page: 1,
+	});
 	const [totalPages, setTotalPages] = useState(1);
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+	const currentPage = pagination.category === category ? pagination.page : 1;
 
 	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setLoading(true);
+		let isActive = true;
 		let url = `/products/?page=${currentPage}`;
+
 		if (category) {
 			url += `&category=${category}`;
 		}
 
+		queueMicrotask(() => {
+			if (isActive) {
+				setLoading(true);
+			}
+		});
+
 		api
 			.get(url)
 			.then((res) => {
+				if (!isActive) {
+					return;
+				}
+
 				const data = res.data;
+
 				setProducts(Array.isArray(data) ? data : (data.results ?? []));
 				setTotalPages(data.total_pages ?? 1);
 			})
-			.finally(() => setLoading(false));
+			.finally(() => {
+				if (isActive) {
+					setLoading(false);
+				}
+			});
+
+		return () => {
+			isActive = false;
+		};
 	}, [category, currentPage]);
 
-	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setCurrentPage(1);
-	}, [category]);
+	function updatePage(nextPage: (page: number) => number) {
+		setPagination((prev) => {
+			const page = prev.category === category ? prev.page : 1;
+
+			return {
+				category,
+				page: nextPage(page),
+			};
+		});
+	}
 
 	return (
 		<main className="p-6">
@@ -91,7 +125,7 @@ export function HomeClient({ category }: HomeClientProps) {
 			{totalPages > 1 && (
 				<div className="flex justify-center gap-2 mt-8">
 					<button
-						onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+						onClick={() => updatePage((page) => Math.max(page - 1, 1))}
 						disabled={currentPage === 1}
 						className="px-4 py-2 rounded-full border disabled:opacity-4
 						 hover:bg-pink-100 transition"
@@ -104,7 +138,7 @@ export function HomeClient({ category }: HomeClientProps) {
 					</span>
 
 					<button
-						onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+						onClick={() => updatePage((page) => Math.min(page + 1, totalPages))}
 						disabled={currentPage === totalPages}
 						className="px-4 py-2 rounded-full border disabled:opacity-40
 						hover:bg-pink-100 transition"

@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 11:23:11 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/05/28 23:22:45 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/26 11:53:55 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ type Profile = {
 	date_joined: string;
 };
 
-type EditableField =
+type ProfileFieldName =
 	| "first_name"
 	| "last_name"
 	| "phone"
@@ -43,7 +43,7 @@ type EditableField =
 	| "zipcode"
 	| "country";
 
-const EDITABLE_FIELDS: { label: string; name: EditableField }[] = [
+const PROFILE_FIELDS: { label: string; name: ProfileFieldName }[] = [
 	{ label: "Nome", name: "first_name" },
 	{ label: "Sobrenome", name: "last_name" },
 	{ label: "Telefone", name: "phone" },
@@ -69,6 +69,7 @@ export default function ProfilePage() {
 		if (authLoading) {
 			return;
 		}
+
 		if (!isAuthenticated) {
 			router.push("/");
 			return;
@@ -168,22 +169,20 @@ export default function ProfilePage() {
 				</div>
 
 				<div className="grid grid-cols-2 gap-4">
-					{EDITABLE_FIELDS.map(({ label, name }) => (
+					{PROFILE_FIELDS.map(({ label, name }) => (
 						<div key={name}>
 							<p className="text-xs text-gray-500 mb-1">{label}</p>
 							{editing ? (
 								<input
 									name={name}
-									value={form[name] ?? ""}
+									value={form[name] || ""}
 									onChange={handleChange}
 									className="w-full border rounded-lg px-3 py-2 text-sm
 									focus:outline-none focus:ring-2 focus:ring-pink-300"
 								/>
 							) : (
 								<p className="font-medium text-sm">
-									{profile[name] ? (
-										profile[name]
-									) : (
+									{profile[name] || (
 										<span className="text-gray-400">—</span>
 									)}
 								</p>

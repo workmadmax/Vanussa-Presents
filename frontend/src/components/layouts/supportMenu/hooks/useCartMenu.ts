@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:56:04 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/05/28 23:22:53 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:58:07 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,17 @@ export function useCartMenu() {
 	const toggleMenu = () => setIsOpen((prev) => !prev);
 
 	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		closeMenu();
+		let isActive = true;
+
+		queueMicrotask(() => {
+			if (isActive) {
+				closeMenu();
+			}
+		});
+
+		return () => {
+			isActive = false;
+		};
 	}, [pathName, closeMenu]);
 
 	useEffect(() => {

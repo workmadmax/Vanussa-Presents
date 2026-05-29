@@ -1,8 +1,18 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   authContext.tsx                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/15 22:11:12 by mdouglas          #+#    #+#             */
+/*   Updated: 2026/04/26 11:49:08 by mdouglas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "@/services/api";
 
 type AuthResponse = {
@@ -40,6 +50,30 @@ type AuthContextType = {
 	logout: () => void;
 };
 
+type StoredAuth = {
+	user: string | null;
+	token: string | null;
+};
+
+type AuthState = StoredAuth & {
+	isLoading: boolean;
+};
+
+function readStoredAuth(): StoredAuth {
+	if (typeof window === "undefined") {
+		return { user: null, token: null };
+	}
+
+	const token = window.localStorage.getItem("token");
+	const user = window.localStorage.getItem("user");
+
+	if (!token || !user) {
+		return { user: null, token: null };
+	}
+
+	return { user, token };
+}
+
 async function registerUser(
 	username: string,
 	email: string,
@@ -65,13 +99,26 @@ async function registerUser(
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [token, setToken] = useState<string | null>(() =>
-		typeof window !== "undefined" ? localStorage.getItem("token") : null
-	);
-	const [user, setUser] = useState<string | null>(() =>
-		typeof window !== "undefined" ? localStorage.getItem("user") : null
-	);
-	const [isLoading] = useState(false);
+	const [auth, setAuth] = useState<AuthState>({
+		user: null,
+		token: null,
+		isLoading: true,
+	});
+	const { user, token, isLoading } = auth;
+
+	useEffect(() => {
+		let isMounted = true;
+
+		queueMicrotask(() => {
+			if (isMounted) {
+				setAuth({ ...readStoredAuth(), isLoading: false });
+			}
+		});
+
+		return () => {
+			isMounted = false;
+		};
+	}, []);
 
 	async function loginUser(username: string, password: string) {
 		try {
@@ -82,8 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			const accessToken = response.data.access;
 			const refreshToken = response.data.refresh;
 
-			setToken(accessToken);
-			setUser(username);
+			setAuth({ user: username, token: accessToken, isLoading: false });
 
 			localStorage.setItem("token", accessToken);
 			localStorage.setItem("user", username);
@@ -102,8 +148,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	function logout() {
-		setUser(null);
-		setToken(null);
+		setAuth({ user: null, token: null, isLoading: false });
 		localStorage.removeItem("token");
 		localStorage.removeItem("user");
 		localStorage.removeItem("refresh_token");

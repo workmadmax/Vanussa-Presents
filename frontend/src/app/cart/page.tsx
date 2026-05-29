@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 17:40:14 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/05/28 23:22:18 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/26 12:40:03 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,56 @@ import { useAuth } from "@/context/authContext";
 import { CartItemCard } from "@/components/cards/cartItens";
 import { LoginModal } from "@/components/ui/modal/loginModal";
 import { RegisterModal } from "@/components/ui/modal/registerModal";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useState, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 import { api } from "@/services/api";
 
-type ApiError = {
+type CheckoutError = {
 	response?: {
-		data?: unknown;
+		data?: {
+			detail?: string;
+		} | string[];
 	};
 };
+
+function subscribeToHydration(onStoreChange: () => void) {
+	queueMicrotask(onStoreChange);
+	return () => {};
+}
+
+function getClientSnapshot() {
+	return true;
+}
+
+function getServerSnapshot() {
+	return false;
+}
+
+function getCheckoutErrorMessage(error: unknown) {
+	const data = (error as CheckoutError).response?.data;
+
+	if (Array.isArray(data)) {
+		return data[0] || "Erro ao criar pedido. Tente novamente.";
+	}
+
+	return data?.detail || "Erro ao criar pedido. Tente novamente.";
+}
 
 export default function CartPage() {
 	const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
 	const { isAuthenticated } = useAuth();
 	const router = useRouter();
 
-	const [mounted, setMounted] = useState(false);
+	const mounted = useSyncExternalStore(
+		subscribeToHydration,
+		getClientSnapshot,
+		getServerSnapshot
+	);
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-
-	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setMounted(true);
-	}, []);
 
 	if (!mounted) {
 		return null;
@@ -66,16 +90,7 @@ export default function CartPage() {
 			clearCart();
 			router.push(`/checkout/${res.data.id}`);
 		} catch (err: unknown) {
-			const data = (err as ApiError).response?.data;
-			const msg =
-				(typeof (data as { detail?: string } | undefined)?.detail ===
-					"string" &&
-					(data as { detail?: string }).detail) ||
-				(Array.isArray(data) && typeof data[0] === "string"
-					? data[0]
-					: undefined) ||
-				"Erro ao criar pedido. Tente novamente.";
-			setError(msg);
+			setError(getCheckoutErrorMessage(err));
 		} finally {
 			setLoading(false);
 		}

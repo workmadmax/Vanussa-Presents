@@ -12,7 +12,32 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { CartMenuLogged } from "@/components/layouts/supportMenu/cart/cartMenuLogged";
+
+jest.mock("next/link", () => {
+	type MockLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+		children: ReactNode;
+		href: string;
+	};
+
+	function MockLink({ children, href, onClick, ...props }: MockLinkProps) {
+		return (
+			<a
+				{...props}
+				href={href}
+				onClick={(event) => {
+					event.preventDefault();
+					onClick?.(event);
+				}}
+			>
+				{children}
+			</a>
+		);
+	}
+
+	return MockLink;
+});
 
 /* ================= HELPERS ================= */
 

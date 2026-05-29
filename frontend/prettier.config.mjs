@@ -1,5 +1,4 @@
 
-
 const prettierConfig = {
 	useTabs: true,
 	tabWidth: 2,

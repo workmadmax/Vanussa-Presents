@@ -6,14 +6,14 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 15:48:07 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/05/28 23:22:45 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/10 17:39:22 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 "use client";
 
-import { useEffect, useState, use } from "react";
 import Image from "next/image";
+import { useEffect, useState, use } from "react";
 import { api } from "@/services/api";
 import { useCart } from "@/context/cartContext";
 import { Product } from "@/types";
@@ -44,20 +44,27 @@ export default function ProductPage({
 		return <p>Carregando...</p>;
 	}
 
-	const imageUrl = product.images?.[0]?.image ?? "/placeholder.png";
+	const productImageUrl = product.images?.[0]?.image;
 
 	return (
 		<main className="p-6">
 			<div className="grid md:grid-cols-2 gap-8">
 				{/* Imagem */}
-				<Image
-					src={imageUrl}
-					alt={product.name}
-					width={640}
-					height={640}
-					className="w-full rounded-xl object-cover"
-					unoptimized
-				/>
+				{productImageUrl ? (
+					<Image
+						src={productImageUrl}
+						alt={product.name}
+						width={800}
+						height={800}
+						className="w-full rounded-xl"
+					/>
+				) : (
+					<div
+						role="img"
+						aria-label={`Imagem indisponível para ${product.name}`}
+						className="w-full aspect-square rounded-xl bg-gray-100"
+					/>
+				)}
 
 				{/* Info */}
 				<div>

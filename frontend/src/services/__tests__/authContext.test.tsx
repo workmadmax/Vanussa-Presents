@@ -25,10 +25,14 @@ const mockApiPost = api.post as jest.Mock;
 
 // 1. Criamos um componente de teste para "espiar" o que o AuthContext está fazendo
 const TestComponent = () => {
-	const { user, isAuthenticated, loginUser, registerUser, logout } = useAuth();
+	const { user, isAuthenticated, isLoading, loginUser, registerUser, logout } =
+		useAuth();
 
 	return (
 		<div>
+			<span data-testid="auth-loading">
+				{isLoading ? "Carregando" : "Pronto"}
+			</span>
 			<span data-testid="auth-status">
 				{isAuthenticated ? "Logado" : "Deslogado"}
 			</span>
@@ -59,15 +63,39 @@ describe("AuthContext", () => {
 		jest.clearAllMocks();
 	});
 
-	it("deve iniciar com o estado deslogado por padrão", () => {
+	it("deve iniciar carregando e concluir a hidratação deslogado", async () => {
 		render(
 			<AuthProvider>
 				<TestComponent />
 			</AuthProvider>
 		);
 
+		expect(screen.getByTestId("auth-loading")).toHaveTextContent("Carregando");
+
+		await waitFor(() => {
+			expect(screen.getByTestId("auth-loading")).toHaveTextContent("Pronto");
+		});
 		expect(screen.getByTestId("auth-status")).toHaveTextContent("Deslogado");
 		expect(screen.getByTestId("user-name")).toHaveTextContent("Visitante");
+	});
+
+	it("deve restaurar usuário e token salvos no localStorage após hidratação", async () => {
+		localStorage.setItem("token", "token-existente");
+		localStorage.setItem("user", "mdouglas");
+
+		render(
+			<AuthProvider>
+				<TestComponent />
+			</AuthProvider>
+		);
+
+		expect(screen.getByTestId("auth-loading")).toHaveTextContent("Carregando");
+
+		await waitFor(() => {
+			expect(screen.getByTestId("auth-loading")).toHaveTextContent("Pronto");
+		});
+		expect(screen.getByTestId("auth-status")).toHaveTextContent("Logado");
+		expect(screen.getByTestId("user-name")).toHaveTextContent("mdouglas");
 	});
 
 	it("deve fazer login com sucesso e salvar dados no localStorage", async () => {

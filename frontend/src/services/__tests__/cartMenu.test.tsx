@@ -10,13 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CartMenu } from "@/components/layouts/supportMenu/cart/cartMenu";
 import { useAuth } from "@/context/authContext";
 import { useCart } from "@/context/cartContext";
 import { api } from "@/services/api";
 import { useRouter } from "next/navigation";
+
+let mockPathname = "/";
 
 jest.mock("@/context/authContext");
 jest.mock("@/context/cartContext");
@@ -26,7 +28,7 @@ jest.mock("@/services/api", () => ({
 	},
 }));
 jest.mock("next/navigation", () => ({
-	usePathname: () => "/",
+	usePathname: () => mockPathname,
 	useRouter: jest.fn(),
 }));
 
@@ -48,21 +50,26 @@ const mockItem = {
 	quantity: 2,
 };
 
-function setup(isAuthenticated = true) {
-	(useAuth as jest.Mock).mockReturnValue({ isAuthenticated });
-	(useCart as jest.Mock).mockReturnValue({ cartItems: [mockItem] });
-	(useRouter as jest.Mock).mockReturnValue({ push: mockPush });
-	mockApiPost.mockResolvedValue({ data: { id: 123 } });
-
-	render(
+function renderCartMenu() {
+	return (
 		<CartMenu onLoginClick={mockOnLoginClick}>
 			<span>Carrinho</span>
 		</CartMenu>
 	);
 }
 
+function setup(isAuthenticated = true) {
+	(useAuth as jest.Mock).mockReturnValue({ isAuthenticated });
+	(useCart as jest.Mock).mockReturnValue({ cartItems: [mockItem] });
+	(useRouter as jest.Mock).mockReturnValue({ push: mockPush });
+	mockApiPost.mockResolvedValue({ data: { id: 123 } });
+
+	return render(renderCartMenu());
+}
+
 beforeEach(() => {
 	jest.clearAllMocks();
+	mockPathname = "/";
 });
 
 describe("CartMenu", () => {
@@ -92,5 +99,60 @@ describe("CartMenu", () => {
 
 		expect(mockOnLoginClick).toHaveBeenCalledTimes(1);
 		expect(mockApiPost).not.toHaveBeenCalled();
+	});
+
+	it("closes the menu when Escape is pressed", async () => {
+		const user = userEvent.setup();
+		setup(true);
+
+		await user.click(screen.getByRole("button", { name: /carrinho/i }));
+		expect(
+			screen.getByRole("button", { name: /finalizar compra/i })
+		).toBeInTheDocument();
+
+		fireEvent.keyDown(window, { key: "Escape" });
+
+		await waitFor(() => {
+			expect(
+				screen.queryByRole("button", { name: /finalizar compra/i })
+			).not.toBeInTheDocument();
+		});
+	});
+
+	it("closes the menu when clicking outside", async () => {
+		const user = userEvent.setup();
+		setup(true);
+
+		await user.click(screen.getByRole("button", { name: /carrinho/i }));
+		expect(
+			screen.getByRole("button", { name: /finalizar compra/i })
+		).toBeInTheDocument();
+
+		fireEvent.mouseDown(document.body);
+
+		await waitFor(() => {
+			expect(
+				screen.queryByRole("button", { name: /finalizar compra/i })
+			).not.toBeInTheDocument();
+		});
+	});
+
+	it("closes the menu when the route changes", async () => {
+		const user = userEvent.setup();
+		const { rerender } = setup(true);
+
+		await user.click(screen.getByRole("button", { name: /carrinho/i }));
+		expect(
+			screen.getByRole("button", { name: /finalizar compra/i })
+		).toBeInTheDocument();
+
+		mockPathname = "/cart";
+		rerender(renderCartMenu());
+
+		await waitFor(() => {
+			expect(
+				screen.queryByRole("button", { name: /finalizar compra/i })
+			).not.toBeInTheDocument();
+		});
 	});
 });

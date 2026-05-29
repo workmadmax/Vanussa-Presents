@@ -6,32 +6,55 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:33:00 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/05/28 23:22:49 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/04/14 21:54:31 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-export function useMenuControl() {
-	const [open, setOpen] = useState(false);
-	const pathname = usePathname();
-	const toggleMenu = () => setOpen((prev) => !prev);
+type MenuState = {
+	pathname: string;
+	isOpen: boolean;
+};
 
-	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setOpen(false);
+export function useMenuControl() {
+	const pathname = usePathname();
+	const [menuState, setMenuState] = useState<MenuState>({
+		pathname,
+		isOpen: false,
+	});
+	const open = menuState.pathname === pathname ? menuState.isOpen : false;
+
+	const closeMenu = useCallback(() => {
+		setMenuState((prev) => {
+			const isCurrentPath = prev.pathname === pathname;
+
+			if (isCurrentPath && !prev.isOpen) {
+				return prev;
+			}
+
+			return { pathname, isOpen: false };
+		});
 	}, [pathname]);
+
+	const toggleMenu = () => {
+		setMenuState((prev) => {
+			const currentOpen = prev.pathname === pathname ? prev.isOpen : false;
+
+			return { pathname, isOpen: !currentOpen };
+		});
+	};
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
-				setOpen(false);
+				closeMenu();
 			}
 		};
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, []);
+	}, [closeMenu]);
 
 	return { isOpen: open, toggleMenu };
 }
