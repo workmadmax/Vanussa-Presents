@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/24 20:58:44 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/25 13:12:07 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/05/29 20:06:34 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,18 @@ class OrderItem(models.Model):
     )
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(quantity__gte=1),
+                name="orderitem_quantity_gte_1",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(price__gt=0),
+                name="orderitem_price_gt_0",
+            ),
+        ]
 
     def subtotal(self):
         return self.quantity * self.price

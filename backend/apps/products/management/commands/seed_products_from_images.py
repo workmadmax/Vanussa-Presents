@@ -252,7 +252,7 @@ class Command(BaseCommand):
                 with open(dest_path, "rb") as f:
                     ProductImage.objects.create(
                         product=product,
-                        image=File(f, name=f"product_images/{dest_filename}"),
+                        image=File(f, name=dest_filename),
                         alt_text=product_name,
                     )
 
