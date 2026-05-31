@@ -45,9 +45,9 @@ Dependencies: WP01
 Requirement refs: FR-004, FR-005, FR-006, FR-007, FR-008
 **Independent test:** `docker compose exec backend python manage.py test apps.products`
 
-- [x] Add tests for the related endpoint behavior.
-- [x] Add a public `GET /api/products/<slug>/related/` route.
-- [x] Implement related queryset selection with same-category priority,
+- [ ] Add tests for the related endpoint behavior.
+- [ ] Add a public `GET /api/products/<slug>/related/` route.
+- [ ] Implement related queryset selection with same-category priority,
   active-only filtering, fallback fill, exclusion, and limit of 4.
 
 ## WP03 - Frontend Gallery And Related Grid
@@ -58,16 +58,16 @@ Dependencies: WP01, WP02
 Requirement refs: FR-001, FR-002, FR-003, FR-009, FR-010
 **Independent test:** `docker compose exec frontend npm test -- --runInBand`
 
-- [x] Align frontend product image types with API fields.
-- [x] Add selected-image gallery behavior to `/products/[slug]`.
-- [x] Fetch and render related products in a responsive grid.
-- [x] Keep product detail rendering when related loading fails.
-- [x] Add frontend regression tests for gallery and related behavior.
+- [ ] Align frontend product image types with API fields.
+- [ ] Add selected-image gallery behavior to `/products/[slug]`.
+- [ ] Fetch and render related products in a responsive grid.
+- [ ] Keep product detail rendering when related loading fails.
+- [ ] Add frontend regression tests for gallery and related behavior.
 
 ## Validation
 
-- [x] `docker compose exec backend python manage.py check`
-- [x] `docker compose exec backend python manage.py test`
-- [x] `docker compose exec frontend npm test -- --runInBand`
-- [x] `docker compose exec frontend npm run lint`
-- [x] `docker compose exec frontend npm run build`
+- [ ] `docker compose exec backend python manage.py check`
+- [ ] `docker compose exec backend python manage.py test`
+- [ ] `docker compose exec frontend npm test -- --runInBand`
+- [ ] `docker compose exec frontend npm run lint`
+- [ ] `docker compose exec frontend npm run build`
