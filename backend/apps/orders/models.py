@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/24 20:58:44 by mdouglas          #+#    #+#              #
-#    Updated: 2026/05/31 17:21:20 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/05/31 18:48:30 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,12 @@ from django.contrib.auth import get_user_model
 class Order(models.Model):
 
     class Status(models.TextChoices):
-        PENDING = "PENDING", "Pending"
-        COMPLETED = "COMPLETED", "Completed"
-        CANCELED = "CANCELED", "Canceled"
-        PAID = "PAID", "Paid"
-        SHIPPED = "SHIPPED", "Shipped"
-        DELIVERED = "DELIVERED", "Delivered"
+        PENDING    = "PENDING",    "Pendente"
+        PROCESSING = "PROCESSING", "Processando"
+        PAID       = "PAID",       "Pago"
+        SHIPPED    = "SHIPPED",    "Enviado"
+        DELIVERED  = "DELIVERED",  "Entregue"
+        CANCELLED  = "CANCELLED",  "Cancelado"
 
     user = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name="orders"
@@ -32,6 +32,7 @@ class Order(models.Model):
         max_length=20, choices=Status.choices, default=Status.PENDING
     )
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    payment_method_id = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
