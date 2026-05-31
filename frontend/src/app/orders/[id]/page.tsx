@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 17:33:00 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/05/31 17:33:54 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/31 19:24:19 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,18 @@ export default function OrderDetailPage() {
 	const [notFound, setNotFound] = useState(false);
 
 	useEffect(() => {
-		if (authLoading) return;
+		if (authLoading) {return;}
 		if (!isAuthenticated) {
 			router.push("/");
 			return;
 		}
-		if (!id) return;
+		if (!id) {return;}
 
 		api
 			.get(`/orders/${id}/`)
 			.then((res) => setOrder(res.data))
 			.catch((err) => {
-				if (err.response?.status === 404) setNotFound(true);
+				if (err.response?.status === 404) {setNotFound(true);}
 			})
 			.finally(() => setLoading(false));
 	}, [isAuthenticated, authLoading, id, router]);

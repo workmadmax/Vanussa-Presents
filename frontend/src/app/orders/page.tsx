@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 11:24:08 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/05/31 19:15:31 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/31 19:31:39 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ type Order = {
 };
 
 const STATUS_LABEL: Record<string, { label: string; color: string }> = {
-	PENDING: 		{ label: "Pendente", color: "bg-yellow-100 text-yellow-700" },
-	PAID: 			{ label: "Pago", color: "bg-blue-100 text-blue-700" },
-	SHIPPED: 		{ label: "Enviado", color: "bg-purple-100 text-purple-700" },
-	DELIVERED: 	{ label: "Entregue", color: "bg-green-100 text-green-700" },
-	CANCELLED: 	{ label: "Cancelado", color: "bg-red-100 text-red-700" },
+	PENDING: { label: "Pendente", color: "bg-yellow-100 text-yellow-700" },
+	PAID: { label: "Pago", color: "bg-blue-100 text-blue-700" },
+	SHIPPED: { label: "Enviado", color: "bg-purple-100 text-purple-700" },
+	DELIVERED: { label: "Entregue", color: "bg-green-100 text-green-700" },
+	CANCELLED: { label: "Cancelado", color: "bg-red-100 text-red-700" },
 	PROCESSING: { label: "Processando", color: "bg-blue-100 text-blue-700" },
 };
 
