@@ -43,4 +43,4 @@ build: ## Rebuild images without using cache
 	$(COMPOSE) build --no-cache
 
 restart: ## Restart services
-
+	$(COMPOSE) restart
