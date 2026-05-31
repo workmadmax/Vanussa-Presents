@@ -10,9 +10,9 @@
 
 | ID   | Description                                                     | WP   | Parallel |
 | ---- | --------------------------------------------------------------- | ---- | -------- |
-| T001 | Fill mission specification, plan and supporting artifacts        | WP01 | No       |
-| T002 | Add API contract, data model and quickstart documents            | WP01 | No       |
-| T003 | Add work package prompts for implementation and review           | WP01 | No       |
+| T001 | Fill mission specification, plan and supporting artifacts        | WP01 | No       | [D] |
+| T002 | Add API contract, data model and quickstart documents            | WP01 | No       | [D] |
+| T003 | Add work package prompts for implementation and review           | WP01 | No       | [D] |
 | T004 | Add related-products endpoint tests                              | WP02 | No       |
 | T005 | Add public related-products route and view                       | WP02 | No       |
 | T006 | Implement same-category priority, fallback fill and active rules | WP02 | No       |
