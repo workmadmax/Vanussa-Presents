@@ -13,9 +13,9 @@
 | T001 | Fill mission specification, plan and supporting artifacts        | WP01 | No       | [D] |
 | T002 | Add API contract, data model and quickstart documents            | WP01 | No       | [D] |
 | T003 | Add work package prompts for implementation and review           | WP01 | No       | [D] |
-| T004 | Add related-products endpoint tests                              | WP02 | No       |
-| T005 | Add public related-products route and view                       | WP02 | No       |
-| T006 | Implement same-category priority, fallback fill and active rules | WP02 | No       |
+| T004 | Add related-products endpoint tests                              | WP02 | No       | [D] |
+| T005 | Add public related-products route and view                       | WP02 | No       | [D] |
+| T006 | Implement same-category priority, fallback fill and active rules | WP02 | No       | [D] |
 | T007 | Align frontend product image types with API fields               | WP03 | No       |
 | T008 | Add product gallery and thumbnail switching                      | WP03 | No       |
 | T009 | Fetch and render related products in a responsive grid           | WP03 | No       |
@@ -45,9 +45,9 @@ Dependencies: WP01
 Requirement refs: FR-004, FR-005, FR-006, FR-007, FR-008
 **Independent test:** `docker compose exec backend python manage.py test apps.products`
 
-- [ ] Add tests for the related endpoint behavior.
-- [ ] Add a public `GET /api/products/<slug>/related/` route.
-- [ ] Implement related queryset selection with same-category priority,
+- [x] Add tests for the related endpoint behavior.
+- [x] Add a public `GET /api/products/<slug>/related/` route.
+- [x] Implement related queryset selection with same-category priority,
   active-only filtering, fallback fill, exclusion, and limit of 4.
 
 ## WP03 - Frontend Gallery And Related Grid
