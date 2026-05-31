@@ -1,4 +1,16 @@
 {
+  "acceptance_history": [
+    {
+      "acceptance_mode": "pr",
+      "accepted_at": "2026-05-31T15:48:48.525909+00:00",
+      "accepted_by": "mdouglas",
+      "accepted_from_commit": "3d8a6de498ff4a6bc075b544bad29f47a7d12cac"
+    }
+  ],
+  "acceptance_mode": "pr",
+  "accepted_at": "2026-05-31T15:48:48.525909+00:00",
+  "accepted_by": "mdouglas",
+  "accepted_from_commit": "3d8a6de498ff4a6bc075b544bad29f47a7d12cac",
   "created_at": "2026-05-30T00:24:58.390194+00:00",
   "friendly_name": "product page gallery related items",
   "mission_id": "01KSV4A2SE8YCYAYFJW9J0Y8A8",
