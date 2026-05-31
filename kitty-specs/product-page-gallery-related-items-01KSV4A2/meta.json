@@ -6,5 +6,7 @@
   "mission_slug": "product-page-gallery-related-items-01KSV4A2",
   "mission_type": "software-dev",
   "slug": "product-page-gallery-related-items-01KSV4A2",
-  "target_branch": "main"
+  "target_branch": "main",
+  "vcs": "git",
+  "vcs_locked_at": "2026-05-31T13:20:05.872582+00:00"
 }
