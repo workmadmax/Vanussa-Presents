@@ -1,0 +1,49 @@
+{
+  "mission_slug": "product-page-gallery-related-items-01KSV4A2",
+  "mission_number": null,
+  "mission_type": "software-dev",
+  "overall_verdict": "pass",
+  "criteria": [
+    {
+      "criterion_id": "AC-WP01",
+      "description": "WP01 mission artifacts, API contract, data model, quickstart, task outline and work package prompts are complete and reviewed.",
+      "proof_type": "code_review",
+      "evidence": "WP01 approved after tasks.md was normalized and finalize-tasks validation passed.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-05-31T15:47:40Z",
+      "notes": "Recorded in WP01 activity log, status events and acceptance artifacts."
+    },
+    {
+      "criterion_id": "AC-WP02",
+      "description": "WP02 backend related-products endpoint is implemented with active-only filtering, current-product exclusion, same-category priority, fallback fill, limit of 4 and 404 behavior.",
+      "proof_type": "automated_test",
+      "evidence": "docker compose exec backend python manage.py check and docker compose exec backend python manage.py test apps.products passed.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-05-31T15:47:40Z",
+      "notes": "WP02 was adopted from the existing implementation and approved after backend validation."
+    },
+    {
+      "criterion_id": "AC-WP03",
+      "description": "WP03 frontend product gallery, thumbnail switching, related-products grid and non-blocking related-load failure behavior are implemented and reviewed.",
+      "proof_type": "automated_test",
+      "evidence": "docker compose exec frontend npm test -- --runInBand, npm run lint and npm run build passed.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-05-31T15:47:40Z",
+      "notes": "WP03 was adopted from the existing implementation and approved after frontend validation."
+    },
+    {
+      "criterion_id": "AC-FINAL-GATES",
+      "description": "Mission-level backend and frontend validation gates passed before acceptance.",
+      "proof_type": "automated_test",
+      "evidence": "docker compose exec backend python manage.py test passed with 97 tests; backend check, frontend tests, lint and build were green.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-05-31T15:47:40Z",
+      "notes": "Backend test output included non-blocking JWT key length warnings only."
+    }
+  ],
+  "negative_invariants": []
+}
