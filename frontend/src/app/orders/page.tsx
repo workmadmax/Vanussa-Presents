@@ -6,7 +6,7 @@
 /*   By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 11:24:08 by mdouglas          #+#    #+#             */
-/*   Updated: 2026/04/26 11:36:45 by mdouglas         ###   ########.fr       */
+/*   Updated: 2026/05/31 17:33:26 by mdouglas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ export default function OrdersPage() {
 										))}
 										<div className="px-4 py-3 flex justify-end">
 											<Link
-												href={`/checkout/${order.id}`}
+												href={`/orders/${order.id}`}
 												className="text-sm text-pink-500 hover:underline"
 											>
 												Ver detalhes →
