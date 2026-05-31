@@ -66,8 +66,8 @@ Requirement refs: FR-001, FR-002, FR-003, FR-009, FR-010
 
 ## Validation
 
-- [ ] `docker compose exec backend python manage.py check`
-- [ ] `docker compose exec backend python manage.py test`
-- [ ] `docker compose exec frontend npm test -- --runInBand`
-- [ ] `docker compose exec frontend npm run lint`
-- [ ] `docker compose exec frontend npm run build`
+- [x] `docker compose exec backend python manage.py check`
+- [x] `docker compose exec backend python manage.py test`
+- [x] `docker compose exec frontend npm test -- --runInBand`
+- [x] `docker compose exec frontend npm run lint`
+- [x] `docker compose exec frontend npm run build`
