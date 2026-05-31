@@ -87,3 +87,5 @@ madbloco.txt
 # generated Spec Kitty folders that are ignored in the active project surface.
 !archive/
 !archive/**
+
+parquinho/
