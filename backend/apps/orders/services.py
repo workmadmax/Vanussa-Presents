@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/24 21:47:20 by mdouglas          #+#    #+#              #
-#    Updated: 2026/04/25 14:45:44 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/05/31 17:37:24 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,24 +28,58 @@ def _parse_quantity(item):
     return quantity
 
 
-def OrderService(user, items):
-    if not items:
-        raise ValidationError("O pedido deve conter pelo menos um item.")
-    
-    with transaction.atomic():
-        order = Order.objects.create(user=user, total_price=Decimal("0.00"))
-        total_price = Decimal("0.00")
-        
-        for item in items:
+class OrderService:
+
+    def __init__(self, user, items):
+        self.user = user
+        self.items = items
+
+    def create_order(self):
+        if not self.items:
+            raise ValidationError("O pedido deve conter pelo menos um item.")
+
+        with transaction.atomic():
+             # valida tudo antes de abrir a transação
+            validated = self._validate_items()
+            order = Order.objects.create(
+                user=self.user,
+                total_price=Decimal("0.00"),
+            )
+            total_price = Decimal("0.00")
+
+            for item in validated:
+                product = item["product"]
+                quantity = item["quantity"]
+
+                OrderItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=quantity,
+                    price=product.price,
+                )
+
+                product.stock -= quantity
+                product.save(update_fields=["stock"])
+                total_price += product.price * quantity
+
+            order.total_price = total_price
+            order.save(update_fields=["total_price"])
+
+        return order
+
+    def _validate_items(self):
+        validated = []
+
+        for item in self.items:
             try:
                 product_id = item.get("product_id")
             except AttributeError:
                 raise ValidationError("Cada item deve conter os dados do produto.")
 
-            quantity = _parse_quantity(item)
-
             if not product_id:
                 raise ValidationError("Cada item deve conter um id do produto.")
+
+            quantity = _parse_quantity(item)
 
             try:
                 product = Product.objects.select_for_update().get(
@@ -60,17 +94,6 @@ def OrderService(user, items):
                     f"Produto '{product.name}' não tem estoque suficiente."
                 )
 
-            OrderItem.objects.create(
-                order = order,
-                product = product,
-                quantity = quantity,
-                price = product.price
-            )
+            validated.append({"product": product, "quantity": quantity})
 
-            product.stock -= quantity
-            product.save(update_fields=["stock"])
-            total_price += (product.price * quantity)
-
-        order.total_price = total_price
-        order.save(update_fields=["total_price"])
-    return (order)
+        return validated
