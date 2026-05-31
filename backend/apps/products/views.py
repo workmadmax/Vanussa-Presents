@@ -10,6 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from .models import Product
 from .serializers import ProductSerializer
@@ -41,3 +42,40 @@ class ProductDetailView(generics.RetrieveAPIView):
     )
     serializer_class = ProductSerializer
     lookup_field = "slug"
+
+
+class ProductRelatedView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    pagination_class = None
+
+    def get_base_queryset(self):
+        return (
+            Product.objects.filter(is_active=True)
+            .select_related("category")
+            .prefetch_related("images")
+            .order_by("-created_at", "-id")
+        )
+
+    def get_queryset(self):
+        base_queryset = self.get_base_queryset()
+        current_product = get_object_or_404(
+            base_queryset,
+            slug=self.kwargs["slug"],
+        )
+
+        related_products = list(
+            base_queryset.filter(category=current_product.category)
+            .exclude(pk=current_product.pk)[:4]
+        )
+
+        remaining_slots = 4 - len(related_products)
+        if remaining_slots <= 0:
+            return related_products
+
+        excluded_ids = [current_product.pk]
+        excluded_ids.extend(product.pk for product in related_products)
+        fallback_products = list(
+            base_queryset.exclude(pk__in=excluded_ids)[:remaining_slots]
+        )
+
+        return related_products + fallback_products

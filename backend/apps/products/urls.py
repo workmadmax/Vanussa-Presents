@@ -11,9 +11,10 @@
 # **************************************************************************** #
 
 from django.urls import path
-from .views import ProductListView, ProductDetailView
+from .views import ProductListView, ProductDetailView, ProductRelatedView
 
 urlpatterns = [
     path('', ProductListView.as_view()),
+    path('<slug:slug>/related/', ProductRelatedView.as_view()),
     path('<slug:slug>/', ProductDetailView.as_view()),
 ]

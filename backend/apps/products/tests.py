@@ -271,3 +271,95 @@ class ProductDetailAPITest(TestCase):
     def test_detail_images_field_is_list(self):
         response = self.client.get(self.url)
         self.assertIsInstance(response.data["images"], list)
+
+
+# ---------------------------------------------------------------------------- #
+#   GET /api/products/<slug>/related/                                           #
+# ---------------------------------------------------------------------------- #
+
+
+class ProductRelatedAPITest(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.category = make_category()
+        self.other_category = make_category(name="Other Category")
+        self.product = make_product(self.category)
+        self.url = "/api/products/test-product/related/"
+
+    def test_related_returns_empty_list_without_candidates(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    def test_related_prioritizes_same_category_and_excludes_current_product(self):
+        same_a = make_product(self.category, name="Same A")
+        same_b = make_product(self.category, name="Same B")
+        other = make_product(self.other_category, name="Other A")
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+        self.assertNotIn(self.product.id, [item["id"] for item in response.data])
+        self.assertEqual(
+            [item["category"] for item in response.data[:2]],
+            [self.category.id, self.category.id],
+        )
+        self.assertEqual(response.data[2]["id"], other.id)
+        self.assertEqual(
+            {item["id"] for item in response.data[:2]},
+            {same_a.id, same_b.id},
+        )
+
+    def test_related_uses_active_products_only(self):
+        active = make_product(self.category, name="Active Related")
+        inactive = make_product(
+            self.category,
+            name="Inactive Related",
+            is_active=False,
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual([item["id"] for item in response.data], [active.id])
+        self.assertNotIn(inactive.id, [item["id"] for item in response.data])
+
+    def test_related_fills_missing_slots_with_other_categories(self):
+        same = make_product(self.category, name="Same Related")
+        other_a = make_product(self.other_category, name="Other A")
+        other_b = make_product(self.other_category, name="Other B")
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)
+        self.assertEqual(response.data[0]["id"], same.id)
+        self.assertEqual(
+            {item["id"] for item in response.data[1:]},
+            {other_a.id, other_b.id},
+        )
+
+    def test_related_limits_response_to_four_products(self):
+        for index in range(5):
+            make_product(self.category, name=f"Same Related {index}")
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 4)
+
+    def test_related_returns_404_for_missing_product(self):
+        response = self.client.get("/api/products/missing/related/")
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_related_returns_404_for_inactive_current_product(self):
+        self.product.is_active = False
+        self.product.save()
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

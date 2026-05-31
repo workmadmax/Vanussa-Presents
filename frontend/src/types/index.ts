@@ -16,7 +16,9 @@
  * Representa uma imagem de produto vinda da API
  */
 export interface ProductImage {
+	id?: number;
 	image: string;
+	alt_text?: string;
 }
 
 /**
