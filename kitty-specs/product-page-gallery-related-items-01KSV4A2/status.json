@@ -1,7 +1,7 @@
 {
-  "event_count": 8,
-  "last_event_id": "01KSZ24TJMMBZ0ENSMPPVNB6FA",
-  "materialized_at": "2026-05-31T13:04:05.204504+00:00",
+  "event_count": 10,
+  "last_event_id": "01KSZ2V8FT9MDBX7N18RMZSKWQ",
+  "materialized_at": "2026-05-31T13:16:20.346106+00:00",
   "mission_number": "",
   "mission_slug": "product-page-gallery-related-items-01KSV4A2",
   "mission_type": "software-dev",
@@ -12,17 +12,17 @@
     "claimed": 0,
     "done": 0,
     "for_review": 0,
-    "in_progress": 0,
+    "in_progress": 1,
     "in_review": 0,
-    "planned": 3
+    "planned": 2
   },
   "work_packages": {
     "WP01": {
-      "actor": "codex:gpt-5:reviewer:reviewer",
+      "actor": "codex:gpt-5:implementer:implementer",
       "force_count": 1,
-      "lane": "planned",
-      "last_event_id": "01KSZ24TJMMBZ0ENSMPPVNB6FA",
-      "last_transition_at": "2026-05-31T13:04:05.204504+00:00"
+      "lane": "in_progress",
+      "last_event_id": "01KSZ2V8FT9MDBX7N18RMZSKWQ",
+      "last_transition_at": "2026-05-31T13:16:20.346106+00:00"
     },
     "WP02": {
       "actor": "finalize-tasks",
