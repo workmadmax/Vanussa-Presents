@@ -16,10 +16,10 @@
 | T004 | Add related-products endpoint tests                              | WP02 | No       | [D] |
 | T005 | Add public related-products route and view                       | WP02 | No       | [D] |
 | T006 | Implement same-category priority, fallback fill and active rules | WP02 | No       | [D] |
-| T007 | Align frontend product image types with API fields               | WP03 | No       |
-| T008 | Add product gallery and thumbnail switching                      | WP03 | No       |
-| T009 | Fetch and render related products in a responsive grid           | WP03 | No       |
-| T010 | Add frontend regression tests and run validation gates           | WP03 | No       |
+| T007 | Align frontend product image types with API fields               | WP03 | No       | [D] |
+| T008 | Add product gallery and thumbnail switching                      | WP03 | No       | [D] |
+| T009 | Fetch and render related products in a responsive grid           | WP03 | No       | [D] |
+| T010 | Add frontend regression tests and run validation gates           | WP03 | No       | [D] |
 
 ## Work Packages
 
@@ -58,11 +58,11 @@ Dependencies: WP01, WP02
 Requirement refs: FR-001, FR-002, FR-003, FR-009, FR-010
 **Independent test:** `docker compose exec frontend npm test -- --runInBand`
 
-- [ ] Align frontend product image types with API fields.
-- [ ] Add selected-image gallery behavior to `/products/[slug]`.
-- [ ] Fetch and render related products in a responsive grid.
-- [ ] Keep product detail rendering when related loading fails.
-- [ ] Add frontend regression tests for gallery and related behavior.
+- [x] Align frontend product image types with API fields.
+- [x] Add selected-image gallery behavior to `/products/[slug]`.
+- [x] Fetch and render related products in a responsive grid.
+- [x] Keep product detail rendering when related loading fails.
+- [x] Add frontend regression tests for gallery and related behavior.
 
 ## Validation
 
