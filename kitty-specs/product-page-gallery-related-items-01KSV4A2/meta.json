@@ -1,6 +1,8 @@
 {
+  "accept_commit": "5a500fd3634c15dcdd355246c859403bf469537e",
   "acceptance_history": [
     {
+      "accept_commit": "5a500fd3634c15dcdd355246c859403bf469537e",
       "acceptance_mode": "pr",
       "accepted_at": "2026-05-31T15:48:48.525909+00:00",
       "accepted_by": "mdouglas",
