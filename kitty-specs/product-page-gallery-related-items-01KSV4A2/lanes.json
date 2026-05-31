@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "mission_slug": "product-page-gallery-related-items-01KSV4A2",
+  "mission_id": "01KSV4A2SE8YCYAYFJW9J0Y8A8",
+  "mission_branch": "kitty/mission-product-page-gallery-related-items-01KSV4A2",
+  "target_branch": "kitty/mission-product-page-gallery-related-items-01KSV4A2",
+  "lanes": [
+    {
+      "lane_id": "lane-a",
+      "wp_ids": [
+        "WP02",
+        "WP03"
+      ],
+      "write_scope": [
+        "backend/apps/products/tests.py",
+        "backend/apps/products/urls.py",
+        "backend/apps/products/views.py",
+        "frontend/src/app/products/*/__tests__/page.test.tsx",
+        "frontend/src/app/products/*/page.tsx",
+        "frontend/src/types/index.ts"
+      ],
+      "predicted_surfaces": [
+        "api",
+        "artifact-rendering"
+      ],
+      "depends_on_lanes": [],
+      "parallel_group": 0
+    },
+    {
+      "lane_id": "lane-planning",
+      "wp_ids": [
+        "WP01"
+      ],
+      "write_scope": [
+        "kitty-specs/product-page-gallery-related-items-01KSV4A2/**"
+      ],
+      "predicted_surfaces": [
+        "planning"
+      ],
+      "depends_on_lanes": [],
+      "parallel_group": 0
+    }
+  ],
+  "computed_at": "2026-05-31T12:53:27.058387+00:00",
+  "computed_from": "dependency_graph+ownership",
+  "planning_artifact_wps": [
+    "WP01"
+  ],
+  "collapse_report": {
+    "events": [
+      {
+        "wp_a": "WP03",
+        "wp_b": "WP02",
+        "rule": "dependency",
+        "evidence": "WP03 depends on WP02"
+      }
+    ],
+    "total_merges": 1,
+    "independent_wps_collapsed": 0,
+    "by_rule": {
+      "dependency": 1
+    }
+  }
+}

@@ -1,108 +1,98 @@
-# Implementation Plan: [FEATURE]
-*Path: [templates/plan-template.md](templates/plan-template.md)*
+# Implementation Plan: Product Page Gallery And Related Items
 
-
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/kitty-specs/[###-feature-name]/spec.md`
-
-**Note**: This template is filled in by the `/spec-kitty.plan` command. See `src/specify_cli/missions/software-dev/command-templates/plan.md` for the execution workflow.
-
-The planner will not begin until all planning questions have been answered—capture those answers in this document before progressing to later phases.
+**Mission:** `product-page-gallery-related-items-01KSV4A2`
+**Branch:** `kitty/mission-product-page-gallery-related-items-01KSV4A2`
+**Planning/base branch:** `main`
+**Merge target:** `main`
+**Spec:** `kitty-specs/product-page-gallery-related-items-01KSV4A2/spec.md`
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Add a compact product detail gallery and category-based related products to the
+existing Django REST + Next.js e-commerce MVP. The backend will provide a public
+related-products list endpoint, and the frontend will render a responsive grid
+below the product detail without introducing recommendation infrastructure.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
+**Languages/Versions:** Python 3.12.3, Django 6.0.4, DRF 3.17.1, Node 20.20.2,
+Next.js 16.2.4, React 19.2.5, TypeScript 5.x, Tailwind CSS 4.
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [Project-specific test approach or NEEDS CLARIFICATION]
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Primary Dependencies:** Django REST Framework generic views, existing
+`ProductSerializer`, Axios API client, `next/image`, existing cart context and
+product card components.
 
-## Charter Check
+**Storage:** Existing PostgreSQL-backed `Product`, `Category`, and
+`ProductImage` tables. No schema migration is required.
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+**Testing:** Django `TestCase`/DRF `APIClient` for backend behavior; Jest and
+Testing Library for frontend product-page interactions.
 
-[Gates determined based on charter file]
+**Constraints:** Preserve existing routes, keep related reads public, hide empty
+related sections, and keep related-load failures non-blocking.
 
 ## Project Structure
 
-### Documentation (this feature)
-
-```
-kitty-specs/[###-feature]/
-├── plan.md              # This file (/spec-kitty.plan command output)
-├── research.md          # Phase 0 output (/spec-kitty.plan command)
-├── data-model.md        # Phase 1 output (/spec-kitty.plan command)
-├── quickstart.md        # Phase 1 output (/spec-kitty.plan command)
-├── contracts/           # Phase 1 output (/spec-kitty.plan command)
-└── tasks.md             # Phase 2 output (/spec-kitty.tasks command - NOT created by /spec-kitty.plan)
-```
-
-### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
-
-```
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+```text
+backend/apps/products/
+  models.py
+  serializers.py
+  urls.py
+  views.py
+  tests.py
+frontend/src/app/products/[slug]/
+  page.tsx
+  __tests__/page.test.tsx
+frontend/src/types/
+  index.ts
+kitty-specs/product-page-gallery-related-items-01KSV4A2/
+  spec.md
+  plan.md
+  research.md
+  data-model.md
+  quickstart.md
+  contracts/rest-api.md
+  tasks.md
+  tasks/
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+## Implementation Strategy
 
-## Complexity Tracking
+- Implement related products as a `ListAPIView` that resolves the current active
+  product by slug, then returns up to 4 active products.
+- Prioritize same-category products, exclude the current product, and fill
+  remaining slots with recent active products from other categories.
+- Keep the frontend gallery local to the product detail page: selected main
+  image state plus thumbnail buttons.
+- Fetch related products through the central `api` client after loading the
+  product detail; log failures and render the product page normally.
+- Reuse `ProductCard` for the related grid to match the existing catalog
+  presentation.
 
-*Fill ONLY if Charter Check has violations that must be justified*
+## Public Interfaces
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+Add one public endpoint:
+
+```text
+GET /api/products/<slug>/related/
+```
+
+Response: unpaginated JSON array of serialized products, using the existing
+`ProductSerializer` shape. Existing routes remain unchanged.
+
+## Work Packages
+
+1. **WP01 - Mission artifacts and API contract:** finalize spec, plan, contract,
+   data model, quickstart, task outline, and work package prompts.
+2. **WP02 - Backend related products endpoint:** add the DRF view, route, and
+   regression tests for ranking/fallback/error behavior.
+3. **WP03 - Frontend gallery and related grid:** update types, product page UI,
+   related fetch behavior, and product-page tests.
+
+## Acceptance Gates
+
+- `docker compose exec backend python manage.py check`
+- `docker compose exec backend python manage.py test`
+- `docker compose exec frontend npm test -- --runInBand`
+- `docker compose exec frontend npm run lint`
+- `docker compose exec frontend npm run build`

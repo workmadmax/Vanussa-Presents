@@ -1,0 +1,42 @@
+{
+  "event_count": 3,
+  "last_event_id": "01KSZ1HBBZ6CXWNZNRN9CSXN3Q",
+  "materialized_at": "2026-05-31T12:53:27.039909+00:00",
+  "mission_number": "",
+  "mission_slug": "product-page-gallery-related-items-01KSV4A2",
+  "mission_type": "software-dev",
+  "summary": {
+    "approved": 0,
+    "blocked": 0,
+    "canceled": 0,
+    "claimed": 0,
+    "done": 0,
+    "for_review": 0,
+    "in_progress": 0,
+    "in_review": 0,
+    "planned": 3
+  },
+  "work_packages": {
+    "WP01": {
+      "actor": "finalize-tasks",
+      "force_count": 1,
+      "lane": "planned",
+      "last_event_id": "01KSZ1HBAPC3ZFAQJQW799FW8F",
+      "last_transition_at": "2026-05-31T12:53:26.998101+00:00"
+    },
+    "WP02": {
+      "actor": "finalize-tasks",
+      "force_count": 1,
+      "lane": "planned",
+      "last_event_id": "01KSZ1HBBBTS1BBSHGMMC41CM0",
+      "last_transition_at": "2026-05-31T12:53:27.019960+00:00"
+    },
+    "WP03": {
+      "actor": "finalize-tasks",
+      "force_count": 1,
+      "lane": "planned",
+      "last_event_id": "01KSZ1HBBZ6CXWNZNRN9CSXN3Q",
+      "last_transition_at": "2026-05-31T12:53:27.039909+00:00"
+    }
+  }
+}
