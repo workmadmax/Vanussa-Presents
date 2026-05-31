@@ -6,7 +6,7 @@
 #    By: mdouglas <mdouglas@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/24 20:58:44 by mdouglas          #+#    #+#              #
-#    Updated: 2026/05/29 20:06:34 by mdouglas         ###   ########.fr        #
+#    Updated: 2026/05/31 17:21:20 by mdouglas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 # Create your models here.
-
 
 class Order(models.Model):
 
