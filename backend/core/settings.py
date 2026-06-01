@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'apps.users',
 		'apps.orders',
+    'apps.checkout',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,11 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+MP_ACCESS_TOKEN = os.getenv("MP_ACCESS_TOKEN", "")
+MP_WEBHOOK_SECRET = os.getenv("MP_WEBHOOK_SECRET", "")
+CHECKOUT_BACKEND_URL = os.getenv("CHECKOUT_BACKEND_URL", "http://127.0.0.1:8000")
+CHECKOUT_FRONTEND_URL = os.getenv("CHECKOUT_FRONTEND_URL", "http://localhost:3000")
+CHECKOUT_PROCESSING_EXPIRATION_HOURS = int(
+    os.getenv("CHECKOUT_PROCESSING_EXPIRATION_HOURS", "48")
+)
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@example.com")

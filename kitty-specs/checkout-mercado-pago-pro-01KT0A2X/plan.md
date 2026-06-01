@@ -1,48 +1,48 @@
-# Implementation Plan: [FEATURE]
-*Path: [templates/plan-template.md](templates/plan-template.md)*
+# Implementation Plan: Checkout Mercado Pago Pro
 
+_Path: [templates/plan-template.md](templates/plan-template.md)_
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/kitty-specs/[###-feature-name]/spec.md`
+**Branch**: `feat/checkout-mercadopago-02` | **Date**: 2026-06-01 | **Spec**: [kitty-specs/checkout-mercado-pago-pro-01KT0A2X/spec.md](kitty-specs/checkout-mercado-pago-pro-01KT0A2X/spec.md)
+**Input**: Feature specification from `/kitty-specs/checkout-mercado-pago-pro-01KT0A2X/spec.md`
 
-**Note**: This template is filled in by the `/spec-kitty.plan` command. See `src/specify_cli/missions/software-dev/command-templates/plan.md` for the execution workflow.
-
-The planner will not begin until all planning questions have been answered—capture those answers in this document before progressing to later phases.
+The planning questions are complete. Proceeding with the implementation plan.
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Implement Mercado Pago Checkout Pro for authenticated checkout, including
+address collection with CEP auto-fill, LGPD consent capture, payment preference
+creation, webhook-driven status updates, and success/failure outcomes. Pending
+payments remain in processing until a management command expires them, executed
+via cron. Paid orders trigger confirmation emails.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [Project-specific test approach or NEEDS CLARIFICATION]
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: Python 3.12.3 (Django 6.0.4, DRF 3.17.1), Node 20.20.2
+(Next.js 16.2.4, React 19.2.5, TypeScript 5.x)
+**Primary Dependencies**: Mercado Pago SDK, SendGrid, ViaCEP public API,
+cron-managed Django management command
+**Storage**: PostgreSQL (existing Order storage)
+**Testing**: Django tests via `python manage.py test`; frontend Jest/RTL via
+`npm test -- --runInBand`
+**Target Platform**: Linux server + modern browsers
+**Project Type**: Web application (Django backend + Next.js frontend)
+**Performance Goals**: Meet NFR thresholds from spec for CEP auto-fill,
+notification handling, and email dispatch
+**Constraints**: Mercado Pago Checkout Pro only; no subscriptions, split
+payments, or external card data storage
+**Scale/Scope**: Single-store ecommerce checkout and order management
 
 ## Charter Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
-
-[Gates determined based on charter file]
+Charter file is missing; governance gate skipped for this mission. No conflicts
+identified from existing repository practices.
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```
-kitty-specs/[###-feature]/
+kitty-specs/checkout-mercado-pago-pro-01KT0A2X/
 ├── plan.md              # This file (/spec-kitty.plan command output)
 ├── research.md          # Phase 0 output (/spec-kitty.plan command)
 ├── data-model.md        # Phase 1 output (/spec-kitty.plan command)
@@ -52,57 +52,29 @@ kitty-specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
 backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
+├── manage.py
+├── apps/
+│   ├── checkout/               # New app for payment + webhook handlers
+│   ├── orders/
+│   ├── users/
+│   └── products/
+└── core/
 
 frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+└── src/
+    ├── app/
+    │   └── checkout/
+    │       ├── [id]/page.tsx
+    │       ├── success/page.tsx
+    │       └── failure/page.tsx
+    ├── services/
+    ├── components/
+    └── context/
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
-
-## Complexity Tracking
-
-*Fill ONLY if Charter Check has violations that must be justified*
-
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+**Structure Decision**: Use the existing web monorepo layout with a Django
+backend and Next.js frontend; add a new `backend/apps/checkout` module and
+extend the checkout routes under `frontend/src/app/checkout`.

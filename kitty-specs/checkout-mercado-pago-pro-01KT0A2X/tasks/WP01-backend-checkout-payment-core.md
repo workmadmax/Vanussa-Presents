@@ -119,3 +119,4 @@ confirmation emails, and expire processing orders via a management command.
 ## Activity Log
 
 - 2026-06-01T01:47:10Z – unknown – Moved to in_progress
+- 2026-06-01T01:47:20Z – unknown – Ran checkout/orders tests: 38 OK. makemigrations check blocked by unrelated products migration.
