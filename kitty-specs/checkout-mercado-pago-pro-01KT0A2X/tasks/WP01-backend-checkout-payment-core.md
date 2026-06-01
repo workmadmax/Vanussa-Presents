@@ -13,7 +13,7 @@ requirement_refs:
 - FR-013
 planning_base_branch: feat/checkout-mercadopago-02
 merge_target_branch: feat/checkout-mercadopago-02
-branch_strategy: Use the lane-specific worktree created after finalize-tasks; base and merge target are feat/checkout-mercadopago-02.
+branch_strategy: Planning artifacts for this feature were generated on feat/checkout-mercadopago-02. During /spec-kitty.implement this WP may branch from a dependency-specific base, but completed changes must merge back into feat/checkout-mercadopago-02 unless the human explicitly redirects the landing branch.
 subtasks:
 - T001
 - T002

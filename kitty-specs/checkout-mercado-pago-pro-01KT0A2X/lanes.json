@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "mission_slug": "checkout-mercado-pago-pro-01KT0A2X",
+  "mission_id": "01KT0A2XT8W46037NW4SCXG3CJ",
+  "mission_branch": "kitty/mission-checkout-mercado-pago-pro-01KT0A2X",
+  "target_branch": "feat/checkout-mercadopago-02",
+  "lanes": [
+    {
+      "lane_id": "lane-a",
+      "wp_ids": [
+        "WP01",
+        "WP02"
+      ],
+      "write_scope": [
+        "backend/apps/checkout/**",
+        "backend/apps/orders/**",
+        "backend/core/**",
+        "frontend/src/app/checkout/**",
+        "frontend/src/app/orders/**",
+        "frontend/src/services/**",
+        "frontend/src/types/**"
+      ],
+      "predicted_surfaces": [
+        "api",
+        "artifact-rendering"
+      ],
+      "depends_on_lanes": [],
+      "parallel_group": 0
+    }
+  ],
+  "computed_at": "2026-06-01T00:56:48.289184+00:00",
+  "computed_from": "dependency_graph+ownership",
+  "planning_artifact_wps": [],
+  "collapse_report": {
+    "events": [
+      {
+        "wp_a": "WP02",
+        "wp_b": "WP01",
+        "rule": "dependency",
+        "evidence": "WP02 depends on WP01"
+      }
+    ],
+    "total_merges": 1,
+    "independent_wps_collapsed": 0,
+    "by_rule": {
+      "dependency": 1
+    }
+  }
+}
