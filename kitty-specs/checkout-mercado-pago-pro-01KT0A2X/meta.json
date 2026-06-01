@@ -1,0 +1,10 @@
+{
+  "created_at": "2026-06-01T00:42:07.654738+00:00",
+  "friendly_name": "checkout mercado pago pro",
+  "mission_id": "01KT0A2XT8W46037NW4SCXG3CJ",
+  "mission_number": null,
+  "mission_slug": "checkout-mercado-pago-pro-01KT0A2X",
+  "mission_type": "software-dev",
+  "slug": "checkout-mercado-pago-pro-01KT0A2X",
+  "target_branch": "feat/checkout-mercadopago-02"
+}
