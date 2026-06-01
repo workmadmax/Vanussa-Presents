@@ -10,7 +10,7 @@
 
 | ID   | Description                                                      | WP   | Parallel |
 | ---- | ---------------------------------------------------------------- | ---- | -------- |
-| T001 | Create checkout app skeleton and wire routes                     | WP01 | No       |
+| T001 | Create checkout app skeleton and wire routes                     | WP01 | No       | [D] |
 | T002 | Extend Order model with delivery and LGPD consent fields         | WP01 | No       |
 | T003 | Implement payment initiation endpoint and preference creation    | WP01 | No       | [D] |
 | T004 | Implement webhook verification and order status updates          | WP01 | No       |
@@ -32,7 +32,7 @@ Dependencies: None
 Requirement refs: FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-013
 **Independent test:** Manual API smoke checks and management command dry-run
 
-- [ ] T001 Create checkout app skeleton and wire routes.
+- [x] T001 Create checkout app skeleton and wire routes.
 - [ ] T002 Extend Order model with delivery and LGPD consent fields.
 - [x] T003 Implement payment initiation endpoint and preference creation.
 - [ ] T004 Implement webhook verification and order status updates.
