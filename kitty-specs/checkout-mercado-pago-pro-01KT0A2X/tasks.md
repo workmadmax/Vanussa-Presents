@@ -14,7 +14,7 @@
 | T002 | Extend Order model with delivery and LGPD consent fields         | WP01 | No       |
 | T003 | Implement payment initiation endpoint and preference creation    | WP01 | No       | [D] |
 | T004 | Implement webhook verification and order status updates          | WP01 | No       |
-| T005 | Send confirmation email on paid orders                           | WP01 | No       |
+| T005 | Send confirmation email on paid orders                           | WP01 | No       | [D] |
 | T006 | Add expiration management command for processing orders          | WP01 | No       |
 | T007 | Build checkout address form with CEP auto-fill and validation    | WP02 | No       |
 | T008 | Add LGPD consent gating and payment redirect                     | WP02 | No       |
@@ -36,7 +36,7 @@ Requirement refs: FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-013
 - [ ] T002 Extend Order model with delivery and LGPD consent fields.
 - [x] T003 Implement payment initiation endpoint and preference creation.
 - [ ] T004 Implement webhook verification and order status updates.
-- [ ] T005 Send confirmation email on paid orders.
+- [x] T005 Send confirmation email on paid orders.
 - [ ] T006 Add expiration management command for processing orders.
 
 ## WP02 - Frontend Checkout Experience
