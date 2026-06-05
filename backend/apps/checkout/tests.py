@@ -111,6 +111,7 @@ class CheckoutPaymentViewTest(APITestCase):
         self.order.refresh_from_db()
         self.assertEqual(self.order.status, Order.Status.PROCESSING)
         self.assertEqual(self.order.payment_id, f"pref-{self.order.id}")
+        self.assertIsNotNone(self.order.processing_started_at)
         self.assertEqual(self.order.delivery_postal_code, "01001-000")
         self.assertTrue(self.order.lgpd_consent)
         self.assertIsNotNone(self.order.lgpd_consented_at)
@@ -245,13 +246,19 @@ class MercadoPagoWebhookViewTest(APITestCase):
 
 
 class ExpireProcessingOrdersCommandTest(APITestCase):
-    def test_expires_stale_processing_orders(self):
+    def test_expires_by_processing_started_at_not_updated_at(self):
         user = make_user(username="expireuser")
         stale = make_order(user, status=Order.Status.PROCESSING)
         fresh = make_order(user, status=Order.Status.PROCESSING)
 
+        now = timezone.now()
         Order.objects.filter(pk=stale.pk).update(
-            updated_at=timezone.now() - timedelta(hours=72)
+            processing_started_at=now - timedelta(hours=72),
+            updated_at=now,
+        )
+        Order.objects.filter(pk=fresh.pk).update(
+            processing_started_at=now - timedelta(hours=1),
+            updated_at=now - timedelta(hours=72),
         )
 
         out = StringIO()

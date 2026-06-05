@@ -21,7 +21,7 @@ class Command(BaseCommand):
         cutoff = timezone.now() - timedelta(hours=options["hours"])
         expired = Order.objects.filter(
             status=Order.Status.PROCESSING,
-            updated_at__lt=cutoff,
+            processing_started_at__lt=cutoff,
         ).update(
             status=Order.Status.CANCELLED,
             payment_provider_status="expired",

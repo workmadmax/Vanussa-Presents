@@ -139,6 +139,11 @@ class CheckoutService:
             if not preference.preference_id or not preference.init_point:
                 raise ValidationError("Invalid Mercado Pago preference response.")
 
+            if (
+                order.status != Order.Status.PROCESSING
+                or order.processing_started_at is None
+            ):
+                order.processing_started_at = timezone.now()
             order.status = Order.Status.PROCESSING
             order.payment_id = preference.preference_id
             order.payment_provider_status = "preference_created"
@@ -154,6 +159,7 @@ class CheckoutService:
                     "status",
                     "payment_id",
                     "payment_provider_status",
+                    "processing_started_at",
                     "updated_at",
                 ]
             )
