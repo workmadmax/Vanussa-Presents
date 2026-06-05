@@ -17,32 +17,8 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/services/api";
 import { useAuth } from "@/context/authContext";
-
-type OrderItem = {
-	id: number;
-	product_name: string;
-	product_slug: string;
-	quantity: number;
-	price: string;
-	subtotal_price: string;
-};
-
-type Order = {
-	id: number;
-	status: string;
-	total_price: string;
-	created_at: string;
-	updated_at: string;
-	items: OrderItem[];
-};
-
-const STATUS_LABEL: Record<string, { label: string; color: string }> = {
-	PENDING: { label: "Pendente", color: "bg-yellow-100 text-yellow-700" },
-	PAID: { label: "Pago", color: "bg-blue-100 text-blue-700" },
-	SHIPPED: { label: "Enviado", color: "bg-purple-100 text-purple-700" },
-	DELIVERED: { label: "Entregue", color: "bg-green-100 text-green-700" },
-	CANCELLED: { label: "Cancelado", color: "bg-red-100 text-red-700" },
-};
+import { getOrderStatusInfo } from "@/services/checkout";
+import type { Order } from "@/types";
 
 export default function OrderDetailPage() {
 	const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -96,10 +72,7 @@ export default function OrderDetailPage() {
 		);
 	}
 
-	const statusInfo = STATUS_LABEL[order.status] ?? {
-		label: order.status,
-		color: "bg-gray-100 text-gray-600",
-	};
+	const statusInfo = getOrderStatusInfo(order.status);
 
 	return (
 		<main className="max-w-2xl mx-auto p-6">

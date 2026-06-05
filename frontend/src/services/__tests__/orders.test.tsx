@@ -255,4 +255,14 @@ describe("Fluxo de pedido — histórico (/orders)", () => {
 			expect(api.get).toHaveBeenCalledWith("/orders/my-orders/");
 		});
 	});
+
+	it("exibe pedidos em processamento como Processando", async () => {
+		mockAuth();
+		(api.get as jest.Mock).mockResolvedValueOnce({
+			data: [{ ...fakeOrder, status: "PROCESSING" }],
+		});
+		render(<OrdersPage />);
+
+		expect(await screen.findByText("Processando")).toBeInTheDocument();
+	});
 });
