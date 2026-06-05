@@ -126,3 +126,4 @@ confirmation emails, and expire processing orders via a management command.
 - 2026-06-05T00:01:17Z – codex – shell_pid=5240 – Started review via action command
 - 2026-06-05T00:06:44Z – codex – shell_pid=5240 – Moved to planned
 - 2026-06-05T00:28:09Z – codex – shell_pid=0 – Moved to for_review
+- 2026-06-05T00:34:25Z – codex – shell_pid=0 – Review passed: backend checkout/payment core satisfies WP01 subtasks; previous Mercado Pago SDK and processing expiration blockers are fixed. Docker checkout/orders tests passed (38 OK) and mercadopago import succeeds. makemigrations --check still reports unrelated products migration drift.
