@@ -124,3 +124,4 @@ confirmation emails, and expire processing orders via a management command.
 - 2026-06-01T01:47:20Z – unknown – Ran checkout/orders tests: 38 OK. makemigrations check blocked by unrelated products migration.
 - 2026-06-01T01:51:40Z – codex – Ready for review.
 - 2026-06-05T00:01:17Z – codex – shell_pid=5240 – Started review via action command
+- 2026-06-05T00:06:44Z – codex – shell_pid=5240 – Moved to planned
