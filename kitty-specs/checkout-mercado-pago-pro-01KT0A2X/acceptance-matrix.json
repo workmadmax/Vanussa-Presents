@@ -1,0 +1,39 @@
+{
+  "mission_slug": "checkout-mercado-pago-pro-01KT0A2X",
+  "mission_number": null,
+  "mission_type": "software-dev",
+  "overall_verdict": "pass",
+  "criteria": [
+    {
+      "criterion_id": "AC-WP01",
+      "description": "WP01 Backend Checkout And Payment Core is reviewed and approved with checkout app routing, order delivery and LGPD fields, payment initiation, webhook processing, paid-order email confirmation, and processing-order expiration implemented.",
+      "proof_type": "automated_test",
+      "evidence": "WP01 approved after Docker checkout/orders tests passed with 38 OK and mercadopago import validation succeeded.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-06-05T00:34:25Z",
+      "notes": "Recorded in WP01 review evidence and status events. makemigrations --check still reports unrelated products migration drift."
+    },
+    {
+      "criterion_id": "AC-WP02",
+      "description": "WP02 Frontend Checkout Experience is reviewed and approved with checkout address form, CEP/address validation, LGPD consent gating, payment redirect, success/failure pages, processing status labels, and frontend checkout service/types coverage implemented.",
+      "proof_type": "automated_test",
+      "evidence": "WP02 approved after focused Jest tests passed 19/19, ESLint passed, and Docker Compose frontend production build passed.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-06-05T01:55:57Z",
+      "notes": "Recorded in WP02 review evidence and status events."
+    },
+    {
+      "criterion_id": "AC-FINAL-GATES",
+      "description": "Mission-level backend and frontend validation gates passed before acceptance.",
+      "proof_type": "automated_test",
+      "evidence": "Backend checkout/orders validation, Mercado Pago import validation, frontend Jest coverage, ESLint, and production build were green during WP reviews.",
+      "pass_fail": "pass",
+      "verified_by": "codex",
+      "verified_at": "2026-06-05T01:55:57Z",
+      "notes": "Acceptance evidence is based on the approved WP review records for this mission."
+    }
+  ],
+  "negative_invariants": []
+}
